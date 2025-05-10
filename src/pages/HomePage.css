@@ -1,0 +1,75 @@
+/* src/pages/HomePage.css */
+
+.homepage-layout {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 30px;
+  margin-top: 20px;
+  width: 100%; /* Ensure the layout takes full width */
+  justify-content: flex-start; /* Left-justify the content */
+  padding: 0 20px; /* Add some padding on the sides */
+}
+
+.homepage-layout > .location-sidebar {
+  flex: 0 0 280px;
+  box-sizing: border-box; /* Added to ensure padding/border are included in width calculation */
+  /* Appearance styles (padding, background, border) are handled by LocationSidebar.css */
+  margin-right: 0; /* Ensure no extra margin on the right */
+  align-self: flex-start; /* Align to the top */
+}
+
+.homepage-main-content {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  box-sizing: border-box; /* Added for consistency */
+  padding-right: 30px; /* Add padding on the right side to match the left padding */
+  /* width: calc(100% - 310px); */ /* Removed fixed width calculation */
+  /* background-color: lightblue; /* TEMPORARY: Add a background to visually see its bounds */
+}
+
+.homepage-main-content > h1,
+.homepage-main-content > p,
+.homepage-main-content > .find-events-button-container,
+.homepage-main-content > hr,
+.homepage-main-content > h2 {
+  margin-left: 0; /* Ensure left alignment */
+  width: 100%; /* Take full width of parent */
+}
+
+.find-events-button-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* Responsive adjustments for mobile (stacking) */
+@media (max-width: 768px) {
+  .homepage-layout {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .homepage-layout > .location-sidebar,
+  .homepage-main-content {
+    flex-basis: auto;
+    width: 100%;
+  }
+
+  .homepage-main-content {
+    width: 100%; /* Override the desktop width calculation */
+  }
+
+  .homepage-layout > .location-sidebar {
+    margin-bottom: 20px;
+    margin-right: 0;
+  }
+}
+
+/* Add this to ensure cards in the main content area behave as expected */
+.homepage-main-content .card {
+  width: 100%;
+  box-sizing: border-box;
+  padding-right: 30px; /* Add padding on the right side to match the gap between sidebar and content */
+}
+

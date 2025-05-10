@@ -1,0 +1,66 @@
+/* src/components/Header.css */
+.app-header {
+  background-color: #000000; /* Black background */
+  height: 60px; /* Fixed height of 60px */
+  width: 100%; /* Full width */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #333; /* Darker border for a black background */
+}
+
+.app-header .header-left,
+.app-header .header-right {
+  flex: 0 0 20%; /* Reduce the width of left and right sections */
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.app-header .header-center {
+  flex: 0 0 60%; /* Increase the width of the center section for menu */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center the navigation links */
+  height: 100%;
+}
+
+/* Removed duplicate rule as it's now included above */
+
+.app-header .header-right {
+  justify-content: flex-end;
+}
+
+.app-header .logo {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-decoration: none;
+  color: #FFFFFF !important; /* White text on black background with !important */
+  display: inline-block; /* Ensure it's a block element */
+  padding: 5px 0; /* Add some padding */
+}
+
+.app-header .main-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap; /* Prevent wrapping */
+  width: 100%; /* Take full width of parent */
+}
+
+.app-header .main-nav .nav-link {
+  margin: 0 5px; /* Reduced margin */
+  text-decoration: none;
+  color: #FFFFFF; /* White text on black background */
+  font-weight: 500;
+  padding: 5px 8px; /* Reduced padding */
+  transition: all 0.2s ease;
+  font-size: 0.85em; /* Smaller font to fit all links */
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.app-header .main-nav .nav-link:hover {
+  color: #FFFFFF; /* Stay white on hover */
+  text-decoration: underline; /* Add underline on hover for clarity */
+}
