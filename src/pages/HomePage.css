@@ -5,7 +5,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   gap: 30px;
-  margin-top: 20px;
+  margin-top: 0; /* Reduced from 20px */
   width: 100%; /* Ensure the layout takes full width */
   justify-content: flex-start; /* Left-justify the content */
   padding: 0 20px; /* Add some padding on the sides */
@@ -29,8 +29,16 @@
   /* background-color: lightblue; /* TEMPORARY: Add a background to visually see its bounds */
 }
 
-.homepage-main-content > h1,
-.homepage-main-content > p,
+.homepage-main-content > h1 {
+  margin-top: 0; /* Force first heading to have no top margin */
+  margin-bottom: 0.3em; /* Reduced space between heading and paragraph */
+}
+
+.homepage-main-content > p {
+  margin-top: 0; /* Remove top margin from paragraph */
+  margin-bottom: 1em; /* Add some space after the paragraph */
+}
+
 .homepage-main-content > .find-events-button-container,
 .homepage-main-content > hr,
 .homepage-main-content > h2 {
@@ -72,4 +80,5 @@
   box-sizing: border-box;
   padding-right: 30px; /* Add padding on the right side to match the gap between sidebar and content */
 }
+
 

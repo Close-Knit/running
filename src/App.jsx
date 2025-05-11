@@ -40,6 +40,11 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/events/:slug" element={<EventDetailPage />} />
+          <Route path="/novelty-run" element={<EventsPage eventType="novelty" />} />
+          <Route path="/themed-run" element={<EventsPage eventType="themed" />} />
+          <Route path="/obstacle-run" element={<EventsPage eventType="obstacle" />} />
+          <Route path="/virtual-run" element={<EventsPage eventType="virtual" />} />
+          <Route path="/barefoot-run" element={<EventsPage eventType="barefoot" />} />
           {/* You can add a 404 Not Found Route here later:
               <Route path="*" element={<NotFoundPage />} />
           */}

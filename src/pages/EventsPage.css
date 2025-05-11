@@ -1,24 +1,22 @@
-/* src/pages/EventsPage.css - Simplified */
+/* src/pages/EventsPage.css */
 
-.events-list-content {
-  /* Styles for the list container itself */
-  padding-right: 30px; /* Add padding on the right side to match the homepage layout */
-}
+/* Import HomePage styles to maintain consistency */
+@import './HomePage.css';
 
-.events-list-content ul {
+/* Additional styles specific to the events page */
+.events-list {
   list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 
-.events-list-content .card {
+.events-list li {
   margin-bottom: 20px;
-  padding: 20px;
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.events-list-content h3 {
-  margin-top: 0;
+/* Override any specific styles as needed */
+.homepage-main-content .events-list .card {
+  width: 100%;
+  box-sizing: border-box;
 }
+
