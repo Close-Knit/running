@@ -1,6 +1,6 @@
 /* src/components/Header.css */
 .app-header {
-  background-color: #000000; /* Black background */
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
   height: 60px; /* Fixed height of 60px */
   width: 100%; /* Full width */
   display: flex;
@@ -8,7 +8,11 @@
   align-items: center;
   padding: 0 20px;
   box-sizing: border-box;
-  border-bottom: 1px solid #333; /* Darker border for a black background */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle light border */
+  backdrop-filter: blur(5px); /* Add a blur effect to the background */
+  -webkit-backdrop-filter: blur(5px); /* For Safari support */
+  position: relative;
+  z-index: 10; /* Ensure header is above other content */
 }
 
 .app-header .header-left,

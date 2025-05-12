@@ -25,6 +25,13 @@ import './components/Footer.css'; // Assuming you have Footer.css
 function App() {
   return (
     <> {/* React Fragment to group multiple top-level elements */}
+      {/* Background image container */}
+      <div
+        className="page-background"
+        style={{
+          backgroundImage: 'url(/images/homepage.jpg)'
+        }}
+      ></div>
 
       <Header /> {/* Renders the Header component at the top */}
 
@@ -36,7 +43,9 @@ function App() {
           marginTop: '0', /* Remove top margin */
           minHeight: 'calc(100vh - 120px)', /* Adjusted to account for header and footer */
           width: '100%', /* Ensure full width */
-          boxSizing: 'border-box' /* Include padding in width calculation */
+          boxSizing: 'border-box', /* Include padding in width calculation */
+          position: 'relative', /* For proper stacking context */
+          zIndex: '1' /* Ensure content is above background */
         }}>
         <Routes> {/* Defines the different routes for your application */}
           <Route path="/" element={<HomePage />} />
@@ -62,3 +71,4 @@ function App() {
 }
 
 export default App;
+

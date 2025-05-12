@@ -9,33 +9,37 @@
   padding: 0;
   margin: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(2, 1fr); /* Changed to 2 columns per row */
+  gap: 30px; /* Increased gap between cards */
 }
 
 .event-card {
-  background-color: #000000;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
   color: white;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
   position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  backdrop-filter: blur(3px); /* Add a slight blur effect to the background */
+  -webkit-backdrop-filter: blur(3px); /* For Safari support */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for better definition */
 }
 
 .event-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+  background-color: rgba(0, 0, 0, 0.75); /* Slightly darker on hover */
+  border-color: rgba(255, 255, 255, 0.2); /* More visible border on hover */
 }
 
 .event-card-content {
-  padding: 20px;
+  padding: 25px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  min-height: 300px; /* Ensure minimum height for consistency */
 }
 
 .event-card h3 {
@@ -46,28 +50,94 @@
 }
 
 .event-card-details {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .event-card-detail {
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   font-size: 0.9rem;
 }
 
 .event-card-detail svg {
   margin-right: 8px;
   color: #ccff00; /* Bright green accent color */
+  flex-shrink: 0; /* Prevent icon from shrinking */
+}
+
+/* New styles for additional information sections */
+.event-card-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* New layout for card content with right sidebar */
+.event-card-layout {
+  display: flex;
+  gap: 15px;
+  flex: 1;
+}
+
+.event-card-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* This will push content to top and bottom */
+}
+
+.event-card-sidebar {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.event-card-section {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 0; /* Remove bottom margin since we're using gap in the parent */
+}
+
+.event-card-section h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #ccff00;
+  border-bottom: 1px solid rgba(204, 255, 0, 0.3);
+  padding-bottom: 5px;
+  text-align: center;
+}
+
+.event-card-section-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+}
+
+.event-card-section-label {
+  color: rgba(255, 255, 255, 0.7);
+  margin-right: 10px;
+}
+
+.event-card-section-value {
+  color: white;
+  font-weight: 500;
+  text-align: right;
 }
 
 .event-highlight {
-  max-height: 60px; /* Limit height to prevent pushing button too far down */
+  max-height: 60px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* Limit to 3 lines */
-  line-clamp: 3; /* Standard property for compatibility */
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   margin-bottom: 10px;
 }
@@ -85,8 +155,8 @@
 }
 
 .event-card-action {
-  margin-top: auto; /* Push to bottom of flex container */
-  padding-top: 15px; /* Add some space above the button */
+  margin-top: auto; /* Push to bottom of container */
+  align-self: flex-start;
 }
 
 .learn-more-btn {
@@ -116,6 +186,7 @@
   text-align: center;
   width: 100%;
   margin-bottom: 0.5em;
+  color: #ccff00; /* Match the learn-more button color */
 }
 
 /* Center the subtitle paragraph as well for consistency */
@@ -123,7 +194,66 @@
   text-align: center;
   width: 100%;
   margin-bottom: 1.5em;
+  color: #ccff00; /* Match the learn-more button color */
 }
 
+/* Add this to ensure text in the overlay container is centered */
+.text-overlay-container p {
+  text-align: center;
+  color: #ccff00; /* Match the learn-more button color */
+  margin-bottom: 0;
+}
+
+/* Responsive adjustments for mobile devices */
+@media (max-width: 992px) {
+  .events-list {
+    grid-template-columns: 1fr; /* Single column on smaller screens */
+  }
+
+  .event-card-content {
+    min-height: auto; /* Let content determine height */
+    padding-bottom: 60px; /* Consistent with desktop */
+  }
+}
+
+@media (max-width: 768px) {
+  .event-card-sections {
+    grid-template-columns: 1fr; /* Stack sections on very small screens */
+    gap: 10px;
+  }
+
+  .event-card-layout {
+    flex-direction: column; /* Stack main content and sidebar on small screens */
+  }
+
+  .event-card-sidebar {
+    width: 100%; /* Full width on small screens */
+  }
+
+  .event-card-action {
+    position: static; /* Reset position on mobile */
+    margin-top: 20px; /* Add space above the button */
+    margin-bottom: 10px; /* Add space below the button */
+  }
+}
+
+/* Adjust the sidebar sections to take up appropriate space */
+.event-card-sidebar .event-card-section:last-child {
+  margin-bottom: auto;
+}
+
+@media (max-width: 768px) {
+  .event-card-layout {
+    flex-direction: column;
+  }
+  
+  .event-card-sidebar {
+    width: 100%;
+  }
+  
+  .event-card-action {
+    margin-top: 15px;
+  }
+}
 
 

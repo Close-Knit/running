@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'; // React hooks
 import { useParams, Link } from 'react-router-dom'; // For getting URL params and navigation
 import { supabase } from '../supabaseClient'; // Your Supabase client
+import './EventDetailPage.css'; // Import CSS for this page
 
 function EventDetailPage() {
   const { slug } = useParams(); // Extracts the 'slug' from the URL (e.g., /events/the-color-run -> slug = 'the-color-run')
@@ -74,20 +75,46 @@ function EventDetailPage() {
   return (
     <div className="event-detail-container"> {/* Added a class for potential styling */}
       <h1>{event.name}</h1>
-      <section className="event-info"> {/* Grouping info for clarity */}
+
+      <section className="event-info"> {/* Grouping basic info for clarity */}
         <p><strong>Type:</strong> {event.type || 'N/A'}</p>
         <p><strong>Dates/Season:</strong> {event.dates_season || 'N/A'}</p>
         <p><strong>Location(s):</strong> {event.locations || 'N/A'}</p>
         <p><strong>Highlight:</strong> {event.highlight || 'N/A'}</p>
       </section>
-      
+
       {event.description && ( // Only show description section if it exists
         <section className="event-description">
           <h2>Description</h2>
           <p>{event.description}</p>
         </section>
       )}
-      
+
+      {/* Additional Event Details Section */}
+      <section className="event-additional-details">
+        <h2>Event Details</h2>
+        <div className="event-details-grid">
+          <div className="event-detail-card">
+            <h3>Course Information</h3>
+            {event.terrain && <p><strong>Terrain:</strong> {event.terrain}</p>}
+            {event.elevation_gain && <p><strong>Elevation Gain:</strong> {event.elevation_gain}</p>}
+            {event.charity_affiliation && <p><strong>Charity Affiliation:</strong> {event.charity_affiliation}</p>}
+          </div>
+
+          <div className="event-detail-card">
+            <h3>Requirements</h3>
+            {event.age_restrictions && <p><strong>Age Restrictions:</strong> {event.age_restrictions}</p>}
+            {event.qualification_standard && <p><strong>Qualification Standard:</strong> {event.qualification_standard}</p>}
+          </div>
+
+          <div className="event-detail-card">
+            <h3>Registration</h3>
+            {event.registration_fee && <p><strong>Registration Fee:</strong> ${event.registration_fee}</p>}
+            {event.price && <p><strong>Ticket Price:</strong> ${event.price}</p>}
+          </div>
+        </div>
+      </section>
+
       {event.website_url && ( // Only show link if URL exists
         <p className="event-website-link">
           <a href={event.website_url} target="_blank" rel="noopener noreferrer">

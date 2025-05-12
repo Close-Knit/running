@@ -1,21 +1,26 @@
 /* src/components/LocationSidebar.css */
 .location-sidebar {
   padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #f9f9f9;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
   min-width: 220px;
   width: 280px; /* Fixed width */
   box-sizing: border-box; /* Added for consistency */
   margin-right: 30px; /* Add margin to the right */
   align-self: flex-start; /* Align to the top */
+  backdrop-filter: blur(3px); /* Add a slight blur effect to the background */
+  -webkit-backdrop-filter: blur(3px); /* For Safari support */
+  color: white; /* Light text for better readability */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
 }
 
 .location-sidebar h3 {
   margin-top: 0;
   margin-bottom: 15px;
   font-size: 1.2em;
-  color: #333;
+  color: #fff; /* White text for better contrast */
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5); /* Subtle glow effect */
 }
 
 .filter-group {
@@ -27,26 +32,31 @@
   margin-bottom: 5px;
   font-weight: bold;
   font-size: 0.9em;
+  color: #fff; /* White text for better contrast */
 }
 
 .filter-group select,
 .filter-group button {
   width: 100%;
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 4px;
-  box-sizing: border-box; /* Already correctly here */
+  box-sizing: border-box;
   font-size: 0.9em;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
+  color: white; /* White text */
 }
 
 .filter-group select:disabled {
-  background-color: #e9ecef;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
   cursor: not-allowed;
 }
 
 .filter-group button {
-  background-color: #007bff;
-  color: white;
+  background-color: #ccff00; /* Green color matching the learn-more button */
+  color: black;
   cursor: pointer;
   margin-top: 10px;
   padding: 10px;
@@ -54,9 +64,11 @@
   font-weight: bold;
   border: none;
   border-radius: 4px;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(204, 255, 0, 0.5); /* Green glow */
 }
 
 .filter-group button:hover {
-  background-color: #0056b3;
+  background-color: #b3ff00; /* Slightly darker green on hover */
+  box-shadow: 0 0 15px rgba(204, 255, 0, 0.7); /* Enhanced glow on hover */
 }

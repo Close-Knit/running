@@ -1,0 +1,136 @@
+/* src/pages/EventDetailPage.css */
+
+.event-detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px;
+  color: white;
+}
+
+.event-detail-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: white;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.event-info {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.event-description {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.event-description h2 {
+  color: #ccff00;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.8rem;
+}
+
+.event-additional-details {
+  margin-bottom: 30px;
+}
+
+.event-additional-details h2 {
+  color: #ccff00;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+
+.event-details-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.event-detail-card {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  padding: 20px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.event-detail-card h3 {
+  color: #ccff00;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+  border-bottom: 1px solid rgba(204, 255, 0, 0.3);
+  padding-bottom: 8px;
+}
+
+.event-detail-card p {
+  margin-bottom: 10px;
+}
+
+.event-website-link {
+  margin: 30px 0;
+  text-align: center;
+}
+
+.event-website-link a {
+  display: inline-block;
+  background-color: #ccff00;
+  color: black;
+  padding: 12px 24px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.event-website-link a:hover {
+  background-color: #b3ff00;
+  text-decoration: none;
+}
+
+.event-detail-nav {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.event-detail-nav a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.event-detail-nav a:hover {
+  color: #ccff00;
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .event-details-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .event-details-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .event-detail-container {
+    padding: 20px;
+  }
+}
