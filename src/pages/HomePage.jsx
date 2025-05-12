@@ -1,24 +1,61 @@
 // src/pages/HomePage.jsx
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import LocationSidebar from '../components/LocationSidebar'; // Import the sidebar
 import { sortEventsByDate, filterEventsByDateRange } from '../utils/dateUtils';
 import './HomePage.css'; // Import CSS for this page's layout
 import './EventsPage.css'; // Import EventsPage CSS for event card styling
 
-function HomePage() {
+function HomePage({ menuType: propMenuType = 'home' }) {
+  const location = useLocation();
+  // Use menuType from location state if available, otherwise use the prop
+  const menuType = location.state?.menuType || propMenuType;
+
+  // Log the location state and menuType for debugging
+  console.log('HomePage: location.state =', location.state);
+  console.log('HomePage: menuType =', menuType);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [activeFilters, setActiveFilters] = useState({
-    country: '',
-    state: '',
-    city: '',
-  });
+  // These were used for navigation to the events page, but we're not using that functionality anymore
+  // const [activeFilters, setActiveFilters] = useState({
+  //   country: '',
+  //   state: '',
+  //   city: '',
+  // });
 
-  const navigate = useNavigate(); // Hook for programmatic navigation
+  // const navigate = useNavigate(); // Hook for programmatic navigation
+
+  // Define a mapping of menu types to background images
+  const menuBackgrounds = {
+    home: 'homepage.jpg',
+    all: 'ladyshoe.jpg',
+    charity: 'charity-run.jpg',
+    themed: 'themed-run.jpg',
+    obstacle: 'obstacle-run.jpg',
+    virtual: 'virtual-run.jpg',
+    barefoot: 'barefoot-run.jpg'
+  };
+
+  useEffect(() => {
+    // Use a small timeout to ensure this runs after any other background changes
+    const timeoutId = setTimeout(() => {
+      const pageBackground = document.querySelector('.page-background');
+      if (pageBackground) {
+        // Get the appropriate background image based on menuType
+        const backgroundImage = menuBackgrounds[menuType] || 'homepage.jpg';
+
+        // Set the background image
+        pageBackground.style.backgroundImage = `url(/images/${backgroundImage})`;
+        console.log(`HomePage: Set background to ${backgroundImage} for menu type: ${menuType}`);
+      }
+    }, 50); // Small delay to win any race conditions
+
+    // Cleanup function to clear the timeout if component unmounts before timeout completes
+    return () => clearTimeout(timeoutId);
+  }, [menuType]); // Re-run when menuType changes
 
   // Fetch events for display
   useEffect(() => {
@@ -121,7 +158,8 @@ function HomePage() {
   // Handler for filter changes from LocationSidebar
   const handleLocationFilterChange = (newFilters) => {
     console.log("Filters received from sidebar on HomePage:", newFilters);
-    setActiveFilters(prevFilters => ({ ...prevFilters, ...newFilters }));
+    // We're not using activeFilters anymore
+    // setActiveFilters(prevFilters => ({ ...prevFilters, ...newFilters }));
 
     // Automatically fetch events when filters change
     if (window.fetchHomePageEvents) {
@@ -129,23 +167,22 @@ function HomePage() {
     }
   };
 
-  // Handler for the "Find Events" button
-  const handleFindEvents = () => {
-    const queryParams = new URLSearchParams();
-    if (activeFilters.country) queryParams.set('country', activeFilters.country);
-    if (activeFilters.state) queryParams.set('state', activeFilters.state);
-    if (activeFilters.city) queryParams.set('city', activeFilters.city);
+  // Handler for the "Find Events" button - not used anymore but kept for reference
+  // const handleFindEvents = () => {
+  //   const queryParams = new URLSearchParams();
+  //   if (activeFilters.country) queryParams.set('country', activeFilters.country);
+  //   if (activeFilters.state) queryParams.set('state', activeFilters.state);
+  //   if (activeFilters.city) queryParams.set('city', activeFilters.city);
 
-    // Navigate to EventsPage with filters as query parameters
-    navigate(`/events?${queryParams.toString()}`);
-  };
+  //   // Navigate to EventsPage with filters as query parameters
+  //   navigate(`/events?${queryParams.toString()}`);
+  // };
 
   return (
     // Removed container class to avoid centering issues
     <div className="homepage-layout">
       <LocationSidebar
         onFilterChange={handleLocationFilterChange}
-        onFindEvents={handleFindEvents}
       />
 
       <div className="homepage-main-content">

@@ -14,10 +14,12 @@ import BlogPage from './pages/BlogPage';
 // Layout component imports
 import Header from './components/Header';
 import Footer from './components/Footer'; // Ensure this import is present
+import BackgroundSelector from './components/BackgroundSelector';
 
 // CSS imports for layout components
 import './components/Header.css'; // Assuming you have Header.css
 import './components/Footer.css'; // Assuming you have Footer.css
+import './components/BackgroundSelector.css';
 
 // Optional: A global stylesheet if you have one (e.g., src/index.css or src/App.css)
 // import './index.css';
@@ -48,7 +50,7 @@ function App() {
           zIndex: '1' /* Ensure content is above background */
         }}>
         <Routes> {/* Defines the different routes for your application */}
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<HomePage menuType="home" />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/events/:slug" element={<EventDetailPage />} />
           <Route path="/charity-run" element={<EventsPage eventType="charity" />} />
@@ -66,6 +68,8 @@ function App() {
 
       <Footer /> {/* Renders the Footer component at the bottom */}
 
+      {/* Background selector component */}
+      <BackgroundSelector />
     </>
   );
 }

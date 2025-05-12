@@ -18,6 +18,29 @@ function EventsPage({ eventType }) {
   // Get the current path to determine which page we're on
   const currentPath = location.pathname;
   console.log('Current path:', currentPath);
+  
+  // Set background image based on the current path
+  useEffect(() => {
+    const pageBackground = document.querySelector('.page-background');
+    if (pageBackground) {
+      // Only change background if we're on a specific event page
+      if (currentPath === '/events') {
+        pageBackground.style.backgroundImage = 'url(/images/ladyshoe.jpg)';
+        console.log('EventsPage: Set background to ladyshoe.jpg');
+      } else if (currentPath === '/charity-run') {
+        pageBackground.style.backgroundImage = 'url(/images/charity-run.jpg)';
+      } else if (currentPath === '/themed-run') {
+        pageBackground.style.backgroundImage = 'url(/images/themed-run.jpg)';
+      } else if (currentPath === '/obstacle-run') {
+        pageBackground.style.backgroundImage = 'url(/images/obstacle-run.jpg)';
+      } else if (currentPath === '/virtual-run') {
+        pageBackground.style.backgroundImage = 'url(/images/virtual-run.jpg)';
+      } else if (currentPath === '/barefoot-run') {
+        pageBackground.style.backgroundImage = 'url(/images/barefoot-run.jpg)';
+      }
+      // Do NOT set a default background here, as it might override the homepage
+    }
+  }, [currentPath]);
 
   // Get filters from URL query parameters or from the eventType prop
   const [filters, setFilters] = useState(() => {

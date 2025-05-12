@@ -6,7 +6,7 @@ import './LocationSidebar.css'; // Import the CSS
 // Import Supabase client for database queries
 import { supabase } from '../supabaseClient';
 
-function LocationSidebar({ onFilterChange, onFindEvents }) { // Props will be used to send filter changes and trigger find events
+function LocationSidebar({ onFilterChange }) { // Props will be used to send filter changes
   // --- STATE FOR SELECTED FILTER VALUES ---
   // We will initialize these later, possibly from URL params or default values
   const [selectedCountry, setSelectedCountry] = useState('');
@@ -77,8 +77,9 @@ function LocationSidebar({ onFilterChange, onFindEvents }) { // Props will be us
     // Calculate date 30 days from now for default filter
     const next30Days = new Date();
     next30Days.setDate(today.getDate() + 30);
-    const next30Month = String(next30Days.getMonth() + 1);
-    const next30Day = String(next30Days.getDate());
+    // Unused variables commented out
+    // const next30Month = String(next30Days.getMonth() + 1);
+    // const next30Day = String(next30Days.getDate());
 
     // Set the UI to show the current date
     setSelectedMonth(currentMonth);
@@ -100,10 +101,11 @@ function LocationSidebar({ onFilterChange, onFindEvents }) { // Props will be us
         showNext30Days: true // Special flag to indicate we want to show the next 30 days
       });
 
-      // Also trigger the find events function if provided
-      if (onFindEvents) {
-        onFindEvents();
-      }
+      // Do NOT automatically trigger the find events function on load
+      // This was causing navigation to /events when the page loads
+      // if (onFindEvents) {
+      //   onFindEvents();
+      // }
 
       console.log("Automatically applying default filters on load (next 30 days)");
     }, 500); // Give a bit more time for everything to initialize
@@ -482,10 +484,11 @@ function LocationSidebar({ onFilterChange, onFindEvents }) { // Props will be us
 
     onFilterChange(filters);
 
-    // Also trigger the find events function if provided
-    if (onFindEvents) {
-      onFindEvents();
-    }
+    // Do NOT automatically trigger the find events function
+    // This was causing navigation to /events when filters are applied
+    // if (onFindEvents) {
+    //   onFindEvents();
+    // }
 
     console.log("Applying filters:", filters);
   };
