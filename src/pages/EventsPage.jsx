@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link, useSearchParams, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import LocationSidebar from '../components/LocationSidebar';
+import { sortEventsByDate, filterEventsByDateRange } from '../utils/dateUtils';
 import './EventsPage.css';
 
 function EventsPage({ eventType }) {
@@ -21,11 +22,19 @@ function EventsPage({ eventType }) {
   // Get filters from URL query parameters or from the eventType prop
   const [filters, setFilters] = useState(() => {
     const params = new URLSearchParams(location.search);
+
+    // Get current date for default date filters
+    const today = new Date();
+    const currentMonth = String(today.getMonth() + 1); // JavaScript months are 0-indexed
+    const currentDay = String(today.getDate());
+
     return {
       type: eventType || params.get('type') || '',
       country: params.get('country') || '',
       state: params.get('state') || '',
       city: params.get('city') || '',
+      month: params.get('month') || currentMonth,
+      day: params.get('day') || currentDay,
     };
   });
 
@@ -64,7 +73,49 @@ function EventsPage({ eventType }) {
           query = query.eq('city', filters.city);
         }
 
-        const { data, error } = await query;
+        // Get events data without date filtering first
+        let { data: allEvents, error: allEventsError } = await query;
+
+        if (allEventsError) throw allEventsError;
+
+        console.log('All events before date filtering:', allEvents);
+
+        // Apply date-based filtering in JavaScript
+        // This assumes event.dates_season contains dates in format like "2025-09-08" or similar
+        if (allEvents && allEvents.length > 0) {
+          // Parse the current filter date
+          const filterMonth = parseInt(filters.month, 10);
+          const filterDay = parseInt(filters.day, 10);
+          const currentYear = new Date().getFullYear();
+
+          // We'll use a progressive filtering strategy to find events based on date proximity
+
+          // Always show events for the next 30 days by default
+          const filterDate = new Date(currentYear, filterMonth - 1, filterDay);
+
+          // Use our utility function to filter events for the next 30 days
+          let filteredEvents = filterEventsByDateRange(allEvents, filterDate, 30);
+
+          console.log('Events in next 30 days:', filteredEvents);
+
+          // If no events found in the next 30 days, just show all events
+          if (filteredEvents.length === 0) {
+            filteredEvents = allEvents;
+            console.log('No events found in next 30 days, showing all events');
+          }
+
+          // Use our utility function to sort events by date in ascending order
+          filteredEvents = sortEventsByDate(filteredEvents);
+
+          console.log('Events sorted by date (ascending):', filteredEvents);
+
+          // Set the filtered events and exit
+          setEvents(filteredEvents);
+          setLoading(false);
+          return; // Exit early since we've already set the events
+        }
+
+        // If we didn't do date filtering, use the original query result
 
         if (error) throw error;
         console.log('Fetched events:', data);
@@ -95,7 +146,7 @@ function EventsPage({ eventType }) {
       <div className="homepage-main-content">
         <h1>
           {currentPath === '/events' ? 'All Events' :
-           eventType === 'novelty' ? 'Novelty Runs' :
+           eventType === 'charity' ? 'Charity Runs' :
            eventType === 'themed' ? 'Themed Runs' :
            eventType === 'obstacle' ? 'Obstacle Runs' :
            eventType === 'virtual' ? 'Virtual Runs' :
@@ -107,6 +158,8 @@ function EventsPage({ eventType }) {
         {/* Conditional paragraph text based on current path */}
         {currentPath === '/events' ? (
           <p>All the types of events</p>
+        ) : eventType === 'charity' ? (
+          <p>Running events that support charitable causes and make a difference.</p>
         ) : eventType === 'themed' ? (
           <p>Fun runs that focus on a theme... like zombies!</p>
         ) : eventType === 'obstacle' ? (
@@ -158,7 +211,7 @@ function EventsPage({ eventType }) {
                     </div>
                   </div>
 
-                  {event.highlight && <p>{event.highlight}</p>}
+                  {event.highlight && <p className="event-highlight">{event.highlight}</p>}
 
                   {event.price && (
                     <div className="event-card-price">

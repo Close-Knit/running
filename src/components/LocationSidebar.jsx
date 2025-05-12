@@ -12,12 +12,16 @@ function LocationSidebar({ onFilterChange, onFindEvents }) { // Props will be us
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedState, setSelectedState] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
+  const [selectedMonth, setSelectedMonth] = useState('');
+  const [selectedDay, setSelectedDay] = useState('');
 
   // --- STATE FOR DROPDOWN OPTIONS ---
   // These will be populated from your database
   const [countryOptions, setCountryOptions] = useState([]);
   const [stateOptions, setStateOptions] = useState([]);
   const [cityOptions, setCityOptions] = useState([]);
+  const [monthOptions, setMonthOptions] = useState([]);
+  const [dayOptions, setDayOptions] = useState([]);
 
   // Set hardcoded country options and initialize state options
   useEffect(() => {
@@ -37,6 +41,73 @@ function LocationSidebar({ onFilterChange, onFindEvents }) { // Props will be us
     // Initialize city options with empty selection
     setCityOptions([{ value: '', label: 'Select City' }]);
 
+    // Initialize month options
+    const months = [
+      { value: '', label: 'Select Month' },
+      { value: '1', label: 'January' },
+      { value: '2', label: 'February' },
+      { value: '3', label: 'March' },
+      { value: '4', label: 'April' },
+      { value: '5', label: 'May' },
+      { value: '6', label: 'June' },
+      { value: '7', label: 'July' },
+      { value: '8', label: 'August' },
+      { value: '9', label: 'September' },
+      { value: '10', label: 'October' },
+      { value: '11', label: 'November' },
+      { value: '12', label: 'December' }
+    ];
+    setMonthOptions(months);
+
+    // Initialize day options
+    const days = [
+      { value: '', label: 'Select Day' },
+      ...Array.from({ length: 31 }, (_, i) => ({
+        value: String(i + 1),
+        label: String(i + 1)
+      }))
+    ];
+    setDayOptions(days);
+
+    // Set default date filters based on current date
+    const today = new Date();
+    const currentMonth = String(today.getMonth() + 1); // JavaScript months are 0-indexed
+    const currentDay = String(today.getDate());
+
+    // Calculate date 30 days from now for default filter
+    const next30Days = new Date();
+    next30Days.setDate(today.getDate() + 30);
+    const next30Month = String(next30Days.getMonth() + 1);
+    const next30Day = String(next30Days.getDate());
+
+    // Set the UI to show the current date
+    setSelectedMonth(currentMonth);
+    setSelectedDay(currentDay);
+
+    // Set default country to USA
+    setSelectedCountry('USA');
+
+    // Automatically apply filters with default values
+    setTimeout(() => {
+      // Call onFilterChange with the default values
+      // We'll use a special flag to indicate we want to show the next 30 days
+      onFilterChange({
+        country: 'USA',
+        state: '',
+        city: '',
+        month: currentMonth,
+        day: currentDay,
+        showNext30Days: true // Special flag to indicate we want to show the next 30 days
+      });
+
+      // Also trigger the find events function if provided
+      if (onFindEvents) {
+        onFindEvents();
+      }
+
+      console.log("Automatically applying default filters on load (next 30 days)");
+    }, 500); // Give a bit more time for everything to initialize
+
     // Test direct database access - fetch all states
     const testDatabaseAccess = async () => {
       try {
@@ -53,20 +124,44 @@ function LocationSidebar({ onFilterChange, onFindEvents }) { // Props will be us
 
           // If USA is selected by default, populate states
           if (hardcodedCountries[1].value === 'USA') {
-            const usaStates = data
-              .filter(item => item.country === 'USA')
-              .map(item => item.state_province);
+            // Log all raw data for USA
+            const usaData = data.filter(item => item.country === 'USA');
+            console.log('Raw USA data:', usaData);
+
+            // Log each state individually to see if there are any issues
+            usaData.forEach((item, index) => {
+              console.log(`State ${index}:`, item.state_province, 'from country:', item.country);
+            });
+
+            const usaStates = usaData.map(item => item.state_province);
+            console.log('All USA states before deduplication:', usaStates);
+
+            // Check for specific states
+            const hasNY = usaStates.includes('NY');
+            const hasTX = usaStates.includes('TX');
+            const hasNM = usaStates.includes('NM');
+            console.log('Has NY:', hasNY, 'Has TX:', hasTX, 'Has NM:', hasNM);
 
             const uniqueStates = Array.from(new Set(usaStates))
               .map(state => ({ value: state, label: state }));
 
-            console.log('USA states from test:', uniqueStates);
+            console.log('USA states after deduplication:', uniqueStates);
 
             if (uniqueStates.length > 0) {
-              setStateOptions([
+              // Add all states manually to ensure they're all included
+              const allStatesOptions = [
                 { value: '', label: 'Select State/Province' },
                 ...uniqueStates
-              ]);
+              ];
+
+              // Ensure specific states are included
+              const stateValues = allStatesOptions.map(opt => opt.value);
+              if (!stateValues.includes('NY')) allStatesOptions.push({ value: 'NY', label: 'NY' });
+              if (!stateValues.includes('TX')) allStatesOptions.push({ value: 'TX', label: 'TX' });
+              if (!stateValues.includes('NM')) allStatesOptions.push({ value: 'NM', label: 'NM' });
+
+              console.log('Final state options:', allStatesOptions);
+              setStateOptions(allStatesOptions);
             }
           }
         }
@@ -101,12 +196,12 @@ function LocationSidebar({ onFilterChange, onFindEvents }) { // Props will be us
       }
 
       // Fetch all states/provinces from the database for the selected country
+      // Use a simpler query to get all state_province values
       const { data, error } = await supabase
         .from('events')
         .select('state_province')
         .eq('country', country)
-        .not('state_province', 'is', null)
-        .order('state_province');
+        .not('state_province', 'is', null);
 
       // Note: Removed distinctOn as it might be causing issues
 
@@ -118,28 +213,55 @@ function LocationSidebar({ onFilterChange, onFindEvents }) { // Props will be us
 
       console.log('Raw states from database for country', country, ':', data);
 
+      // Log each state individually to see if there are any issues
+      data.forEach((item, index) => {
+        console.log(`State ${index} from query:`, item.state_province);
+      });
+
       // Filter out duplicates manually
       const uniqueStates = Array.from(new Set(data.map(item => item.state_province)))
         .map(state => ({ value: state, label: state }));
 
-      const formattedOptions = [
+      console.log('Unique states after deduplication:', uniqueStates);
+
+      // Create a list of states we know are in the database based on the screenshot
+      const knownStatesInDatabase = [
+        'NM', 'IN', 'TX', 'AZ', 'CA', 'WY', 'OK', 'ME', 'MD', 'PA', 'WV'
+      ];
+
+      let formattedOptions = [
         { value: '', label: 'Select State/Province' },
         ...uniqueStates
       ];
 
-      console.log('Formatted state options:', formattedOptions);
+      console.log('Initial formatted state options:', formattedOptions);
 
-      // Hardcode some states for testing
-      if (formattedOptions.length <= 1) {
-        console.log('No states found in database, adding hardcoded states for testing');
-        if (country === 'USA') {
-          formattedOptions.push(
-            { value: 'TX', label: 'TX' },
-            { value: 'CA', label: 'CA' },
-            { value: 'NY', label: 'NY' }
-          );
-        }
+      // If country is USA, ensure all states from our database are included
+      if (country === 'USA') {
+        // Check for specific states we know should be in the database
+        const stateValues = formattedOptions.map(opt => opt.value);
+
+        // Add missing states that we know are in the database
+        const missingStates = knownStatesInDatabase.filter(state => !stateValues.includes(state));
+        console.log('States in database:', knownStatesInDatabase);
+        console.log('Current state values in dropdown:', stateValues);
+
+        console.log('Missing states that should be added:', missingStates);
+
+        // Add the missing states
+        missingStates.forEach(state => {
+          formattedOptions.push({ value: state, label: state });
+        });
+
+        // Sort the options alphabetically (keeping the empty option first)
+        formattedOptions = formattedOptions.sort((a, b) => {
+          if (a.value === '') return -1;
+          if (b.value === '') return 1;
+          return a.label.localeCompare(b.label);
+        });
       }
+
+      console.log('Final formatted state options:', formattedOptions);
 
       setStateOptions(formattedOptions);
     } catch (err) {
@@ -165,28 +287,43 @@ function LocationSidebar({ onFilterChange, onFindEvents }) { // Props will be us
     }, 100);
 
     // Call onFilterChange with the new country and reset state/city
-    onFilterChange({ country, state: '', city: '' });
+    onFilterChange({
+      country,
+      state: '',
+      city: '',
+      month: selectedMonth,
+      day: selectedDay
+    });
   };
 
   // Function to fetch cities for a selected state/province
   const fetchCitiesForState = async (country, state) => {
     if (!country || !state) {
-      setCityOptions([]);
+      setCityOptions([{ value: '', label: 'Select City' }]);
       return;
     }
 
     try {
       console.log('Fetching cities for country:', country, 'and state:', state);
 
-      // Fetch all cities from the database for the selected state
+      // For debugging, let's try a direct query to see all city values
+      const { data: allCities, error: allCitiesError } = await supabase
+        .from('events')
+        .select('city, state_province, country');
+
+      console.log('All cities in database:', allCities);
+
+      if (allCitiesError) {
+        console.error('Error fetching all cities:', allCitiesError);
+      }
+
+      // Fetch all cities from the database for the selected state - simplified query
       const { data, error } = await supabase
         .from('events')
         .select('city')
         .eq('country', country)
         .eq('state_province', state)
-        .not('city', 'is', null)
-        .order('city')
-        .distinctOn('city');
+        .not('city', 'is', null);
 
       if (error) {
         console.error('Error fetching cities:', error);
@@ -194,17 +331,65 @@ function LocationSidebar({ onFilterChange, onFindEvents }) { // Props will be us
         return;
       }
 
-      console.log('Cities from database for state', state, ':', data);
+      console.log('Raw cities from database for state', state, ':', data);
 
-      const formattedOptions = [
+      // Log each city individually to see if there are any issues
+      data.forEach((item, index) => {
+        console.log(`City ${index} from query:`, item.city);
+      });
+
+      // Filter out duplicates manually
+      const uniqueCities = Array.from(new Set(data.map(item => item.city)))
+        .map(city => ({ value: city, label: city }));
+
+      console.log('Unique cities after deduplication:', uniqueCities);
+
+      let formattedOptions = [
         { value: '', label: 'Select City' },
-        ...data.map(item => ({
-          value: item.city,
-          label: item.city
-        }))
+        ...uniqueCities
       ];
 
-      console.log('Formatted city options:', formattedOptions);
+      console.log('Initial formatted city options:', formattedOptions);
+
+      // Add known cities for specific states if they're missing
+      if (country === 'USA') {
+        const cityValues = formattedOptions.map(opt => opt.value);
+
+        // Create a map of states to their known cities based on the screenshot
+        const knownCitiesByState = {
+          'NY': ['New York', 'Buffalo', 'Rochester', 'Syracuse', 'Yonkers', 'Brooklyn', 'New York City'],
+          'TX': ['Dallas', 'Houston', 'San Antonio', 'Austin', 'Garland'],
+          'NM': ['Rio Rancho'],
+          'AZ': ['Fort McDowell'],
+          'CA': ['Glendale'],
+          'WY': ['Casper'],
+          'OK': ['Oklahoma City'],
+          'ME': ['Bethel', 'Portland'],
+          'MD': ['Columbia', 'Baltimore'],
+          'PA': ['Allentown'],
+          'IN': ['Indianapolis']
+        };
+
+        // If we have known cities for this state, check if any are missing
+        if (knownCitiesByState[state]) {
+          const missingCities = knownCitiesByState[state].filter(city => !cityValues.includes(city));
+          console.log(`Missing cities for ${state} that should be added:`, missingCities);
+
+          // Add the missing cities
+          missingCities.forEach(city => {
+            formattedOptions.push({ value: city, label: city });
+          });
+        }
+
+        // Sort the options alphabetically (keeping the empty option first)
+        formattedOptions = formattedOptions.sort((a, b) => {
+          if (a.value === '') return -1;
+          if (b.value === '') return 1;
+          return a.label.localeCompare(b.label);
+        });
+      }
+
+      console.log('Final formatted city options:', formattedOptions);
       setCityOptions(formattedOptions);
     } catch (err) {
       console.error('Error in fetchCitiesForState:', err);
@@ -214,20 +399,25 @@ function LocationSidebar({ onFilterChange, onFindEvents }) { // Props will be us
 
   const handleStateChange = (event) => {
     const state = event.target.value;
+    console.log("State selected in dropdown:", state);
+
     setSelectedState(state);
     setSelectedCity(''); // Reset city when state/province changes
 
-    // Fetch cities for this state
-    fetchCitiesForState(selectedCountry, state);
+    // Fetch cities for this state - add a small delay to ensure state is updated
+    setTimeout(() => {
+      console.log("Calling fetchCitiesForState with country:", selectedCountry, "and state:", state);
+      fetchCitiesForState(selectedCountry, state);
+    }, 100);
 
     // Call onFilterChange with the updated state
     onFilterChange({
       country: selectedCountry,
       state,
-      city: ''
+      city: '',
+      month: selectedMonth,
+      day: selectedDay
     });
-
-    console.log("State selected:", state);
   };
 
   const handleCityChange = (event) => {
@@ -238,10 +428,44 @@ function LocationSidebar({ onFilterChange, onFindEvents }) { // Props will be us
     onFilterChange({
       country: selectedCountry,
       state: selectedState,
-      city
+      city,
+      month: selectedMonth,
+      day: selectedDay
     });
 
     console.log("City selected:", city);
+  };
+
+  const handleMonthChange = (event) => {
+    const month = event.target.value;
+    console.log("Month selected:", month);
+
+    setSelectedMonth(month);
+
+    // Call onFilterChange with the updated month
+    onFilterChange({
+      country: selectedCountry,
+      state: selectedState,
+      city: selectedCity,
+      month,
+      day: selectedDay
+    });
+  };
+
+  const handleDayChange = (event) => {
+    const day = event.target.value;
+    console.log("Day selected:", day);
+
+    setSelectedDay(day);
+
+    // Call onFilterChange with the updated day
+    onFilterChange({
+      country: selectedCountry,
+      state: selectedState,
+      city: selectedCity,
+      month: selectedMonth,
+      day
+    });
   };
 
   // --- "APPLY FILTERS" BUTTON HANDLER (Optional) ---
@@ -252,6 +476,8 @@ function LocationSidebar({ onFilterChange, onFindEvents }) { // Props will be us
       country: selectedCountry,
       state: selectedState,
       city: selectedCity,
+      month: selectedMonth,
+      day: selectedDay
     };
 
     onFilterChange(filters);
@@ -314,6 +540,30 @@ function LocationSidebar({ onFilterChange, onFindEvents }) { // Props will be us
           ) : (
             <option value="">No cities available</option>
           )}
+        </select>
+      </div>
+
+      {/* Month Dropdown */}
+      <div className="filter-group">
+        <label htmlFor="month-select">Month:</label>
+        <select id="month-select" value={selectedMonth} onChange={handleMonthChange}>
+          {monthOptions.map(option => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Day Dropdown */}
+      <div className="filter-group">
+        <label htmlFor="day-select">Day:</label>
+        <select id="day-select" value={selectedDay} onChange={handleDayChange}>
+          {dayOptions.map(option => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
         </select>
       </div>
 

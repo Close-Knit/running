@@ -42,7 +42,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/events/:slug" element={<EventDetailPage />} />
-          <Route path="/novelty-run" element={<EventsPage eventType="novelty" />} />
+          <Route path="/charity-run" element={<EventsPage eventType="charity" />} />
           <Route path="/themed-run" element={<EventsPage eventType="themed" />} />
           <Route path="/obstacle-run" element={<EventsPage eventType="obstacle" />} />
           <Route path="/virtual-run" element={<EventsPage eventType="virtual" />} />

@@ -110,15 +110,15 @@
 
 .app-header .main-nav .nav-link:hover {
   color: #FFFFFF; /* Stay white on hover */
-  text-shadow: 0 0 8px #ff8c00, 0 0 12px #ff6600; /* Orange glow effect */
-  box-shadow: 0 0 10px rgba(255, 140, 0, 0.5); /* Subtle orange box glow */
-  background-color: rgba(255, 140, 0, 0.15); /* Very subtle orange background */
+  text-shadow: 0 0 8px #ccff00, 0 0 12px #b3ff00; /* Green glow effect matching learn-more button */
+  box-shadow: 0 0 10px rgba(204, 255, 0, 0.5); /* Subtle green box glow */
+  background-color: rgba(204, 255, 0, 0.15); /* Very subtle green background */
 }
 
 /* Style for active/selected nav link */
 .app-header .main-nav .nav-link.active {
   color: #FFFFFF;
-  text-shadow: 0 0 8px #ff8c00, 0 0 12px #ff6600; /* Orange glow effect */
-  box-shadow: 0 0 10px rgba(255, 140, 0, 0.5); /* Subtle orange box glow */
-  background-color: rgba(255, 140, 0, 0.2); /* Slightly more visible orange background */
+  text-shadow: 0 0 8px #ccff00, 0 0 12px #b3ff00; /* Green glow effect matching learn-more button */
+  box-shadow: 0 0 10px rgba(204, 255, 0, 0.5); /* Subtle green box glow */
+  background-color: rgba(204, 255, 0, 0.2); /* Slightly more visible green background */
 }

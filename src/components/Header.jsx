@@ -16,7 +16,7 @@ function Header() {
       <div className="header-center">
         <nav className="main-nav"> {/* Navigation section */}
           <NavLink to="/events" className="nav-link">All Events</NavLink>
-          <NavLink to="/novelty-run" className="nav-link">Novelty Run</NavLink>
+          <NavLink to="/charity-run" className="nav-link">Charity Run</NavLink>
           <NavLink to="/themed-run" className="nav-link">Themed Run</NavLink>
           <NavLink to="/obstacle-run" className="nav-link">Obstacle Run</NavLink>
           <NavLink to="/virtual-run" className="nav-link">Virtual Run</NavLink>

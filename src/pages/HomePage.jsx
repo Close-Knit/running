@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import LocationSidebar from '../components/LocationSidebar'; // Import the sidebar
+import { sortEventsByDate, filterEventsByDateRange } from '../utils/dateUtils';
 import './HomePage.css'; // Import CSS for this page's layout
 import './EventsPage.css'; // Import EventsPage CSS for event card styling
 
@@ -21,19 +22,77 @@ function HomePage() {
 
   // Fetch events for display
   useEffect(() => {
-    async function fetchEvents() {
+    async function fetchEvents(filters = {}) {
       setLoading(true);
       setError(null);
       try {
-        const { data, error: supabaseError } = await supabase
+        // Start with a base query
+        let query = supabase
           .from('events')
-          .select('*')
-          .limit(3);
+          .select('*');
+
+        // Apply filters if they exist
+        if (filters.country) {
+          query = query.eq('country', filters.country);
+        }
+        if (filters.state) {
+          query = query.eq('state_province', filters.state);
+        }
+        if (filters.city) {
+          query = query.eq('city', filters.city);
+        }
+
+        // Apply date filtering if month and day are provided
+        // For the home page, we'll always show events for the next 30 days
+        if (filters.month && filters.day) {
+          // We'll fetch all events and filter them in JavaScript
+          query = query.limit(20); // Fetch more events to ensure we have enough after filtering
+        } else {
+          query = query.limit(8);
+        }
+
+        const { data, error: supabaseError } = await query;
 
         if (supabaseError) {
           throw supabaseError;
         }
-        setEvents(data || []);
+
+        // Filter events to show only those in the next 30 days
+        if (filters.month && filters.day && data && data.length > 0) {
+          const currentYear = new Date().getFullYear();
+          const filterMonth = parseInt(filters.month, 10);
+          const filterDay = parseInt(filters.day, 10);
+
+          // Calculate date for filtering
+          const filterDate = new Date(currentYear, filterMonth - 1, filterDay);
+
+          console.log('Filtering events from', filterDate, 'for next 30 days');
+
+          // Use our utility function to filter events for the next 30 days
+          let filteredEvents = filterEventsByDateRange(data, filterDate, 30);
+
+          console.log('Events in next 30 days:', filteredEvents);
+
+          // If no events found in the next 30 days, just show all events
+          if (filteredEvents.length === 0) {
+            console.log('No events found in next 30 days, showing all events');
+            filteredEvents = data;
+          }
+
+          // Use our utility function to sort events by date in ascending order
+          filteredEvents = sortEventsByDate(filteredEvents);
+
+          console.log('Events sorted by date (ascending):', filteredEvents);
+          setEvents(filteredEvents);
+        } else if (data && data.length > 0) {
+          // Even if we don't have month and day filters, still sort by date
+          const sortedEvents = sortEventsByDate(data);
+
+          console.log('Events sorted by date (ascending) without filters:', sortedEvents);
+          setEvents(sortedEvents);
+        } else {
+          setEvents([]);
+        }
       } catch (err) {
         console.error("Error fetching events:", err);
         setError(err.message || "Failed to fetch events.");
@@ -42,13 +101,32 @@ function HomePage() {
         setLoading(false);
       }
     }
-    fetchEvents();
+
+    // Get current date for default filters
+    const today = new Date();
+    const currentMonth = String(today.getMonth() + 1);
+    const currentDay = String(today.getDate());
+
+    // Fetch with default filters
+    fetchEvents({
+      country: 'USA',
+      month: currentMonth,
+      day: currentDay
+    });
+
+    // Store the fetchEvents function for later use
+    window.fetchHomePageEvents = fetchEvents;
   }, []);
 
   // Handler for filter changes from LocationSidebar
   const handleLocationFilterChange = (newFilters) => {
     console.log("Filters received from sidebar on HomePage:", newFilters);
     setActiveFilters(prevFilters => ({ ...prevFilters, ...newFilters }));
+
+    // Automatically fetch events when filters change
+    if (window.fetchHomePageEvents) {
+      window.fetchHomePageEvents(newFilters);
+    }
   };
 
   // Handler for the "Find Events" button
@@ -114,7 +192,7 @@ function HomePage() {
                     </div>
                   </div>
 
-                  {event.highlight && <p>{event.highlight}</p>}
+                  {event.highlight && <p className="event-highlight">{event.highlight}</p>}
 
                   {event.price && (
                     <div className="event-card-price">
