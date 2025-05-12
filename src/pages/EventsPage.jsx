@@ -7,13 +7,13 @@ import './EventsPage.css';
 
 function EventsPage({ eventType }) {
   console.log('EventsPage received eventType:', eventType); // Debug log
-  
+
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   // Get the current path to determine which page we're on
   const currentPath = location.pathname;
   console.log('Current path:', currentPath);
@@ -34,17 +34,17 @@ function EventsPage({ eventType }) {
       setLoading(true);
       try {
         let query = supabase.from('events').select('*');
-        
+
         // Debug log to see what eventType we're receiving
         console.log('Current eventType:', eventType);
         console.log('Current path:', currentPath);
-        
+
         // Apply filters - only filter by type if we're not on the "All Events" page
         if (eventType && currentPath !== '/events') {
           // Convert eventType to lowercase for case-insensitive comparison
           const typeToFilter = eventType.toLowerCase();
           console.log('Filtering by eventType (lowercase):', typeToFilter);
-          
+
           // Use ilike for case-insensitive matching
           query = query.ilike('type', `%${typeToFilter}%`);
         } else if (filters.type && currentPath !== '/events') {
@@ -52,23 +52,23 @@ function EventsPage({ eventType }) {
           query = query.ilike('type', `%${filters.type.toLowerCase()}%`);
           console.log('Filtering by filters.type:', filters.type);
         }
-        
+
         // Location filters still apply to all pages
         if (filters.country) {
           query = query.eq('country', filters.country);
         }
         if (filters.state) {
-          query = query.eq('state', filters.state);
+          query = query.eq('state_province', filters.state);
         }
         if (filters.city) {
           query = query.eq('city', filters.city);
         }
-        
+
         const { data, error } = await query;
-        
+
         if (error) throw error;
         console.log('Fetched events:', data);
-        
+
         setEvents(data || []);
       } catch (err) {
         console.error('Error fetching events:', err);
@@ -77,7 +77,7 @@ function EventsPage({ eventType }) {
         setLoading(false);
       }
     }
-    
+
     fetchEvents();
   }, [filters, eventType, currentPath]); // Add currentPath to dependencies
 
@@ -88,22 +88,22 @@ function EventsPage({ eventType }) {
 
   return (
     <div className="homepage-layout">
-      <LocationSidebar 
+      <LocationSidebar
         onFilterChange={handleLocationFilterChange}
         initialFilters={filters}
       />
       <div className="homepage-main-content">
         <h1>
-          {currentPath === '/events' ? 'All Events' : 
+          {currentPath === '/events' ? 'All Events' :
            eventType === 'novelty' ? 'Novelty Runs' :
            eventType === 'themed' ? 'Themed Runs' :
            eventType === 'obstacle' ? 'Obstacle Runs' :
            eventType === 'virtual' ? 'Virtual Runs' :
            eventType === 'barefoot' ? 'Barefoot Runs' :
-           eventType ? `${eventType.charAt(0).toUpperCase() + eventType.slice(1)} Runs` : 
+           eventType ? `${eventType.charAt(0).toUpperCase() + eventType.slice(1)} Runs` :
            'All Events'}
         </h1>
-        
+
         {/* Conditional paragraph text based on current path */}
         {currentPath === '/events' ? (
           <p>All the types of events</p>
@@ -118,7 +118,7 @@ function EventsPage({ eventType }) {
         ) : (
           <p>Turn up the fun and turn down the speed</p>
         )}
-        
+
         {loading && <p>Loading events...</p>}
         {error && <p>Error: {error}</p>}
         {!loading && !error && events.length === 0 && (
@@ -130,7 +130,7 @@ function EventsPage({ eventType }) {
               <li key={event.id} className="event-card">
                 <div className="event-card-content">
                   <h3>{event.name}</h3>
-                  
+
                   <div className="event-card-details">
                     <div className="event-card-detail">
                       {/* Calendar icon */}
@@ -139,7 +139,7 @@ function EventsPage({ eventType }) {
                       </svg>
                       {event.dates_season || 'Dates TBA'}
                     </div>
-                    
+
                     <div className="event-card-detail">
                       {/* Location icon */}
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -147,7 +147,7 @@ function EventsPage({ eventType }) {
                       </svg>
                       {event.locations || 'Location TBA'}
                     </div>
-                    
+
                     <div className="event-card-detail">
                       {/* Tag icon */}
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -157,16 +157,16 @@ function EventsPage({ eventType }) {
                       {event.type || 'Event Type'}
                     </div>
                   </div>
-                  
+
                   {event.highlight && <p>{event.highlight}</p>}
-                  
+
                   {event.price && (
                     <div className="event-card-price">
                       ${event.price}
                       <span className="price-label">/ticket</span>
                     </div>
                   )}
-                  
+
                   <div className="event-card-action">
                     <Link to={`/events/${event.slug}`} className="learn-more-btn">
                       LEARN MORE

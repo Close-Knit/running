@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react'; // We'll need these later
 import './LocationSidebar.css'; // Import the CSS
 
-// We will import supabase client later if fetching distinct locations directly here
-// import { supabase } from '../supabaseClient';
+// Import Supabase client for database queries
+import { supabase } from '../supabaseClient';
 
 function LocationSidebar({ onFilterChange, onFindEvents }) { // Props will be used to send filter changes and trigger find events
   // --- STATE FOR SELECTED FILTER VALUES ---
@@ -19,42 +19,228 @@ function LocationSidebar({ onFilterChange, onFindEvents }) { // Props will be us
   const [stateOptions, setStateOptions] = useState([]);
   const [cityOptions, setCityOptions] = useState([]);
 
-  // --- MOCK OPTIONS FOR NOW (until we fetch from DB) ---
+  // Set hardcoded country options and initialize state options
   useEffect(() => {
-    // Replace these with actual fetching logic later
-    setCountryOptions([
+    // Use hardcoded country options for now
+    const hardcodedCountries = [
       { value: '', label: 'Select Country' },
       { value: 'USA', label: 'USA' },
-      { value: 'CAN', label: 'Canada' }, // Example
-    ]);
-    // State and City options would typically be loaded based on country/state selection
+      { value: 'CAN', label: 'Canada' }
+    ];
+
+    console.log('Setting hardcoded country options:', hardcodedCountries);
+    setCountryOptions(hardcodedCountries);
+
+    // Initialize state options with empty selection
+    setStateOptions([{ value: '', label: 'Select State/Province' }]);
+
+    // Initialize city options with empty selection
+    setCityOptions([{ value: '', label: 'Select City' }]);
+
+    // Test direct database access - fetch all states
+    const testDatabaseAccess = async () => {
+      try {
+        console.log('Testing direct database access...');
+        const { data, error } = await supabase
+          .from('events')
+          .select('state_province, country')
+          .order('state_province');
+
+        if (error) {
+          console.error('Error in test database access:', error);
+        } else {
+          console.log('Test database access successful. All states:', data);
+
+          // If USA is selected by default, populate states
+          if (hardcodedCountries[1].value === 'USA') {
+            const usaStates = data
+              .filter(item => item.country === 'USA')
+              .map(item => item.state_province);
+
+            const uniqueStates = Array.from(new Set(usaStates))
+              .map(state => ({ value: state, label: state }));
+
+            console.log('USA states from test:', uniqueStates);
+
+            if (uniqueStates.length > 0) {
+              setStateOptions([
+                { value: '', label: 'Select State/Province' },
+                ...uniqueStates
+              ]);
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Error in test database access:', err);
+      }
+    };
+
+    testDatabaseAccess();
   }, []);
+
+  // Function to fetch states/provinces for a selected country
+  const fetchStatesForCountry = async (country) => {
+    if (!country) {
+      console.log('No country selected, clearing state options');
+      setStateOptions([{ value: '', label: 'Select State/Province' }]);
+      return;
+    }
+
+    try {
+      console.log('Fetching states for country:', country);
+
+      // For debugging, let's try a direct query to see all state_province values
+      const { data: allStates, error: allStatesError } = await supabase
+        .from('events')
+        .select('state_province, country');
+
+      console.log('All states in database:', allStates);
+
+      if (allStatesError) {
+        console.error('Error fetching all states:', allStatesError);
+      }
+
+      // Fetch all states/provinces from the database for the selected country
+      const { data, error } = await supabase
+        .from('events')
+        .select('state_province')
+        .eq('country', country)
+        .not('state_province', 'is', null)
+        .order('state_province');
+
+      // Note: Removed distinctOn as it might be causing issues
+
+      if (error) {
+        console.error('Error fetching states/provinces:', error);
+        setStateOptions([{ value: '', label: 'Select State/Province' }]);
+        return;
+      }
+
+      console.log('Raw states from database for country', country, ':', data);
+
+      // Filter out duplicates manually
+      const uniqueStates = Array.from(new Set(data.map(item => item.state_province)))
+        .map(state => ({ value: state, label: state }));
+
+      const formattedOptions = [
+        { value: '', label: 'Select State/Province' },
+        ...uniqueStates
+      ];
+
+      console.log('Formatted state options:', formattedOptions);
+
+      // Hardcode some states for testing
+      if (formattedOptions.length <= 1) {
+        console.log('No states found in database, adding hardcoded states for testing');
+        if (country === 'USA') {
+          formattedOptions.push(
+            { value: 'TX', label: 'TX' },
+            { value: 'CA', label: 'CA' },
+            { value: 'NY', label: 'NY' }
+          );
+        }
+      }
+
+      setStateOptions(formattedOptions);
+    } catch (err) {
+      console.error('Error in fetchStatesForCountry:', err);
+      setStateOptions([{ value: '', label: 'Select State/Province' }]);
+    }
+  };
 
   // --- HANDLERS FOR DROPDOWN CHANGES ---
   // These will update state and call onFilterChange
   const handleCountryChange = (event) => {
     const country = event.target.value;
+    console.log("Country selected in dropdown:", country);
+
     setSelectedCountry(country);
     setSelectedState(''); // Reset state/province when country changes
     setSelectedCity('');  // Reset city when country changes
-    // TODO: Fetch states for this country
-    // TODO: Call onFilterChange({ country, state: '', city: '' });
-    console.log("Country selected:", country);
+
+    // Fetch states for this country - add a small delay to ensure state is updated
+    setTimeout(() => {
+      console.log("Calling fetchStatesForCountry with country:", country);
+      fetchStatesForCountry(country);
+    }, 100);
+
+    // Call onFilterChange with the new country and reset state/city
+    onFilterChange({ country, state: '', city: '' });
+  };
+
+  // Function to fetch cities for a selected state/province
+  const fetchCitiesForState = async (country, state) => {
+    if (!country || !state) {
+      setCityOptions([]);
+      return;
+    }
+
+    try {
+      console.log('Fetching cities for country:', country, 'and state:', state);
+
+      // Fetch all cities from the database for the selected state
+      const { data, error } = await supabase
+        .from('events')
+        .select('city')
+        .eq('country', country)
+        .eq('state_province', state)
+        .not('city', 'is', null)
+        .order('city')
+        .distinctOn('city');
+
+      if (error) {
+        console.error('Error fetching cities:', error);
+        setCityOptions([{ value: '', label: 'Select City' }]);
+        return;
+      }
+
+      console.log('Cities from database for state', state, ':', data);
+
+      const formattedOptions = [
+        { value: '', label: 'Select City' },
+        ...data.map(item => ({
+          value: item.city,
+          label: item.city
+        }))
+      ];
+
+      console.log('Formatted city options:', formattedOptions);
+      setCityOptions(formattedOptions);
+    } catch (err) {
+      console.error('Error in fetchCitiesForState:', err);
+      setCityOptions([{ value: '', label: 'Select City' }]);
+    }
   };
 
   const handleStateChange = (event) => {
     const state = event.target.value;
     setSelectedState(state);
     setSelectedCity(''); // Reset city when state/province changes
-    // TODO: Fetch cities for this state
-    // TODO: Call onFilterChange({ country: selectedCountry, state, city: '' });
+
+    // Fetch cities for this state
+    fetchCitiesForState(selectedCountry, state);
+
+    // Call onFilterChange with the updated state
+    onFilterChange({
+      country: selectedCountry,
+      state,
+      city: ''
+    });
+
     console.log("State selected:", state);
   };
 
   const handleCityChange = (event) => {
     const city = event.target.value;
     setSelectedCity(city);
-    // TODO: Call onFilterChange({ country: selectedCountry, state: selectedState, city });
+
+    // Call onFilterChange with the updated city
+    onFilterChange({
+      country: selectedCountry,
+      state: selectedState,
+      city
+    });
+
     console.log("City selected:", city);
   };
 
@@ -99,22 +285,17 @@ function LocationSidebar({ onFilterChange, onFindEvents }) { // Props will be us
       {/* We'll make this appear only when a country is selected later */}
       <div className="filter-group">
         <label htmlFor="state-select">State/Province:</label>
+        {console.log('Rendering state options:', stateOptions)}
         <select id="state-select" value={selectedState} onChange={handleStateChange} disabled={!selectedCountry}>
-          <option value="">Select State/Province</option>
-          {/* Mocked for now, will be dynamic */}
-          {selectedCountry === 'USA' && (
-            <>
-              <option value="CA">California</option>
-              <option value="NY">New York</option>
-            </>
+          {stateOptions && stateOptions.length > 0 ? (
+            stateOptions.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))
+          ) : (
+            <option value="">No states available</option>
           )}
-          {selectedCountry === 'CAN' && (
-            <>
-              <option value="ON">Ontario</option>
-              <option value="BC">British Columbia</option>
-            </>
-          )}
-          {/* {stateOptions.map(option => (...))} Later */}
         </select>
       </div>
 
@@ -122,16 +303,17 @@ function LocationSidebar({ onFilterChange, onFindEvents }) { // Props will be us
       {/* We'll make this appear only when a state/province is selected later */}
       <div className="filter-group">
         <label htmlFor="city-select">City:</label>
+        {console.log('Rendering city options:', cityOptions)}
         <select id="city-select" value={selectedCity} onChange={handleCityChange} disabled={!selectedState}>
-          <option value="">Select City</option>
-          {/* Mocked for now, will be dynamic */}
-          {selectedState === 'CA' && selectedCountry === 'USA' && (
-            <>
-              <option value="San Francisco">San Francisco</option>
-              <option value="Los Angeles">Los Angeles</option>
-            </>
+          {cityOptions && cityOptions.length > 0 ? (
+            cityOptions.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))
+          ) : (
+            <option value="">No cities available</option>
           )}
-           {/* {cityOptions.map(option => (...))} Later */}
         </select>
       </div>
 

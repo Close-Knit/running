@@ -8,6 +8,8 @@ import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import EventsPage from './pages/EventsPage';
 import EventDetailPage from './pages/EventDetailPage';
+import ShoeReviewsPage from './pages/ShoeReviewsPage';
+import BlogPage from './pages/BlogPage';
 
 // Layout component imports
 import Header from './components/Header';
@@ -45,6 +47,8 @@ function App() {
           <Route path="/obstacle-run" element={<EventsPage eventType="obstacle" />} />
           <Route path="/virtual-run" element={<EventsPage eventType="virtual" />} />
           <Route path="/barefoot-run" element={<EventsPage eventType="barefoot" />} />
+          <Route path="/shoe-reviews" element={<ShoeReviewsPage />} />
+          <Route path="/blog" element={<BlogPage />} />
           {/* You can add a 404 Not Found Route here later:
               <Route path="*" element={<NotFoundPage />} />
           */}

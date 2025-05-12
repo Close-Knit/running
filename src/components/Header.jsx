@@ -24,7 +24,10 @@ function Header() {
         </nav>
       </div>
       <div className="header-right">
-        {/* Empty div to balance the layout */}
+        <nav className="secondary-nav">
+          <NavLink to="/shoe-reviews" className="nav-link">Shoe Reviews</NavLink>
+          <NavLink to="/blog" className="nav-link">Blog</NavLink>
+        </nav>
       </div>
     </header>
   );

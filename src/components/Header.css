@@ -35,6 +35,42 @@
   justify-content: flex-end;
 }
 
+.app-header .secondary-nav {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+/* Apply the same styling to secondary nav links as main nav links */
+.app-header .secondary-nav .nav-link {
+  margin: 0 8px; /* Same spacing as main nav */
+  text-decoration: none;
+  color: #FFFFFF;
+  font-weight: 500;
+  padding: 8px 12px; /* Same padding as main nav */
+  transition: all 0.3s ease;
+  font-size: 1em; /* Same font size as main nav */
+  white-space: nowrap;
+  border-radius: 4px;
+  position: relative;
+}
+
+.app-header .secondary-nav .nav-link:hover {
+  color: #FFFFFF; /* Stay white on hover */
+  text-shadow: 0 0 8px #ff8c00, 0 0 12px #ff6600; /* Orange glow effect */
+  box-shadow: 0 0 10px rgba(255, 140, 0, 0.5); /* Subtle orange box glow */
+  background-color: rgba(255, 140, 0, 0.15); /* Very subtle orange background */
+}
+
+/* Style for active/selected secondary nav link */
+.app-header .secondary-nav .nav-link.active {
+  color: #FFFFFF;
+  text-shadow: 0 0 8px #ff8c00, 0 0 12px #ff6600; /* Orange glow effect */
+  box-shadow: 0 0 10px rgba(255, 140, 0, 0.5); /* Subtle orange box glow */
+  background-color: rgba(255, 140, 0, 0.2); /* Slightly more visible orange background */
+}
+
 /* Styles for the Link wrapping the logo */
 .app-header .logo-link {
   display: flex; /* Helps with vertical alignment of the image */
