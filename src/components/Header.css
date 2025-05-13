@@ -126,3 +126,168 @@
   box-shadow: 0 0 10px rgba(204, 255, 0, 0.5); /* Subtle green box glow */
   background-color: rgba(204, 255, 0, 0.2); /* Slightly more visible green background */
 }
+
+/* Mobile styles for horizontal scrolling header menu */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0 10px; /* Reduce side padding on mobile */
+  }
+
+  .app-header .header-left {
+    flex: 0 0 auto; /* Just enough width for the logo */
+  }
+
+  .app-header .header-center {
+    flex: 1; /* Take remaining space */
+    position: relative; /* For the gradient indicators */
+    padding: 0 15px; /* Space for the gradients */
+    overflow: hidden; /* Hide overflow except for the nav */
+  }
+
+  .app-header .header-right {
+    flex: 0 0 auto; /* Just enough for secondary nav */
+  }
+
+  .app-header .main-nav {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar in IE/Edge */
+    padding-bottom: 5px; /* Space for the scrollbar */
+    justify-content: flex-start; /* Start from the left */
+    gap: 5px; /* Add some gap between items */
+    position: relative;
+  }
+
+  /* Add a subtle animation to indicate scrollability */
+  @keyframes pulseScroll {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+  }
+
+  .app-header .header-center::after {
+    animation: pulseScroll 2s infinite ease-in-out;
+  }
+
+  /* Hide scrollbar in Chrome/Safari */
+  .app-header .main-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Visual indicators for scrolling */
+  .app-header .header-center::before,
+  .app-header .header-center::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 20px;
+    z-index: 2;
+    pointer-events: none; /* Allow clicks to pass through */
+  }
+
+  .app-header .header-center::before {
+    left: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.7), transparent);
+  }
+
+  .app-header .header-center::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(0,0,0,0.7), transparent);
+  }
+
+  /* Make nav links more compact */
+  .app-header .main-nav .nav-link {
+    margin: 0 4px;
+    padding: 6px 10px;
+    font-size: 0.9em;
+    white-space: nowrap;
+  }
+
+  /* Styles for scroll buttons */
+  .nav-scroll-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease;
+  }
+
+  .nav-scroll-button:hover {
+    background-color: rgba(204, 255, 0, 0.3);
+    box-shadow: 0 0 8px rgba(204, 255, 0, 0.5);
+  }
+
+  .nav-scroll-button.left {
+    left: 2px;
+  }
+
+  .nav-scroll-button.right {
+    right: 2px;
+  }
+
+  /* Adjust secondary nav for mobile */
+  .app-header .secondary-nav {
+    justify-content: flex-end;
+  }
+
+  .app-header .secondary-nav .nav-link {
+    margin: 0 4px;
+    padding: 6px 8px;
+    font-size: 0.9em;
+  }
+}
+
+/* For very small screens, further optimize */
+@media (max-width: 480px) {
+  .app-header .header-logo-image {
+    height: 40px; /* Smaller logo */
+  }
+
+  /* Make secondary nav scrollable too */
+  .app-header .header-right {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .app-header .secondary-nav {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 5px;
+    justify-content: flex-start;
+  }
+
+  .app-header .secondary-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Visual indicators for secondary nav */
+  .app-header .header-right::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 15px;
+    background: linear-gradient(to left, rgba(0,0,0,0.7), transparent);
+    z-index: 2;
+    pointer-events: none;
+  }
+}
