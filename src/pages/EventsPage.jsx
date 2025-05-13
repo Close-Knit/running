@@ -18,7 +18,7 @@ function EventsPage({ eventType }) {
   // Get the current path to determine which page we're on
   const currentPath = location.pathname;
   console.log('Current path:', currentPath);
-  
+
   // Set background image based on the current path
   useEffect(() => {
     const pageBackground = document.querySelector('.page-background');
@@ -28,15 +28,15 @@ function EventsPage({ eventType }) {
         pageBackground.style.backgroundImage = 'url(/images/ladyshoe.jpg)';
         console.log('EventsPage: Set background to ladyshoe.jpg');
       } else if (currentPath === '/charity-run') {
-        pageBackground.style.backgroundImage = 'url(/images/charity-run.jpg)';
+        pageBackground.style.backgroundImage = 'url(/images/fireman-walk.jpg)';
       } else if (currentPath === '/themed-run') {
-        pageBackground.style.backgroundImage = 'url(/images/themed-run.jpg)';
+        pageBackground.style.backgroundImage = 'url(/images/minidress.jpg)';
       } else if (currentPath === '/obstacle-run') {
-        pageBackground.style.backgroundImage = 'url(/images/obstacle-run.jpg)';
+        pageBackground.style.backgroundImage = 'url(/images/spartan.webp)';
       } else if (currentPath === '/virtual-run') {
-        pageBackground.style.backgroundImage = 'url(/images/virtual-run.jpg)';
+        pageBackground.style.backgroundImage = 'url(/images/virtual.jpg)';
       } else if (currentPath === '/barefoot-run') {
-        pageBackground.style.backgroundImage = 'url(/images/barefoot-run.jpg)';
+        pageBackground.style.backgroundImage = 'url(/images/barefoot.jpg)';
       }
       // Do NOT set a default background here, as it might override the homepage
     }
@@ -237,7 +237,7 @@ function EventsPage({ eventType }) {
                       </div>
 
                       {event.highlight && <p className="event-highlight">{event.highlight}</p>}
-                      
+
                       {/* Move the button here to align with the bottom of the main content */}
                       <div className="event-card-action">
                         <Link to={`/events/${event.slug}`} className="learn-more-btn">

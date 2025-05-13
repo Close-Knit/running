@@ -32,11 +32,11 @@ function HomePage({ menuType: propMenuType = 'home' }) {
   const menuBackgrounds = {
     home: 'homepage.jpg',
     all: 'ladyshoe.jpg',
-    charity: 'charity-run.jpg',
-    themed: 'themed-run.jpg',
-    obstacle: 'obstacle-run.jpg',
-    virtual: 'virtual-run.jpg',
-    barefoot: 'barefoot-run.jpg'
+    charity: 'fireman-walk.jpg',
+    themed: 'minidress.jpg',
+    obstacle: 'spartan.webp',
+    virtual: 'virtual.jpg',
+    barefoot: 'barefoot.jpg'
   };
 
   useEffect(() => {
