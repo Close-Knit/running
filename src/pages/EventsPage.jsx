@@ -1,6 +1,6 @@
 // src/pages/EventsPage.jsx
 import { useState, useEffect } from 'react';
-import { Link, useSearchParams, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import LocationSidebar from '../components/LocationSidebar';
 import SEO from '../components/SEO'; // Import SEO component
@@ -14,7 +14,6 @@ function EventsPage({ eventType }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const location = useLocation();
-  const navigate = useNavigate();
 
   // Get the current path to determine which page we're on
   const currentPath = location.pathname;
@@ -140,11 +139,10 @@ function EventsPage({ eventType }) {
         }
 
         // If we didn't do date filtering, use the original query result
+        // No need to check for errors again as we already checked allEventsError
+        console.log('Fetched events:', allEvents);
 
-        if (error) throw error;
-        console.log('Fetched events:', data);
-
-        setEvents(data || []);
+        setEvents(allEvents || []);
       } catch (err) {
         console.error('Error fetching events:', err);
         setError(err.message);
