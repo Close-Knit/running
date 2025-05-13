@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link, useSearchParams, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import LocationSidebar from '../components/LocationSidebar';
+import SEO from '../components/SEO'; // Import SEO component
 import { sortEventsByDate, filterEventsByDateRange } from '../utils/dateUtils';
 import './EventsPage.css';
 
@@ -160,8 +161,87 @@ function EventsPage({ eventType }) {
     setFilters(prevFilters => ({ ...prevFilters, ...newFilters }));
   };
 
+  // Generate SEO data based on the current path/event type
+  const getSeoData = () => {
+    let title, description, keywords, pageType;
+
+    // Set title and description based on event type
+    if (currentPath === '/events') {
+      title = "Fun Running Events Worldwide | Alt.Run";
+      description = "Browse all running events on Alt.Run. Discover dates, locations, and details for your next fun-filled running adventure.";
+      pageType = "all";
+    } else if (eventType === 'charity') {
+      title = "Charity Runs & Fundraising Events | Alt.Run";
+      description = "Find charity runs and fundraising events that support great causes. Make a difference while enjoying a fun running experience with Alt.Run.";
+      pageType = "charity";
+    } else if (eventType === 'themed') {
+      title = "Exciting Themed Runs & Fun Costume Events | Alt.Run";
+      description = "Discover fun themed runs from color runs to zombie dashes. Find the most exciting costume and themed running events worldwide on Alt.Run.";
+      pageType = "themed";
+    } else if (eventType === 'obstacle') {
+      title = "Obstacle Course Races & Mud Runs | Alt.Run";
+      description = "Challenge yourself with obstacle course races and mud runs for all skill levels. Find beginner-friendly OCRs and exciting challenges on Alt.Run.";
+      pageType = "obstacle";
+    } else if (eventType === 'virtual') {
+      title = "Virtual Runs & Remote Running Challenges | Alt.Run";
+      description = "Participate in virtual runs and remote running challenges from anywhere. Find flexible, fun virtual running events on Alt.Run.";
+      pageType = "virtual";
+    } else if (eventType === 'barefoot') {
+      title = "Barefoot Running Events & Natural Running | Alt.Run";
+      description = "Explore barefoot running events and natural running experiences. Discover minimalist running adventures on Alt.Run.";
+      pageType = "barefoot";
+    } else {
+      title = "Alternative Running Events | Alt.Run";
+      description = "Find unique and alternative running events worldwide. Discover fun, social, and adventurous running experiences on Alt.Run.";
+      pageType = "other";
+    }
+
+    // Set keywords based on event type
+    const baseKeywords = ["running events", "fun runs", "running adventures", "social running"];
+    const typeKeywords = {
+      all: ["running events", "fun runs", "alternative running", "running adventures"],
+      charity: ["charity runs", "fundraising runs", "charity 5k", "fundraising events", "running for charity"],
+      themed: ["themed runs", "costume runs", "color runs", "glow runs", "zombie runs", "fun themed events"],
+      obstacle: ["obstacle course races", "OCR", "mud runs", "spartan race", "tough mudder", "beginner OCR"],
+      virtual: ["virtual runs", "remote running", "virtual challenges", "run from home", "flexible running events"],
+      barefoot: ["barefoot running", "natural running", "minimalist running", "barefoot friendly events"]
+    };
+
+    // Combine base keywords with type-specific keywords
+    keywords = [...baseKeywords, ...(typeKeywords[pageType] || typeKeywords.other)];
+
+    // Create schema for the event listing page
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "@id": `https://alt.run${currentPath}#webpage`,
+      "url": `https://alt.run${currentPath}`,
+      "name": title,
+      "description": description,
+      "isPartOf": { "@id": "https://alt.run/#website" },
+      "about": {
+        "@type": "Thing",
+        "name": pageType === "all" ? "Running Events" : `${pageType.charAt(0).toUpperCase() + pageType.slice(1)} Running Events`
+      }
+    };
+
+    return {
+      title,
+      description,
+      canonicalUrl: currentPath,
+      keywords,
+      schema
+    };
+  };
+
+  // Get SEO data for the current page
+  const seoData = getSeoData();
+
   return (
     <div className="homepage-layout">
+      {/* SEO Component */}
+      <SEO {...seoData} />
+
       <LocationSidebar
         onFilterChange={handleLocationFilterChange}
         initialFilters={filters}

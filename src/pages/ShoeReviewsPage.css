@@ -1,0 +1,26 @@
+/* src/pages/ShoeReviewsPage.css */
+/* Override global text colors for the shoe reviews page */
+.shoe-reviews-page .homepage-main-content h1,
+.shoe-reviews-page .homepage-main-content > p {
+  color: black;
+  text-shadow: none;
+}
+
+/* Add a white background behind the heading and intro text for better readability */
+.shoe-reviews-page .homepage-main-content h1,
+.shoe-reviews-page .homepage-main-content > p {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  display: inline-block;
+  width: auto;
+}
+
+.shoe-reviews-content p {
+  color: black;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}

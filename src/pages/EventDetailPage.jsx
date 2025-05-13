@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'; // React hooks
 import { useParams, Link } from 'react-router-dom'; // For getting URL params and navigation
 import { supabase } from '../supabaseClient'; // Your Supabase client
+import SEO from '../components/SEO'; // Import SEO component
 import './EventDetailPage.css'; // Import CSS for this page
 
 function EventDetailPage() {
@@ -72,8 +73,162 @@ function EventDetailPage() {
   }
 
   // If event is found, display its details
+
+  // Generate SEO data for the event
+  const generateEventSeo = () => {
+    // Format the event location for the title
+    const locationParts = [];
+    if (event.city) locationParts.push(event.city);
+    if (event.state_province) locationParts.push(event.state_province);
+    if (event.country) locationParts.push(event.country);
+    const locationString = locationParts.join(', ');
+
+    // Determine event type for title
+    let eventTypeLabel = '';
+    if (event.type) {
+      if (event.type.toLowerCase().includes('charity')) {
+        eventTypeLabel = 'Charity Run';
+      } else if (event.type.toLowerCase().includes('themed')) {
+        eventTypeLabel = 'Themed Run';
+      } else if (event.type.toLowerCase().includes('obstacle')) {
+        eventTypeLabel = 'Obstacle Race';
+      } else if (event.type.toLowerCase().includes('virtual')) {
+        eventTypeLabel = 'Virtual Run';
+      } else if (event.type.toLowerCase().includes('barefoot')) {
+        eventTypeLabel = 'Barefoot Run';
+      } else {
+        eventTypeLabel = event.type;
+      }
+    }
+
+    // Create SEO title (55-60 characters)
+    const title = `${event.name} - Fun ${eventTypeLabel} in ${locationString} | Alt.Run`;
+
+    // Create meta description (150-160 characters)
+    const description = `Join the ${event.name}! A vibrant ${eventTypeLabel} in ${locationString}. Perfect for adventure seekers and fun-loving runners. Find details & sign up on Alt.Run!`;
+
+    // Generate keywords based on event details
+    const keywords = [
+      "fun runs",
+      "running events",
+      eventTypeLabel.toLowerCase(),
+      `${eventTypeLabel.toLowerCase()} in ${locationString}`,
+      `running events in ${locationString}`,
+      "alternative running",
+      "fun running adventures"
+    ];
+
+    // Add terrain as keyword if available
+    if (event.terrain) {
+      keywords.push(`${event.terrain} running`);
+    }
+
+    // Add charity as keyword if available
+    if (event.charity_affiliation) {
+      keywords.push(`${event.charity_affiliation} run`);
+      keywords.push("charity running events");
+    }
+
+    // Create breadcrumbs
+    const breadcrumbs = [
+      { name: "Home", path: "/" },
+      { name: "Events", path: "/events" }
+    ];
+
+    // Add event type to breadcrumbs if available
+    if (event.type) {
+      if (event.type.toLowerCase().includes('charity')) {
+        breadcrumbs.push({ name: "Charity Runs", path: "/charity-run" });
+      } else if (event.type.toLowerCase().includes('themed')) {
+        breadcrumbs.push({ name: "Themed Runs", path: "/themed-run" });
+      } else if (event.type.toLowerCase().includes('obstacle')) {
+        breadcrumbs.push({ name: "Obstacle Races", path: "/obstacle-run" });
+      } else if (event.type.toLowerCase().includes('virtual')) {
+        breadcrumbs.push({ name: "Virtual Runs", path: "/virtual-run" });
+      } else if (event.type.toLowerCase().includes('barefoot')) {
+        breadcrumbs.push({ name: "Barefoot Runs", path: "/barefoot-run" });
+      }
+    }
+
+    // Add current event to breadcrumbs
+    breadcrumbs.push({ name: event.name, path: `/events/${slug}` });
+
+    // Create Event schema
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": event.name,
+      "description": event.description || `${event.name} - A fun ${eventTypeLabel} in ${locationString}`,
+      "url": `https://alt.run/events/${slug}`,
+      "keywords": [
+        eventTypeLabel.toLowerCase(),
+        "fun run",
+        "alternative running",
+        "running event",
+        event.terrain || "",
+        event.charity_affiliation || ""
+      ].filter(Boolean),
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": event.type.toLowerCase().includes('virtual')
+        ? "https://schema.org/OnlineEventAttendanceMode"
+        : "https://schema.org/OfflineEventAttendanceMode",
+      "location": {
+        "@type": "Place",
+        "name": event.locations || locationString,
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": event.city || "",
+          "addressRegion": event.state_province || "",
+          "addressCountry": event.country || ""
+        }
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": event.registration_fee || event.price || "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "url": event.website_url || `https://alt.run/events/${slug}`
+      }
+    };
+
+    // Add start date if available
+    if (event.dates_season) {
+      // Try to parse the date from dates_season
+      const dateMatch = event.dates_season.match(/\d{4}-\d{2}-\d{2}/);
+      if (dateMatch) {
+        schema.startDate = dateMatch[0];
+      } else {
+        schema.startDate = event.dates_season;
+      }
+    }
+
+    // Add organizer if available
+    if (event.organizer) {
+      schema.organizer = {
+        "@type": "Organization",
+        "name": event.organizer
+      };
+    }
+
+    return {
+      title,
+      description,
+      canonicalUrl: `/events/${slug}`,
+      ogType: "article",
+      keywords,
+      schema,
+      breadcrumbs
+    };
+  };
+
+  // Get SEO data for the event
+  const eventSeoData = generateEventSeo();
+
   return (
     <div className="event-detail-container"> {/* Added a class for potential styling */}
+      {/* SEO Component */}
+      <SEO {...eventSeoData} />
+
       <h1>{event.name}</h1>
 
       <section className="event-info"> {/* Grouping basic info for clarity */}

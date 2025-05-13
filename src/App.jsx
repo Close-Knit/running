@@ -10,6 +10,7 @@ import EventsPage from './pages/EventsPage';
 import EventDetailPage from './pages/EventDetailPage';
 import ShoeReviewsPage from './pages/ShoeReviewsPage';
 import BlogPage from './pages/BlogPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 // Layout component imports
 import Header from './components/Header';
@@ -58,9 +59,8 @@ function App() {
           <Route path="/barefoot-run" element={<EventsPage eventType="barefoot" />} />
           <Route path="/shoe-reviews" element={<ShoeReviewsPage />} />
           <Route path="/blog" element={<BlogPage />} />
-          {/* You can add a 404 Not Found Route here later:
-              <Route path="*" element={<NotFoundPage />} />
-          */}
+          {/* 404 Not Found Route - catches all unmatched routes */}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
 

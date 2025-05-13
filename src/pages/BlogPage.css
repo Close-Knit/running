@@ -1,0 +1,26 @@
+/* src/pages/BlogPage.css */
+/* Override global text colors for the blog page */
+.blog-page .homepage-main-content h1,
+.blog-page .homepage-main-content > p {
+  color: black;
+  text-shadow: none;
+}
+
+/* Add a white background behind the heading and intro text for better readability */
+.blog-page .homepage-main-content h1,
+.blog-page .homepage-main-content > p {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  display: inline-block;
+  width: auto;
+}
+
+.blog-content p {
+  color: black;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}

@@ -1,0 +1,26 @@
+{
+  "short_name": "Alt.Run",
+  "name": "Alt.Run: Fun & Unique Running Adventures",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "description": "Your ultimate guide to fun, themed, charity, obstacle, and unique alternative runs globally."
+}

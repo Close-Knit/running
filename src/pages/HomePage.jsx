@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import LocationSidebar from '../components/LocationSidebar'; // Import the sidebar
+import SEO from '../components/SEO'; // Import SEO component
 import { sortEventsByDate, filterEventsByDateRange } from '../utils/dateUtils';
 import './HomePage.css'; // Import CSS for this page's layout
 import './EventsPage.css'; // Import EventsPage CSS for event card styling
@@ -178,9 +179,33 @@ function HomePage({ menuType: propMenuType = 'home' }) {
   //   navigate(`/events?${queryParams.toString()}`);
   // };
 
+  // Define SEO data for the homepage
+  const seoData = {
+    title: "Alt.Run: Discover Fun & Unique Running Adventures Worldwide",
+    description: "Your ultimate guide to fun, themed, charity, obstacle, and unique alternative runs globally. Find your next adventure, plus running tips and shoe reviews for every enthusiast.",
+    canonicalUrl: "/",
+    keywords: [
+      "alternative runs", "fun runs", "themed runs", "charity runs", "obstacle course races",
+      "virtual runs", "barefoot runs", "running events", "fun running adventures",
+      "beginner friendly runs", "social running events"
+    ],
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": "https://alt.run/#webpage",
+      "url": "https://alt.run/",
+      "name": "Alt.Run: Discover Fun & Unique Running Adventures Worldwide",
+      "description": "Your ultimate guide to fun, themed, charity, obstacle, and unique alternative runs globally.",
+      "isPartOf": { "@id": "https://alt.run/#website" }
+    }
+  };
+
   return (
     // Removed container class to avoid centering issues
     <div className="homepage-layout">
+      {/* SEO Component */}
+      <SEO {...seoData} />
+
       <LocationSidebar
         onFilterChange={handleLocationFilterChange}
       />
