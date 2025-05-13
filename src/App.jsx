@@ -2,6 +2,7 @@
 
 // React and Router imports
 // No 'import React from "react";' is typically needed with modern Vite setups for JSX
+import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 // Page component imports
@@ -23,7 +24,35 @@ import './components/Footer.css'; // Assuming you have Footer.css
 // Optional: A global stylesheet if you have one (e.g., src/index.css or src/App.css)
 // import './index.css';
 
+// Helper function to optimize background images for mobile
+const optimizeBackgroundForMobile = () => {
+  const pageBackground = document.querySelector('.page-background');
+  if (pageBackground) {
+    if (window.innerWidth <= 768) {
+      // Adjust background position for better mobile display
+      pageBackground.style.backgroundPosition = 'center center';
+    } else {
+      // Reset to default for desktop
+      pageBackground.style.backgroundPosition = 'center';
+    }
+  }
+};
+
 function App() {
+  // Set up event listener for window resize to optimize background images
+  useEffect(() => {
+    // Initial optimization
+    optimizeBackgroundForMobile();
+
+    // Add event listener for window resize
+    window.addEventListener('resize', optimizeBackgroundForMobile);
+
+    // Clean up event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', optimizeBackgroundForMobile);
+    };
+  }, []);
+
   return (
     <> {/* React Fragment to group multiple top-level elements */}
       {/* Background image container */}

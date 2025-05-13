@@ -42,7 +42,28 @@ a:hover {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  /* Removed fixed attachment for better mobile compatibility */
+}
+
+/* Optimize background images for different screen sizes */
+@media (min-width: 769px) {
+  .page-background {
+    background-attachment: fixed; /* Only use fixed attachment on desktop */
+  }
+}
+
+/* Mobile-specific background image optimizations */
+@media (max-width: 768px) {
+  .page-background {
+    background-position: center center; /* Ensure image is centered */
+    background-size: cover; /* Cover the entire viewport */
+    height: 100vh; /* Use viewport height instead of percentage */
+    width: 100vw; /* Use viewport width */
+    /* Improve performance on mobile */
+    will-change: transform;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
 }
 
 /* Headings */

@@ -11,6 +11,27 @@ function BlogPage() {
     if (pageBackground) {
       pageBackground.style.backgroundImage = 'url(/images/runblog.jpg)';
       console.log('BlogPage: Set background to runblog.jpg');
+
+      // Optimize background position for mobile if needed
+      const optimizeForMobile = () => {
+        if (window.innerWidth <= 768) {
+          // Adjust background position for better mobile display
+          // This helps prevent zooming and pixelation issues
+          pageBackground.style.backgroundPosition = 'center center';
+        } else {
+          // Reset to default for desktop
+          pageBackground.style.backgroundPosition = 'center';
+        }
+      };
+
+      // Run optimization immediately and on resize
+      optimizeForMobile();
+      window.addEventListener('resize', optimizeForMobile);
+
+      // Clean up event listener on component unmount
+      return () => {
+        window.removeEventListener('resize', optimizeForMobile);
+      };
     }
   }, []);
 

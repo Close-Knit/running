@@ -50,7 +50,29 @@ function HomePage({ menuType: propMenuType = 'home' }) {
 
         // Set the background image
         pageBackground.style.backgroundImage = `url(/images/${backgroundImage})`;
+
+        // Optimize background position for mobile if needed
+        const optimizeForMobile = () => {
+          if (window.innerWidth <= 768) {
+            // Adjust background position for better mobile display
+            // This helps prevent zooming and pixelation issues
+            pageBackground.style.backgroundPosition = 'center center';
+          } else {
+            // Reset to default for desktop
+            pageBackground.style.backgroundPosition = 'center';
+          }
+        };
+
+        // Run optimization immediately and on resize
+        optimizeForMobile();
+        window.addEventListener('resize', optimizeForMobile);
+
         console.log(`HomePage: Set background to ${backgroundImage} for menu type: ${menuType}`);
+
+        // Clean up event listener on component unmount
+        return () => {
+          window.removeEventListener('resize', optimizeForMobile);
+        };
       }
     }, 50); // Small delay to win any race conditions
 

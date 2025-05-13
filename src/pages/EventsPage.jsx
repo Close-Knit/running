@@ -23,22 +23,51 @@ function EventsPage({ eventType }) {
   useEffect(() => {
     const pageBackground = document.querySelector('.page-background');
     if (pageBackground) {
+      let backgroundImage = '';
+
       // Only change background if we're on a specific event page
       if (currentPath === '/events') {
-        pageBackground.style.backgroundImage = 'url(/images/ladyshoe.jpg)';
-        console.log('EventsPage: Set background to ladyshoe.jpg');
+        backgroundImage = 'ladyshoe.jpg';
+        pageBackground.style.backgroundImage = `url(/images/${backgroundImage})`;
+        console.log(`EventsPage: Set background to ${backgroundImage}`);
       } else if (currentPath === '/charity-run') {
-        pageBackground.style.backgroundImage = 'url(/images/fireman-walk.jpg)';
+        backgroundImage = 'fireman-walk.jpg';
+        pageBackground.style.backgroundImage = `url(/images/${backgroundImage})`;
       } else if (currentPath === '/themed-run') {
-        pageBackground.style.backgroundImage = 'url(/images/minidress.jpg)';
+        backgroundImage = 'minidress.jpg';
+        pageBackground.style.backgroundImage = `url(/images/${backgroundImage})`;
       } else if (currentPath === '/obstacle-run') {
-        pageBackground.style.backgroundImage = 'url(/images/spartan.webp)';
+        backgroundImage = 'spartan.webp';
+        pageBackground.style.backgroundImage = `url(/images/${backgroundImage})`;
       } else if (currentPath === '/virtual-run') {
-        pageBackground.style.backgroundImage = 'url(/images/virtual.jpg)';
+        backgroundImage = 'virtual.jpg';
+        pageBackground.style.backgroundImage = `url(/images/${backgroundImage})`;
       } else if (currentPath === '/barefoot-run') {
-        pageBackground.style.backgroundImage = 'url(/images/barefoot.jpg)';
+        backgroundImage = 'barefoot.jpg';
+        pageBackground.style.backgroundImage = `url(/images/${backgroundImage})`;
       }
       // Do NOT set a default background here, as it might override the homepage
+
+      // Optimize background position for mobile if needed
+      const optimizeForMobile = () => {
+        if (window.innerWidth <= 768) {
+          // Adjust background position for better mobile display
+          // This helps prevent zooming and pixelation issues
+          pageBackground.style.backgroundPosition = 'center center';
+        } else {
+          // Reset to default for desktop
+          pageBackground.style.backgroundPosition = 'center';
+        }
+      };
+
+      // Run optimization immediately and on resize
+      optimizeForMobile();
+      window.addEventListener('resize', optimizeForMobile);
+
+      // Clean up event listener on component unmount
+      return () => {
+        window.removeEventListener('resize', optimizeForMobile);
+      };
     }
   }, [currentPath]);
 
