@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 /**
  * SEO component for managing all meta tags, titles, and schema markup
- * 
+ *
  * @param {Object} props - Component props
  * @param {string} props.title - Page title (55-60 characters)
  * @param {string} props.description - Meta description (150-160 characters)
@@ -29,10 +29,13 @@ function SEO({
 }) {
   // Base URL for the site
   const siteUrl = 'https://alt.run';
-  
+
   // Format the canonical URL
   const fullCanonicalUrl = canonicalUrl ? `${siteUrl}${canonicalUrl}` : siteUrl;
-  
+
+  // Ensure ogImage has absolute URL
+  const fullOgImageUrl = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
+
   // Generate schema markup
   const generateSchemaMarkup = () => {
     // Base website schema that will be included on all pages
@@ -52,7 +55,7 @@ function SEO({
         'query-input': 'required name=search_term_string'
       }
     };
-    
+
     // Organization schema
     const organizationSchema = {
       '@context': 'https://schema.org',
@@ -72,7 +75,7 @@ function SEO({
         'https://instagram.com/altrun'
       ]
     };
-    
+
     // Breadcrumb schema if provided
     let breadcrumbSchema = null;
     if (breadcrumbs) {
@@ -87,19 +90,19 @@ function SEO({
         }))
       };
     }
-    
+
     // Combine all schemas
     const schemas = [websiteSchema, organizationSchema];
-    
+
     if (breadcrumbSchema) {
       schemas.push(breadcrumbSchema);
     }
-    
+
     // Add custom schema if provided
     if (schema) {
       schemas.push(schema);
     }
-    
+
     return schemas;
   };
 
@@ -110,28 +113,29 @@ function SEO({
       <meta name="description" content={description} />
       {keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
       <link rel="canonical" href={fullCanonicalUrl} />
-      
+
       {/* Robots Meta */}
       {noindex ? (
         <meta name="robots" content="noindex, nofollow" />
       ) : (
         <meta name="robots" content="index, follow" />
       )}
-      
+
       {/* Open Graph / Facebook */}
       <meta property="og:type" content={ogType} />
       <meta property="og:url" content={fullCanonicalUrl} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content={`${siteUrl}${ogImage}`} />
-      
+      <meta property="og:image" content={fullOgImageUrl} />
+      <meta property="og:site_name" content="Alt.Run" />
+
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:url" content={fullCanonicalUrl} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
-      
+      <meta name="twitter:image" content={fullOgImageUrl} />
+
       {/* Schema.org JSON-LD */}
       <script type="application/ld+json">
         {JSON.stringify(generateSchemaMarkup())}
