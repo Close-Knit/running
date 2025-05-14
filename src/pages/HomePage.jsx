@@ -204,7 +204,7 @@ function HomePage({ menuType: propMenuType = 'home' }) {
   // Define SEO data for the homepage
   const seoData = {
     title: "Alt.Run: Discover Fun & Unique Running Adventures Worldwide",
-    description: "Your ultimate guide to fun, themed, charity, obstacle, and unique alternative runs globally. Explore running adventures from muddy obstacle courses to virtual races across USA, UK, Canada, Australia and more.",
+    description: "Discover unique running adventures worldwide with Alt.Run! Explore themed runs, obstacle courses, virtual races & more. Filter by location & date to find your next unforgettable event.",
     canonicalUrl: "/",
     keywords: [
       "alternative runs", "fun runs", "themed runs", "charity runs", "obstacle course races",
@@ -217,7 +217,7 @@ function HomePage({ menuType: propMenuType = 'home' }) {
       "@id": "https://alt.run/#webpage",
       "url": "https://alt.run/",
       "name": "Alt.Run: Discover Fun & Unique Running Adventures Worldwide",
-      "description": "Your ultimate guide to fun, themed, charity, obstacle, and unique alternative runs globally. Explore running adventures from muddy obstacle courses to virtual races across USA, UK, Canada, Australia and more.",
+      "description": "Discover unique running adventures worldwide with Alt.Run! Explore themed runs, obstacle courses, virtual races & more. Filter by location & date to find your next unforgettable event.",
       "isPartOf": { "@id": "https://alt.run/#website" }
     }
   };

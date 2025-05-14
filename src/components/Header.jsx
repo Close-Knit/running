@@ -37,24 +37,17 @@ function Header() {
   return (
     <header className="app-header"> {/* A semantic HTML5 header tag with a CSS class */}
       <div className="header-left">
-        <a
-          href="/"
+        <NavLink
+          to="/"
           id="home-logo-link"
           className="logo-link"
-          onClick={(e) => {
-            // Prevent default behavior
-            e.preventDefault();
-            console.log("Logo clicked, navigating to homepage");
-            // Navigate to the homepage
-            window.location.href = '/';
-          }}
         >
           <img
             src="/logo-glow.webp" /* Updated to use the new logo-glow.webp file */
             alt="Alt.Run Logo" /* IMPORTANT: Accessible alt text */
             className="header-logo-image" /* New class for styling the image */
           />
-        </a>
+        </NavLink>
       </div>
 
       {/* Desktop Navigation */}

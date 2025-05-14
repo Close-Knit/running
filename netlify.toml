@@ -2,6 +2,25 @@
   publish = "dist"
   command = "npm run build"
 
+# Domain redirects for canonical URL
+[[redirects]]
+  from = "https://www.alt.run/*"
+  to = "https://alt.run/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://alt.run/*"
+  to = "https://alt.run/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.alt.run/*"
+  to = "https://alt.run/:splat"
+  status = 301
+  force = true
+
 # Redirect all routes to index.html for SPA client-side routing
 [[redirects]]
   from = "/*"

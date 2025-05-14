@@ -11,6 +11,7 @@
     "generate-sitemap": "node scripts/generate-sitemap.js",
     "generate-html-snapshots": "node scripts/generate-html-snapshots.js",
     "check-routes": "node scripts/check-routes.js",
+    "check-redirects": "node scripts/check-redirects.js",
     "postbuild": "echo 'Build completed with HTML snapshots and sitemap generation'"
   },
   "dependencies": {

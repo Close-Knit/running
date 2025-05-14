@@ -23,12 +23,7 @@ export default defineConfig({
     // Add any HTML config if needed
     htmlConfig({
       // You can add global HTML attributes here if needed
-      metas: [
-        {
-          name: 'description',
-          content: 'Your ultimate guide to fun, themed, charity, obstacle, and unique alternative runs globally. Explore running adventures from muddy obstacle courses to virtual races across USA, UK, Canada, Australia and more.'
-        }
-      ]
+      metas: []
     })
   ],
   // Ensure clean URLs (no .html extension)
