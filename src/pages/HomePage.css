@@ -12,10 +12,10 @@
 }
 
 .homepage-layout > .location-sidebar {
-  flex: 0 0 280px;
+  flex: 0 0 auto; /* Allow the sidebar to size based on content */
   box-sizing: border-box; /* Added to ensure padding/border are included in width calculation */
   /* Appearance styles (padding, background, border) are handled by LocationSidebar.css */
-  margin-right: 0; /* Ensure no extra margin on the right */
+  margin-right: 30px; /* Add margin to the right */
   align-self: flex-start; /* Align to the top */
 }
 
@@ -95,7 +95,8 @@
   .homepage-layout > .location-sidebar {
     margin-bottom: 20px;
     margin-right: 0;
-    /* Other sidebar-specific styles are in LocationSidebar.css */
+    width: auto; /* Auto width based on content */
+    align-self: flex-start; /* Ensure left alignment */
   }
 }
 

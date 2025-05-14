@@ -238,8 +238,9 @@
 
   /* Ensure the location sidebar is properly styled on mobile */
   .homepage-layout > .location-sidebar {
-    width: 100%;
+    width: auto; /* Auto width based on content */
     margin-bottom: 20px;
+    align-self: flex-start; /* Ensure left alignment */
   }
 }
 
