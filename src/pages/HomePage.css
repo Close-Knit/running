@@ -58,6 +58,11 @@
 
 .text-overlay-container p {
   color: #ccff00; /* Match the learn-more button color */
+  margin-bottom: 10px; /* Add space between paragraphs */
+}
+
+/* Remove margin from the last paragraph */
+.text-overlay-container p:last-child {
   margin-bottom: 0;
 }
 

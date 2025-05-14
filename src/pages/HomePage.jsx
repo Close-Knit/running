@@ -204,7 +204,7 @@ function HomePage({ menuType: propMenuType = 'home' }) {
   // Define SEO data for the homepage
   const seoData = {
     title: "Alt.Run: Discover Fun & Unique Running Adventures Worldwide",
-    description: "Your ultimate guide to fun, themed, charity, obstacle, and unique alternative runs globally. Find your next adventure, plus running tips and shoe reviews for every enthusiast.",
+    description: "Your ultimate guide to fun, themed, charity, obstacle, and unique alternative runs globally. Explore running adventures from muddy obstacle courses to virtual races across USA, UK, Canada, Australia and more.",
     canonicalUrl: "/",
     keywords: [
       "alternative runs", "fun runs", "themed runs", "charity runs", "obstacle course races",
@@ -217,7 +217,7 @@ function HomePage({ menuType: propMenuType = 'home' }) {
       "@id": "https://alt.run/#webpage",
       "url": "https://alt.run/",
       "name": "Alt.Run: Discover Fun & Unique Running Adventures Worldwide",
-      "description": "Your ultimate guide to fun, themed, charity, obstacle, and unique alternative runs globally.",
+      "description": "Your ultimate guide to fun, themed, charity, obstacle, and unique alternative runs globally. Explore running adventures from muddy obstacle courses to virtual races across USA, UK, Canada, Australia and more.",
       "isPartOf": { "@id": "https://alt.run/#website" }
     }
   };
@@ -236,6 +236,7 @@ function HomePage({ menuType: propMenuType = 'home' }) {
         <div className="text-overlay-container">
           <h1>Alternative Running Events</h1>
           <p>Your curated guide to the most exciting themed, obstacle, and alternative running events.</p>
+          <p>Welcome to the world beyond traditional marathons. At Alt.Run, we bring together a comprehensive directory of unique running adventures, from muddy obstacle courses and vibrant themed runs to challenging virtual races you can do anywhere. Find your next unforgettable experience and filter by location, date, or event type to start your adventure today. From the USA to the Philippines to the United Kingdom to Canada to Australia, we have every type of running event you could hope for.</p>
         </div>
 
         {/* Display event cards without the "Featured Events" heading */}

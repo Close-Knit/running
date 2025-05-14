@@ -26,7 +26,7 @@ export default defineConfig({
       metas: [
         {
           name: 'description',
-          content: 'Alt.Run: Discover Fun & Unique Running Adventures Worldwide'
+          content: 'Your ultimate guide to fun, themed, charity, obstacle, and unique alternative runs globally. Explore running adventures from muddy obstacle courses to virtual races across USA, UK, Canada, Australia and more.'
         }
       ]
     })
