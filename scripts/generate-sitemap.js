@@ -13,19 +13,20 @@ const siteUrl = 'https://alt.run';
 // Current date in YYYY-MM-DD format for lastmod
 const currentDate = new Date().toISOString().split('T')[0];
 
-// Define the routes that are known to exist and work
-// These should match the routes defined in App.jsx
+// Define the routes that exist in the React Router configuration
+// These match the routes defined in App.jsx
 const routes = [
   { path: '/', changefreq: 'daily', priority: '1.0' },
-  // Add other routes only after confirming they work and don't return 404
-  // { path: '/events', changefreq: 'daily', priority: '0.9' },
-  // { path: '/charity-run', changefreq: 'daily', priority: '0.8' },
-  // { path: '/themed-run', changefreq: 'daily', priority: '0.8' },
-  // { path: '/obstacle-run', changefreq: 'daily', priority: '0.8' },
-  // { path: '/virtual-run', changefreq: 'daily', priority: '0.8' },
-  // { path: '/barefoot-run', changefreq: 'daily', priority: '0.8' },
-  // { path: '/blog', changefreq: 'weekly', priority: '0.7' },
-  // { path: '/shoe-reviews', changefreq: 'weekly', priority: '0.7' },
+  { path: '/events', changefreq: 'daily', priority: '0.9' },
+  { path: '/charity-run', changefreq: 'daily', priority: '0.8' },
+  { path: '/themed-run', changefreq: 'daily', priority: '0.8' },
+  { path: '/obstacle-run', changefreq: 'daily', priority: '0.8' },
+  { path: '/virtual-run', changefreq: 'daily', priority: '0.8' },
+  { path: '/barefoot-run', changefreq: 'daily', priority: '0.8' },
+  { path: '/blog', changefreq: 'weekly', priority: '0.7' },
+  { path: '/shoe-reviews', changefreq: 'weekly', priority: '0.7' },
+  // Note: We don't include dynamic routes like /events/:slug here
+  // Those would be generated separately if needed
 ];
 
 // Generate the sitemap XML content
@@ -83,7 +84,7 @@ function generateSitemapXml() {
 function writeSitemap() {
   const sitemap = generateSitemapXml();
   const outputPath = path.resolve(__dirname, '../public/sitemap.xml');
-  
+
   fs.writeFileSync(outputPath, sitemap);
   console.log(`Sitemap generated at ${outputPath}`);
 }

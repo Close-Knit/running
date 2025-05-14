@@ -5,12 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run generate-sitemap && vite build && npm run generate-html-snapshots",
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-sitemap": "node scripts/generate-sitemap.js",
+    "generate-html-snapshots": "node scripts/generate-html-snapshots.js",
     "check-routes": "node scripts/check-routes.js",
-    "prebuild": "npm run generate-sitemap"
+    "postbuild": "echo 'Build completed with HTML snapshots and sitemap generation'"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.4",
@@ -30,6 +31,8 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vite-plugin-html-config": "^2.0.2",
+    "vite-plugin-static-copy": "^3.0.0"
   }
 }
