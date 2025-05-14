@@ -7,10 +7,14 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-sitemap": "node scripts/generate-sitemap.js",
+    "check-routes": "node scripts/check-routes.js",
+    "prebuild": "npm run generate-sitemap"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.4",
+    "node-fetch": "^3.3.2",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

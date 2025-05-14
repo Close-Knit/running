@@ -1,90 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Homepage -->
   <url>
     <loc>https://alt.run/</loc>
-    <lastmod>2023-06-01</lastmod>
+    <lastmod>2025-05-14</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-  
-  <!-- Main Category Pages -->
-  <url>
-    <loc>https://alt.run/events</loc>
-    <lastmod>2023-06-01</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://alt.run/charity-run</loc>
-    <lastmod>2023-06-01</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://alt.run/themed-run</loc>
-    <lastmod>2023-06-01</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://alt.run/obstacle-run</loc>
-    <lastmod>2023-06-01</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://alt.run/virtual-run</loc>
-    <lastmod>2023-06-01</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://alt.run/barefoot-run</loc>
-    <lastmod>2023-06-01</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <!-- Blog and Shoe Reviews -->
-  <url>
-    <loc>https://alt.run/blog</loc>
-    <lastmod>2023-06-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://alt.run/shoe-reviews</loc>
-    <lastmod>2023-06-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
+
   <!-- Individual Event Pages - These would be dynamically generated -->
   <!-- Example:
   <url>
     <loc>https://alt.run/events/the-color-run-new-york</loc>
-    <lastmod>2023-06-01</lastmod>
+    <lastmod>2025-05-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   -->
-  
+
   <!-- Individual Blog Posts - These would be dynamically generated -->
   <!-- Example:
   <url>
     <loc>https://alt.run/blog/top-5-fun-obstacle-races-for-beginners</loc>
-    <lastmod>2023-06-01</lastmod>
+    <lastmod>2025-05-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   -->
-  
+
   <!-- Individual Shoe Reviews - These would be dynamically generated -->
   <!-- Example:
   <url>
     <loc>https://alt.run/shoe-reviews/brooks-cascadia-17</loc>
-    <lastmod>2023-06-01</lastmod>
+    <lastmod>2025-05-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
