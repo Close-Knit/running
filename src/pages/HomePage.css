@@ -78,6 +78,7 @@
   .homepage-layout {
     flex-direction: column;
     gap: 20px;
+    padding: 0 15px; /* Slightly reduced padding on mobile */
   }
 
   .homepage-layout > .location-sidebar,
@@ -88,11 +89,13 @@
 
   .homepage-main-content {
     width: 100%; /* Override the desktop width calculation */
+    padding-right: 0; /* Remove right padding on mobile */
   }
 
   .homepage-layout > .location-sidebar {
     margin-bottom: 20px;
     margin-right: 0;
+    /* Other sidebar-specific styles are in LocationSidebar.css */
   }
 }
 

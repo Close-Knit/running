@@ -235,6 +235,12 @@
     margin-top: 20px; /* Add space above the button */
     margin-bottom: 10px; /* Add space below the button */
   }
+
+  /* Ensure the location sidebar is properly styled on mobile */
+  .homepage-layout > .location-sidebar {
+    width: 100%;
+    margin-bottom: 20px;
+  }
 }
 
 /* Adjust the sidebar sections to take up appropriate space */
@@ -246,11 +252,11 @@
   .event-card-layout {
     flex-direction: column;
   }
-  
+
   .event-card-sidebar {
     width: 100%;
   }
-  
+
   .event-card-action {
     margin-top: 15px;
   }
