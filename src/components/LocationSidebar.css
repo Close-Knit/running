@@ -72,3 +72,21 @@
   background-color: #b3ff00; /* Slightly darker green on hover */
   box-shadow: 0 0 15px rgba(204, 255, 0, 0.7); /* Enhanced glow on hover */
 }
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+  .location-sidebar {
+    width: auto; /* Instead of fixed width */
+    max-width: 100%; /* Prevent overflow */
+    min-width: 0; /* Override the min-width */
+    margin: 0 0 20px 0; /* Left-align with bottom margin */
+    align-self: flex-start; /* Ensure left alignment */
+  }
+  
+  .filter-group select,
+  .filter-group button {
+    width: 100%; /* Keep controls full width of their container */
+  }
+}
+
+
