@@ -185,10 +185,14 @@ function LocationSidebar({ onFilterChange }) { // Props will be used to send fil
 
     try {
       console.log('Fetching states for country:', country);
+      
+      // Determine which table to query based on country
+      const tableName = country === 'CAN' ? 'events_canada' : 'events';
+      console.log(`Using table: ${tableName} for country: ${country}`);
 
       // For debugging, let's try a direct query to see all state_province values
       const { data: allStates, error: allStatesError } = await supabase
-        .from('events')
+        .from(tableName)
         .select('state_province, country');
 
       console.log('All states in database:', allStates);
@@ -197,15 +201,12 @@ function LocationSidebar({ onFilterChange }) { // Props will be used to send fil
         console.error('Error fetching all states:', allStatesError);
       }
 
-      // Fetch all states/provinces from the database for the selected country
-      // Use a simpler query to get all state_province values
+      // Fetch all states/provinces from the appropriate table for the selected country
       const { data, error } = await supabase
-        .from('events')
+        .from(tableName)
         .select('state_province')
         .eq('country', country)
         .not('state_province', 'is', null);
-
-      // Note: Removed distinctOn as it might be causing issues
 
       if (error) {
         console.error('Error fetching states/provinces:', error);
@@ -214,11 +215,6 @@ function LocationSidebar({ onFilterChange }) { // Props will be used to send fil
       }
 
       console.log('Raw states from database for country', country, ':', data);
-
-      // Log each state individually to see if there are any issues
-      data.forEach((item, index) => {
-        console.log(`State ${index} from query:`, item.state_province);
-      });
 
       // Filter out duplicates manually
       const uniqueStates = Array.from(new Set(data.map(item => item.state_province)))
@@ -301,16 +297,21 @@ function LocationSidebar({ onFilterChange }) { // Props will be used to send fil
   // Function to fetch cities for a selected state/province
   const fetchCitiesForState = async (country, state) => {
     if (!country || !state) {
+      console.log('No country or state selected, clearing city options');
       setCityOptions([{ value: '', label: 'Select City' }]);
       return;
     }
 
     try {
       console.log('Fetching cities for country:', country, 'and state:', state);
+      
+      // Determine which table to query based on country
+      const tableName = country === 'CAN' ? 'events_canada' : 'events';
+      console.log(`Using table: ${tableName} for cities in ${state}, ${country}`);
 
       // For debugging, let's try a direct query to see all city values
       const { data: allCities, error: allCitiesError } = await supabase
-        .from('events')
+        .from(tableName)
         .select('city, state_province, country');
 
       console.log('All cities in database:', allCities);
@@ -319,9 +320,9 @@ function LocationSidebar({ onFilterChange }) { // Props will be used to send fil
         console.error('Error fetching all cities:', allCitiesError);
       }
 
-      // Fetch all cities from the database for the selected state - simplified query
+      // Fetch all cities from the appropriate table for the selected state
       const { data, error } = await supabase
-        .from('events')
+        .from(tableName)
         .select('city')
         .eq('country', country)
         .eq('state_province', state)
@@ -584,3 +585,5 @@ function LocationSidebar({ onFilterChange }) { // Props will be used to send fil
 }
 
 export default LocationSidebar;
+
+

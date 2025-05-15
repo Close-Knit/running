@@ -86,9 +86,13 @@ function HomePage({ menuType: propMenuType = 'home' }) {
       setLoading(true);
       setError(null);
       try {
+        // Determine which table to query based on country
+        const tableName = filters.country === 'CAN' ? 'events_canada' : 'events';
+        console.log(`HomePage: Using table: ${tableName} for country: ${filters.country}`);
+        
         // Start with a base query
         let query = supabase
-          .from('events')
+          .from(tableName)
           .select('*');
 
         // Apply filters if they exist

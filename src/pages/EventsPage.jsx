@@ -94,7 +94,11 @@ function EventsPage({ eventType }) {
     async function fetchEvents() {
       setLoading(true);
       try {
-        let query = supabase.from('events').select('*');
+        // Determine which table to query based on country
+        const tableName = filters.country === 'CAN' ? 'events_canada' : 'events';
+        console.log(`EventsPage: Using table: ${tableName} for country: ${filters.country}`);
+        
+        let query = supabase.from(tableName).select('*');
 
         // Debug log to see what eventType we're receiving
         console.log('Current eventType:', eventType);
