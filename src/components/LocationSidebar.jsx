@@ -6,7 +6,7 @@ import './LocationSidebar.css'; // Import the CSS
 // Import Supabase client for database queries
 import { supabase } from '../supabaseClient';
 
-function LocationSidebar({ onFilterChange }) { // Props will be used to send filter changes
+function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will be used to send filter changes
   // --- STATE FOR SELECTED FILTER VALUES ---
   // We will initialize these later, possibly from URL params or default values
   const [selectedCountry, setSelectedCountry] = useState('');
@@ -114,20 +114,22 @@ function LocationSidebar({ onFilterChange }) { // Props will be used to send fil
     const testDatabaseAccess = async () => {
       try {
         console.log('Testing direct database access...');
-        const { data, error } = await supabase
+
+        // Test USA events table
+        const { data: usaEventsData, error: usaError } = await supabase
           .from('events')
           .select('state_province, country')
           .order('state_province');
 
-        if (error) {
-          console.error('Error in test database access:', error);
+        if (usaError) {
+          console.error('Error in test database access for USA events:', usaError);
         } else {
-          console.log('Test database access successful. All states:', data);
+          console.log('Test database access successful for USA events. All states:', usaEventsData);
 
           // If USA is selected by default, populate states
           if (hardcodedCountries[1].value === 'USA') {
             // Log all raw data for USA
-            const usaData = data.filter(item => item.country === 'USA');
+            const usaData = usaEventsData.filter(item => item.country === 'USA');
             console.log('Raw USA data:', usaData);
 
             // Log each state individually to see if there are any issues
@@ -167,6 +169,27 @@ function LocationSidebar({ onFilterChange }) { // Props will be used to send fil
             }
           }
         }
+
+        // Test Canada events table
+        const { data: canadaEventsData, error: canadaError } = await supabase
+          .from('events_canada')
+          .select('state_province, country')
+          .order('state_province');
+
+        if (canadaError) {
+          console.error('Error in test database access for Canada events:', canadaError);
+        } else {
+          console.log('Test database access successful for Canada events. All provinces:', canadaEventsData);
+
+          // Log all raw data for Canada
+          const canadaData = canadaEventsData.filter(item => item.country === 'CAN');
+          console.log('Raw Canada data:', canadaData);
+
+          // Log each province individually to see if there are any issues
+          canadaData.forEach((item, index) => {
+            console.log(`Province ${index}:`, item.state_province, 'from country:', item.country);
+          });
+        }
       } catch (err) {
         console.error('Error in test database access:', err);
       }
@@ -185,7 +208,7 @@ function LocationSidebar({ onFilterChange }) { // Props will be used to send fil
 
     try {
       console.log('Fetching states for country:', country);
-      
+
       // Determine which table to query based on country
       const tableName = country === 'CAN' ? 'events_canada' : 'events';
       console.log(`Using table: ${tableName} for country: ${country}`);
@@ -250,14 +273,46 @@ function LocationSidebar({ onFilterChange }) { // Props will be used to send fil
         missingStates.forEach(state => {
           formattedOptions.push({ value: state, label: state });
         });
+      }
+      // If country is Canada, ensure all provinces are included
+      else if (country === 'CAN') {
+        // Create a list of known Canadian provinces
+        const knownCanadianProvinces = [
+          'AB', // Alberta
+          'BC', // British Columbia
+          'MB', // Manitoba
+          'NB', // New Brunswick
+          'NL', // Newfoundland and Labrador
+          'NS', // Nova Scotia
+          'NT', // Northwest Territories
+          'NU', // Nunavut
+          'ON', // Ontario
+          'PE', // Prince Edward Island
+          'QC', // Quebec
+          'SK', // Saskatchewan
+          'YT'  // Yukon
+        ];
 
-        // Sort the options alphabetically (keeping the empty option first)
-        formattedOptions = formattedOptions.sort((a, b) => {
-          if (a.value === '') return -1;
-          if (b.value === '') return 1;
-          return a.label.localeCompare(b.label);
+        // Check for missing provinces
+        const provinceValues = formattedOptions.map(opt => opt.value);
+        const missingProvinces = knownCanadianProvinces.filter(province => !provinceValues.includes(province));
+
+        console.log('Known Canadian provinces:', knownCanadianProvinces);
+        console.log('Current province values in dropdown:', provinceValues);
+        console.log('Missing provinces that should be added:', missingProvinces);
+
+        // Add the missing provinces
+        missingProvinces.forEach(province => {
+          formattedOptions.push({ value: province, label: province });
         });
       }
+
+      // Sort the options alphabetically (keeping the empty option first)
+      formattedOptions = formattedOptions.sort((a, b) => {
+        if (a.value === '') return -1;
+        if (b.value === '') return 1;
+        return a.label.localeCompare(b.label);
+      });
 
       console.log('Final formatted state options:', formattedOptions);
 
@@ -273,6 +328,9 @@ function LocationSidebar({ onFilterChange }) { // Props will be used to send fil
   const handleCountryChange = (event) => {
     const country = event.target.value;
     console.log("Country selected in dropdown:", country);
+    console.log("Country value type:", typeof country);
+    console.log("Is country === 'CAN'?", country === 'CAN');
+    console.log("Is country === 'Canada'?", country === 'Canada');
 
     setSelectedCountry(country);
     setSelectedState(''); // Reset state/province when country changes
@@ -285,6 +343,7 @@ function LocationSidebar({ onFilterChange }) { // Props will be used to send fil
     }, 100);
 
     // Call onFilterChange with the new country and reset state/city
+    console.log(`Calling onFilterChange with country: ${country}, table: ${country === 'CAN' ? 'events_canada' : 'events'}`);
     onFilterChange({
       country,
       state: '',
@@ -304,29 +363,43 @@ function LocationSidebar({ onFilterChange }) { // Props will be used to send fil
 
     try {
       console.log('Fetching cities for country:', country, 'and state:', state);
-      
+
       // Determine which table to query based on country
       const tableName = country === 'CAN' ? 'events_canada' : 'events';
       console.log(`Using table: ${tableName} for cities in ${state}, ${country}`);
 
       // For debugging, let's try a direct query to see all city values
-      const { data: allCities, error: allCitiesError } = await supabase
+      let debugQuery = supabase
         .from(tableName)
         .select('city, state_province, country');
 
-      console.log('All cities in database:', allCities);
+      // For events_canada table, filter by the selected province to see all cities
+      if (tableName === 'events_canada') {
+        debugQuery = debugQuery.eq('state_province', state);
+      }
+
+      const { data: allCities, error: allCitiesError } = await debugQuery;
+
+      console.log(`All cities in ${tableName} for ${state}:`, allCities);
 
       if (allCitiesError) {
         console.error('Error fetching all cities:', allCitiesError);
       }
 
       // Fetch all cities from the appropriate table for the selected state
-      const { data, error } = await supabase
+      let query = supabase
         .from(tableName)
         .select('city')
-        .eq('country', country)
         .eq('state_province', state)
         .not('city', 'is', null);
+
+      // Only apply country filter for the events table, not for events_canada
+      // This ensures we get all cities from the events_canada table for the selected province
+      if (tableName !== 'events_canada') {
+        query = query.eq('country', country);
+      }
+
+      const { data, error } = await query;
 
       if (error) {
         console.error('Error fetching cities:', error);
@@ -383,14 +456,66 @@ function LocationSidebar({ onFilterChange }) { // Props will be used to send fil
             formattedOptions.push({ value: city, label: city });
           });
         }
-
-        // Sort the options alphabetically (keeping the empty option first)
-        formattedOptions = formattedOptions.sort((a, b) => {
-          if (a.value === '') return -1;
-          if (b.value === '') return 1;
-          return a.label.localeCompare(b.label);
-        });
       }
+      // Add known cities for Canadian provinces if they're missing
+      else if (country === 'CAN') {
+        const cityValues = formattedOptions.map(opt => opt.value);
+
+        // Create a map of provinces to their known cities
+        const knownCitiesByProvince = {
+          'ON': ['Toronto', 'Ottawa', 'Mississauga', 'Hamilton', 'London', 'Brampton', 'Windsor'],
+          'BC': ['Vancouver', 'Victoria', 'Surrey', 'Burnaby', 'Richmond', 'Kelowna', 'Abbotsford', 'Coquitlam', 'Langley', 'Delta', 'Nanaimo', 'Kamloops', 'Prince George', 'Chilliwack', 'Vernon', 'Penticton', 'Campbell River', 'Courtenay', 'Port Coquitlam', 'North Vancouver', 'West Vancouver', 'Squamish', 'Whistler'],
+          'AB': ['Calgary', 'Edmonton', 'Red Deer', 'Lethbridge', 'Fort McMurray', 'Medicine Hat', 'Grande Prairie', 'Airdrie', 'Spruce Grove', 'St. Albert', 'Leduc', 'Okotoks', 'Cochrane', 'Camrose', 'Canmore', 'Banff', 'Jasper'],
+          'QC': ['Montreal', 'Quebec City', 'Laval', 'Gatineau', 'Sherbrooke', 'Longueuil', 'Trois-Rivieres', 'Levis', 'Saguenay', 'Terrebonne', 'Repentigny', 'Brossard', 'Drummondville', 'Saint-Jerome', 'Granby', 'Shawinigan', 'Mont-Tremblant'],
+          'NS': ['Halifax', 'Sydney', 'Dartmouth', 'Truro', 'Yarmouth', 'New Glasgow', 'Kentville', 'Amherst', 'Bridgewater', 'Antigonish'],
+          'MB': ['Winnipeg', 'Brandon', 'Thompson', 'Steinbach', 'Portage la Prairie', 'Selkirk', 'Dauphin', 'Morden', 'Winkler', 'The Pas'],
+          'SK': ['Saskatoon', 'Regina', 'Prince Albert', 'Moose Jaw', 'Swift Current', 'Yorkton', 'North Battleford', 'Estevan', 'Weyburn', 'Lloydminster'],
+          'NB': ['Fredericton', 'Moncton', 'Saint John', 'Miramichi', 'Edmundston', 'Bathurst', 'Campbellton', 'Dieppe', 'Riverview', 'Oromocto'],
+          'NL': ['St. John\'s', 'Corner Brook', 'Mount Pearl', 'Conception Bay South', 'Paradise', 'Grand Falls-Windsor', 'Gander', 'Labrador City', 'Carbonear', 'Stephenville'],
+          'PE': ['Charlottetown', 'Summerside', 'Stratford', 'Cornwall', 'Montague', 'Kensington', 'Alberton', 'Souris', 'Georgetown', 'Tignish'],
+          'YT': ['Whitehorse', 'Dawson City', 'Watson Lake', 'Haines Junction', 'Mayo', 'Faro', 'Carmacks', 'Teslin', 'Carcross', 'Ross River'],
+          'NT': ['Yellowknife', 'Hay River', 'Inuvik', 'Fort Smith', 'Norman Wells', 'Fort Simpson', 'Behchoko', 'Tuktoyaktuk', 'Fort Providence', 'Fort Resolution'],
+          'NU': ['Iqaluit', 'Rankin Inlet', 'Arviat', 'Baker Lake', 'Cambridge Bay', 'Igloolik', 'Pond Inlet', 'Pangnirtung', 'Kugluktuk', 'Gjoa Haven']
+        };
+
+        // If we have known cities for this province, check if any are missing
+        if (knownCitiesByProvince[state]) {
+          const missingCities = knownCitiesByProvince[state].filter(city => !cityValues.includes(city));
+          console.log(`Missing cities for ${state} province that should be added:`, missingCities);
+
+          // Add the missing cities
+          missingCities.forEach(city => {
+            formattedOptions.push({ value: city, label: city });
+          });
+        }
+
+        // Also check if there are any cities in allCities that aren't in our formattedOptions yet
+        if (allCities && allCities.length > 0) {
+          // Extract all unique cities from the database results
+          const dbCities = Array.from(new Set(allCities.map(item => item.city)))
+            .filter(city => city && city.trim() !== ''); // Filter out null or empty cities
+
+          console.log(`Cities from database for ${state}:`, dbCities);
+
+          // Find cities in the database that aren't in our options yet
+          const cityValues = formattedOptions.map(opt => opt.value);
+          const missingDbCities = dbCities.filter(city => !cityValues.includes(city));
+
+          console.log(`Cities from database that should be added:`, missingDbCities);
+
+          // Add the missing database cities
+          missingDbCities.forEach(city => {
+            formattedOptions.push({ value: city, label: city });
+          });
+        }
+      }
+
+      // Sort the options alphabetically (keeping the empty option first)
+      formattedOptions = formattedOptions.sort((a, b) => {
+        if (a.value === '') return -1;
+        if (b.value === '') return 1;
+        return a.label.localeCompare(b.label);
+      });
 
       console.log('Final formatted city options:', formattedOptions);
       setCityOptions(formattedOptions);
@@ -576,6 +701,13 @@ function LocationSidebar({ onFilterChange }) { // Props will be used to send fil
         <button type="button" onClick={handleApplyFilters}>
           Find Events
         </button>
+
+        {/* Loading indicator */}
+        {isLoading && (
+          <div className="loading-indicator">
+            <div className="loading-bar"></div>
+          </div>
+        )}
       </div>
 
       {/* TODO: "Use my current location" button */}

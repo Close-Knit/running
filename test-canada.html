@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Canada Events</title>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <h1>Test Canada Events</h1>
+  <button id="testButton">Test Canada Events</button>
+  <div id="results"></div>
+
+  <script>
+    document.getElementById('testButton').addEventListener('click', async () => {
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = '<p>Testing...</p>';
+      
+      try {
+        // Get Supabase URL and key from the environment variables
+        const supabaseUrl = 'https://lfcbwmqvbgfpgpjkqwue.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxmY2J3bXF2YmdmcGdwamtxd3VlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTU0NTM5NzcsImV4cCI6MjAzMTAyOTk3N30.Nh8yCZtYJMDM0T4Yx0b0-Uh9bTj-LrYl9pEcCw5icQE';
+        
+        // Create Supabase client
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        
+        // Test querying the events_canada table
+        const { data: canadaEvents, error: canadaError } = await supabase
+          .from('events_canada')
+          .select('*')
+          .limit(10);
+        
+        if (canadaError) {
+          throw new Error(`Error querying events_canada table: ${canadaError.message}`);
+        }
+        
+        // Test querying the events table for comparison
+        const { data: usaEvents, error: usaError } = await supabase
+          .from('events')
+          .select('*')
+          .limit(10);
+        
+        if (usaError) {
+          throw new Error(`Error querying events table: ${usaError.message}`);
+        }
+        
+        // Display results
+        resultsDiv.innerHTML = `
+          <h2>Canada Events (${canadaEvents.length})</h2>
+          <pre>${JSON.stringify(canadaEvents, null, 2)}</pre>
+          <h2>USA Events (${usaEvents.length})</h2>
+          <pre>${JSON.stringify(usaEvents, null, 2)}</pre>
+        `;
+      } catch (err) {
+        resultsDiv.innerHTML = `<p>Error: ${err.message}</p>`;
+        console.error('Error:', err);
+      }
+    });
+  </script>
+</body>
+</html>
