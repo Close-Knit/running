@@ -7,6 +7,7 @@ function Header() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
 
   // Toggle mobile menu
   const toggleMobileMenu = () => {
@@ -24,17 +25,26 @@ function Header() {
     setDropdownOpen(!dropdownOpen);
   };
 
-  // Close dropdown when clicking outside
+  // Toggle mobile dropdown menu
+  const toggleMobileDropdown = (e) => {
+    e.preventDefault();
+    setMobileDropdownOpen(!mobileDropdownOpen);
+  };
+
+  // Close dropdowns when clicking outside
   useEffect(() => {
-    const closeDropdown = (e) => {
+    const closeDropdowns = (e) => {
       if (!e.target.closest('.dropdown')) {
         setDropdownOpen(false);
       }
+      if (!e.target.closest('.mobile-dropdown')) {
+        setMobileDropdownOpen(false);
+      }
     };
 
-    document.addEventListener('click', closeDropdown);
+    document.addEventListener('click', closeDropdowns);
     return () => {
-      document.removeEventListener('click', closeDropdown);
+      document.removeEventListener('click', closeDropdowns);
     };
   }, []);
 
@@ -108,6 +118,21 @@ function Header() {
       {/* Mobile Navigation */}
       {isMobile && (
         <div className="mobile-nav-container">
+          {/* Mobile Running Guides Dropdown */}
+          <div className="mobile-dropdown">
+            <button
+              className={`mobile-dropdown-toggle ${mobileDropdownOpen ? 'active' : ''}`}
+              onClick={toggleMobileDropdown}
+              aria-expanded={mobileDropdownOpen}
+            >
+              Running Guides
+            </button>
+            <div className={`mobile-dropdown-menu ${mobileDropdownOpen ? 'show' : ''}`}>
+              <NavLink to="/start-running-guide" className="mobile-dropdown-item" onClick={() => setMobileDropdownOpen(false)}>Start Running: Beginner Guide</NavLink>
+              <NavLink to="/intermediate-running-guide" className="mobile-dropdown-item" onClick={() => setMobileDropdownOpen(false)}>Intermediate Runner's Guide</NavLink>
+            </div>
+          </div>
+
           {/* Hamburger Menu Button */}
           <button
             className={`hamburger-button ${mobileMenuOpen ? 'active' : ''}`}
@@ -129,12 +154,7 @@ function Header() {
               <NavLink to="/obstacle-run" className="nav-link" onClick={closeMobileMenu}>Obstacle Run</NavLink>
               <NavLink to="/virtual-run" className="nav-link" onClick={closeMobileMenu}>Virtual Run</NavLink>
               <NavLink to="/barefoot-run" className="nav-link" onClick={closeMobileMenu}>Barefoot Run</NavLink>
-              <div className="mobile-secondary-nav">
-                <div className="mobile-section-title">Running Guides</div>
-                <NavLink to="/start-running-guide" className="nav-link mobile-guide-link" onClick={closeMobileMenu}>Start Running: Beginner Guide</NavLink>
-                <NavLink to="/intermediate-running-guide" className="nav-link mobile-guide-link" onClick={closeMobileMenu}>Intermediate Runner's Guide</NavLink>
-                {/* <NavLink to="/blog" className="nav-link" onClick={closeMobileMenu}>Blog</NavLink> */}
-              </div>
+              {/* <NavLink to="/blog" className="nav-link" onClick={closeMobileMenu}>Blog</NavLink> */}
             </nav>
           </div>
         </div>

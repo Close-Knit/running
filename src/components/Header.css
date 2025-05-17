@@ -12,7 +12,7 @@
   backdrop-filter: blur(5px); /* Add a blur effect to the background */
   -webkit-backdrop-filter: blur(5px); /* For Safari support */
   position: relative;
-  z-index: 10; /* Ensure header is above other content */
+  z-index: 100; /* Increased z-index to ensure header is above other content */
 }
 
 .app-header .header-left,
@@ -118,7 +118,7 @@
   border-radius: 4px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 8px 0;
-  z-index: 20;
+  z-index: 1000; /* Increased z-index to ensure it appears above all content */
   display: none;
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
@@ -215,6 +215,76 @@
   .mobile-nav-container {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+  }
+
+  /* Mobile dropdown styles */
+  .mobile-dropdown {
+    position: relative;
+    margin-right: 15px;
+    z-index: 1001; /* Same as hamburger button */
+  }
+
+  .mobile-dropdown-toggle {
+    background: transparent;
+    border: none;
+    color: #FFFFFF;
+    font-weight: 500;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 0.9em;
+    white-space: nowrap;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .mobile-dropdown-toggle::after {
+    content: '▼';
+    font-size: 0.7em;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .mobile-dropdown-toggle:hover, .mobile-dropdown-toggle.active {
+    color: #FFFFFF;
+    text-shadow: 0 0 8px #ccff00, 0 0 12px #b3ff00; /* Green glow effect */
+    box-shadow: 0 0 10px rgba(204, 255, 0, 0.5); /* Subtle green box glow */
+    background-color: rgba(204, 255, 0, 0.15); /* Very subtle green background */
+  }
+
+  .mobile-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    min-width: 220px;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 8px 0;
+    z-index: 1000; /* Same as desktop dropdown */
+    display: none;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-dropdown-menu.show {
+    display: block;
+  }
+
+  .mobile-dropdown-item {
+    display: block;
+    padding: 8px 16px;
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 0.95em;
+  }
+
+  .mobile-dropdown-item:hover {
+    background-color: rgba(204, 255, 0, 0.15); /* Very subtle green background */
+    text-shadow: 0 0 8px #ccff00, 0 0 12px #b3ff00; /* Green glow effect */
   }
 
   /* Hamburger button styles */
@@ -228,7 +298,7 @@
     border: none;
     cursor: pointer;
     padding: 0;
-    z-index: 20;
+    z-index: 1001; /* Increased z-index to be above the mobile menu */
     position: relative;
   }
 
@@ -265,7 +335,7 @@
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease, padding 0.3s ease;
-    z-index: 15;
+    z-index: 1000; /* Increased z-index to ensure it appears above all content */
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -355,5 +425,14 @@
   .mobile-main-nav .nav-link {
     width: 90%; /* Wider links on very small screens */
     font-size: 0.95em; /* Slightly smaller font */
+  }
+
+  .mobile-dropdown-toggle {
+    font-size: 0.85em; /* Smaller font for very small screens */
+    padding: 6px 10px; /* Smaller padding */
+  }
+
+  .mobile-dropdown {
+    margin-right: 10px; /* Less margin on very small screens */
   }
 }
