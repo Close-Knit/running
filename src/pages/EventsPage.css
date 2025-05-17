@@ -249,6 +249,36 @@
   margin-bottom: auto;
 }
 
+/* No events message styling */
+.no-events-message {
+  color: #ccff00 !important;
+  text-align: center !important;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+  width: 100%;
+  display: block;
+}
+
+.no-events-container {
+  width: 100%;
+  text-align: center;
+}
+
+/* Special message styling for barefoot run page */
+.special-message {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ccff00;
+  text-align: center;
+  border: 1px solid rgba(204, 255, 0, 0.3);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
 @media (max-width: 768px) {
   .event-card-layout {
     flex-direction: column;

@@ -322,8 +322,14 @@ function EventsPage({ eventType }) {
 
         {/* Don't show loading message here since we're using the loading indicator in the sidebar */}
         {error && <p>Error: {error}</p>}
-        {!loading && !error && events.length === 0 && (
-          <p>No events found matching your criteria. Try adjusting your filters.</p>
+        {!loading && !error && events.length === 0 && currentPath === '/barefoot-run' && (
+          <div className="no-events-container">
+            <p className="no-events-message">No events found matching your criteria. Try adjusting your filters.</p>
+            <p className="special-message">Currently curating Barefoot Running events. Come back soon!!</p>
+          </div>
+        )}
+        {!loading && !error && events.length === 0 && currentPath !== '/barefoot-run' && (
+          <p className="no-events-message">No events found matching your criteria. Try adjusting your filters.</p>
         )}
         {!loading && !error && events.length > 0 && (
           <ul className="events-list">
