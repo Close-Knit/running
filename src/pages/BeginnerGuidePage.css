@@ -39,9 +39,9 @@
   margin-bottom: 0;
 }
 
-/* For PDF generation - hide elements that shouldn't be in the PDF */
+/* For print styling */
 @media print {
-  header, footer, .download-guide, .guide-footer {
+  header, footer, .guide-footer {
     display: none !important;
   }
 
@@ -181,43 +181,7 @@
   height: 40px;
 }
 
-/* Download button styles */
-.download-guide-container {
-  margin: 2rem 0;
-  text-align: center;
-}
-
-.download-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #32CD32;
-  color: white;
-  font-weight: 600;
-  font-size: 1.1rem;
-  padding: 0.8rem 1.5rem;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-decoration: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.download-button span {
-  margin-right: 8px;
-}
-
-.download-button:hover {
-  background-color: #2db82d;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.download-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+/* Download button styles removed */
 
 /* Responsive styles */
 @media (max-width: 768px) {
@@ -229,8 +193,5 @@
     padding: 1rem;
   }
 
-  .download-button {
-    font-size: 1rem;
-    padding: 0.7rem 1.2rem;
-  }
+  /* Download button styles removed */
 }

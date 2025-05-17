@@ -157,7 +157,6 @@ export default function BeginnerGuidePage() {
             <li>Read through each section at your own pace.</li>
             <li>Pay special attention to the <strong>'Your First Running Plan'</strong> – this is your roadmap!</li>
             <li>Don't forget to check out the FAQ for quick answers.</li>
-            <li>Want to take this guide with you? Click the 'Download PDF' button at the end to save it to your device.</li>
           </ul>
         </div>
 
@@ -403,19 +402,6 @@ export default function BeginnerGuidePage() {
       <div className="guide-footer">
         <img src="/logo-glow.webp" alt="Alt.Run Logo" className="guide-footer-logo" />
       </div>
-
-      {/* PDF download button commented out until PDF is manually created
-      <div className="download-guide-container">
-        <a
-          href="/alt-run-beginner-guide.pdf"
-          download="Alt.Run_Beginners_Guide_to_Running.pdf"
-          className="download-button"
-        >
-          <span>📥</span>
-          Download Your Free Beginner's Guide (PDF)
-        </a>
-      </div>
-      */}
     </div>
   );
 }
