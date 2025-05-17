@@ -1,0 +1,225 @@
+/* src/components/DetailedTrainingPlanDisplay.css */
+.detailed-training-plan {
+  margin: 2rem 0;
+  font-size: 0.95rem;
+}
+
+.plan-header {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px 8px 0 0;
+  padding: 1.5rem;
+  border-bottom: 2px solid #32CD32; /* Bright green */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.plan-header h4 {
+  color: #32CD32;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.plan-header p {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.plan-header p:last-child {
+  margin-bottom: 0;
+}
+
+.training-phase-container {
+  margin-bottom: 2rem;
+}
+
+.phase-header {
+  background-color: rgba(50, 205, 50, 0.1);
+  padding: 1rem 1.5rem;
+  border-radius: 8px 8px 0 0;
+  border-bottom: 1px solid rgba(50, 205, 50, 0.3);
+}
+
+.phase-header h4 {
+  color: #32CD32;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.phase-header p {
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+.detailed-plan-table-container {
+  overflow-x: auto;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.detailed-plan-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.detailed-plan-table th {
+  background-color: #32CD32;
+  color: white;
+  font-weight: 600;
+  text-align: left;
+  padding: 0.8rem 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.day-column {
+  width: 10%;
+}
+
+.workout-focus-column {
+  width: 15%;
+}
+
+.workout-details-column {
+  width: 40%;
+}
+
+.duration-column {
+  width: 15%;
+}
+
+.intensity-column {
+  width: 20%;
+}
+
+.week-header-row td {
+  background-color: rgba(50, 205, 50, 0.2);
+  font-weight: bold;
+  padding: 0.8rem 1rem;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+.day-row {
+  border-bottom: 1px solid #eee;
+}
+
+.day-row:nth-child(even) {
+  background-color: rgba(50, 205, 50, 0.05);
+}
+
+.day-row:hover {
+  background-color: rgba(50, 205, 50, 0.1);
+}
+
+.day-cell, 
+.workout-focus-cell, 
+.workout-details-cell, 
+.duration-cell, 
+.intensity-cell {
+  padding: 0.8rem 1rem;
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.day-cell {
+  font-weight: 600;
+}
+
+.workout-focus-cell {
+  font-weight: 500;
+}
+
+.workout-details-cell {
+  line-height: 1.6;
+}
+
+.intensity-cell {
+  font-style: italic;
+}
+
+.week-note-row td,
+.phase-note-row td {
+  padding: 0.8rem 1rem;
+  background-color: rgba(255, 250, 230, 0.5);
+  font-style: italic;
+  color: #666;
+  border-bottom: 1px solid #eee;
+}
+
+/* Print styles */
+@media print {
+  .detailed-training-plan {
+    margin: 10mm 0;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .detailed-plan-table-container {
+    overflow-x: visible;
+    box-shadow: none;
+  }
+
+  .detailed-plan-table {
+    border: 1px solid #ddd;
+  }
+
+  .detailed-plan-table th {
+    background-color: #f0f0f0 !important;
+    color: #333 !important;
+    border-bottom: 2px solid #32CD32;
+  }
+
+  .week-header-row td {
+    background-color: #f9f9f9 !important;
+  }
+
+  .day-row:nth-child(even) {
+    background-color: #f9f9f9 !important;
+  }
+
+  /* Ensure rows don't break across pages */
+  .day-row, .week-header-row, .week-note-row, .phase-note-row {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Add borders for better definition in print */
+  .day-cell, .workout-focus-cell, .workout-details-cell, .duration-cell, .intensity-cell {
+    border-bottom: 1px solid #ddd;
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 992px) {
+  .detailed-plan-table {
+    font-size: 0.85rem;
+  }
+
+  .day-cell, 
+  .workout-focus-cell, 
+  .workout-details-cell, 
+  .duration-cell, 
+  .intensity-cell,
+  .detailed-plan-table th {
+    padding: 0.6rem 0.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .detailed-plan-table {
+    font-size: 0.8rem;
+  }
+
+  .day-cell, 
+  .workout-focus-cell, 
+  .workout-details-cell, 
+  .duration-cell, 
+  .intensity-cell,
+  .detailed-plan-table th {
+    padding: 0.5rem 0.6rem;
+  }
+}

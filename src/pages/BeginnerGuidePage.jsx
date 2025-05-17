@@ -160,6 +160,12 @@ export default function BeginnerGuidePage() {
           </ul>
         </div>
 
+        {/* Disclaimer */}
+        <div className="disclaimer-box">
+          <h3>Important Disclaimer:</h3>
+          <p>The information in this guide is intended for educational purposes only and should not replace professional medical advice. Always consult with a healthcare professional before starting any new exercise program, especially if you have any underlying health conditions or concerns. Listen to your body and progress at your own pace.</p>
+        </div>
+
         {/* --- Section 1 --- */}
         <GuideSection id="why-start" title="Why Start Running? The Amazing First Steps.">
           <p>Running is one of the most natural forms of exercise for humans. Our bodies are literally designed for it! Here's why starting a running journey can be one of the best decisions you'll make:</p>

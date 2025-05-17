@@ -3,9 +3,12 @@ import React, { useEffect, useRef } from 'react';
 import GuideHeader from '../components/GuideHeader';
 import TableOfContents from '../components/TableOfContents';
 import GuideSection from '../components/GuideSection';
+import DetailedTrainingPlanDisplay from '../components/DetailedTrainingPlanDisplay';
+import PlanExplanation from '../components/PlanExplanation';
 import FAQItem from '../components/FAQItem';
 import SEO from '../components/SEO';
 import './IntermediateGuidePage.css';
+import intermediateFasterTenKPlan from '../data/intermediateFasterTenKPlan';
 
 export default function IntermediateGuidePage() {
   const guideContentRef = useRef();
@@ -109,6 +112,12 @@ export default function IntermediateGuidePage() {
             <li>Pay special attention to the <strong>'Training Frameworks & Example Plans'</strong> section for structured guidance.</li>
             <li>Implement changes gradually – not all at once – to avoid injury and burnout.</li>
           </ul>
+        </div>
+
+        {/* Disclaimer */}
+        <div className="disclaimer-box">
+          <h3>Important Disclaimer:</h3>
+          <p>The information in this guide is intended for educational purposes only and should not replace professional medical or coaching advice. The training methods, nutritional strategies, and recovery protocols described may not be appropriate for all runners. Always consult with healthcare professionals before making significant changes to your training, nutrition, or supplementation regimen, especially if you have any underlying health conditions.</p>
         </div>
 
         {/* --- Section 1 --- */}
@@ -337,8 +346,43 @@ export default function IntermediateGuidePage() {
             </div>
           </div>
 
+          <h3>Detailed Training Plans</h3>
+          <p>Below is a comprehensive 12-week plan designed to help intermediate runners improve their 10K time. This plan includes specific workouts for each day, with clear guidance on intensity and duration.</p>
+
+          <PlanExplanation
+            textBefore={
+              <>
+                <p>This plan is structured in three phases: Base Building, Intensity Development, and Race Specificity/Taper. Each phase builds upon the previous one to develop the specific physiological systems needed for a faster 10K.</p>
+                <p>The plan assumes you're running 4-5 days per week and have been consistently running for at least 3-4 months. Adjust as needed based on your schedule and recovery needs.</p>
+              </>
+            }
+          />
+
+          <DetailedTrainingPlanDisplay
+            planData={intermediateFasterTenKPlan}
+            title={intermediateFasterTenKPlan.title}
+            goal={intermediateFasterTenKPlan.goal}
+            targetAudience={intermediateFasterTenKPlan.targetAudience}
+            prerequisites={intermediateFasterTenKPlan.prerequisites}
+          />
+
+          <PlanExplanation
+            textAfter={
+              <>
+                <h4>How to Use This Plan:</h4>
+                <ul>
+                  <li>The plan is designed to be flexible. If you need to rearrange days within a week to fit your schedule, that's fine, but try to maintain the spacing between hard workouts.</li>
+                  <li>Listen to your body. If you're excessively fatigued or feeling the onset of injury, it's better to take an extra rest day than to push through.</li>
+                  <li>The RPE (Rate of Perceived Exertion) scale runs from 1-10, where 1 is very easy and 10 is maximum effort.</li>
+                  <li>For workouts, "WU" means warm-up and "CD" means cool-down. Always include at least 10 minutes of easy jogging for each.</li>
+                  <li>Adjust paces based on your current fitness level. If you have a recent race result, use that to calculate your training paces.</li>
+                </ul>
+              </>
+            }
+          />
+
           <h3>Simplified Example Plans</h3>
-          <p>Here are two condensed training plans for common intermediate goals:</p>
+          <p>If you prefer a more condensed approach, here are two simplified training plans for common intermediate goals:</p>
 
           <h4>10-Week Faster 5K/10K Plan</h4>
           <p>This plan focuses on improving your speed and endurance for shorter race distances:</p>

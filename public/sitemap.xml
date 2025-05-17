@@ -49,10 +49,22 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://alt.run/shoe-reviews</loc>
+    <loc>https://alt.run/start-running-guide</loc>
     <lastmod>2025-05-17</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alt.run/intermediate-running-guide</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alt.run/advanced-running-guide</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <!-- Individual Event Pages - These would be dynamically generated -->

@@ -3,9 +3,12 @@ import React, { useEffect, useRef } from 'react';
 import GuideHeader from '../components/GuideHeader';
 import TableOfContents from '../components/TableOfContents';
 import GuideSection from '../components/GuideSection';
+import DetailedTrainingPlanDisplay from '../components/DetailedTrainingPlanDisplay';
+import PlanExplanation from '../components/PlanExplanation';
 import FAQItem from '../components/FAQItem';
 import SEO from '../components/SEO';
 import './AdvancedRunningGuidePage.css';
+import advancedMarathonPlan from '../data/advancedMarathonPlan';
 
 export default function AdvancedRunningGuidePage() {
   const guideContentRef = useRef();
@@ -64,14 +67,22 @@ export default function AdvancedRunningGuidePage() {
       "competitive running tactics", "advanced strength training for runners"
     ],
     schema: {
+      "@context": "https://schema.org",
       "@type": "Article",
+      "@id": "https://alt.run/advanced-running-guide#article",
+      "url": "https://alt.run/advanced-running-guide",
+      "name": "The Alt.Run Ultimate Advanced Runner's Guide",
       "headline": "The Alt.Run Ultimate Advanced Runner's Guide",
       "description": "Master the science and art of elite running with our comprehensive advanced runner's guide. Detailed training methodologies, physiological optimization, and performance strategies for experienced runners.",
-      "image": "https://alt.run/images/advanced-running.jpg",
-      "author": {
-        "@type": "Organization",
-        "name": "Alt.Run"
-      }
+      "isPartOf": { "@id": "https://alt.run/#website" },
+      "mainEntityOfPage": { "@id": "https://alt.run/advanced-running-guide#webpage" },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://alt.run/images/advanced-running.jpg",
+        "width": 1200,
+        "height": 630
+      },
+      "publisher": { "@id": "https://alt.run/#organization" }
     },
     breadcrumbs: [
       { name: "Home", path: "/" },
@@ -227,7 +238,7 @@ export default function AdvancedRunningGuidePage() {
               <ul>
                 <li><strong>3 Weeks Out:</strong> 20% volume reduction, maintain workout intensity</li>
                 <li><strong>2 Weeks Out:</strong> 35-40% volume reduction, shorter but still intense quality sessions</li>
-                <li><strong>Race Week:</strong> >50% volume reduction, 1-2 short "sharpening" sessions</li>
+                <li><strong>Race Week:</strong> &gt;50% volume reduction, 1-2 short "sharpening" sessions</li>
               </ul>
               <h5>Example Sharpening Workouts:</h5>
               <ul>
@@ -276,6 +287,41 @@ export default function AdvancedRunningGuidePage() {
           </div>
 
           <p>The key to successful advanced periodization is balancing structure with flexibility. Your training architecture should be robust enough to provide progressive stimulus but adaptable enough to accommodate your body's responses, life stressors, and unexpected challenges.</p>
+
+          <h3>Example Elite Development Marathon Plan</h3>
+          <p>Below is a comprehensive 18-week marathon training plan designed for advanced runners aiming to achieve peak marathon performance. This plan demonstrates the block periodization approach discussed above, with distinct accumulation, transmutation, and realization phases.</p>
+
+          <PlanExplanation
+            textBefore={
+              <>
+                <p>This plan is designed for highly experienced runners with a substantial training history. It features high volume (70-100+ miles per week) and sophisticated workout structures that require a strong foundation of aerobic fitness and injury resilience.</p>
+                <p>The plan is organized into three distinct blocks, each with specific physiological targets and training emphases. Note that this is a framework that should be adapted to your individual needs, strengths, and limitations.</p>
+              </>
+            }
+          />
+
+          <DetailedTrainingPlanDisplay
+            planData={advancedMarathonPlan}
+            title={advancedMarathonPlan.title}
+            goal={advancedMarathonPlan.goal}
+            targetAudience={advancedMarathonPlan.targetAudience}
+            prerequisites={advancedMarathonPlan.prerequisites}
+          />
+
+          <PlanExplanation
+            textAfter={
+              <>
+                <h4>Implementation Guidelines:</h4>
+                <ul>
+                  <li>This plan represents a significant training commitment. The volume and intensity are appropriate only for runners with several years of consistent high-mileage training.</li>
+                  <li>PM (evening) runs are optional but recommended for those targeting the higher end of the mileage ranges. They can be adjusted or eliminated based on recovery needs and time constraints.</li>
+                  <li>Strength training should be periodized alongside running, with a focus on foundation in the early phases, transitioning to power and maintenance in later phases.</li>
+                  <li>The plan assumes you're monitoring recovery markers (resting heart rate, heart rate variability, subjective fatigue) and are willing to adjust as needed.</li>
+                  <li>Zone references correspond to heart rate or power zones, with Zone 1-2 being easy/aerobic, Zone 3 being moderate/marathon pace, Zone 4 being threshold, and Zone 5 being VO2 max intensity.</li>
+                </ul>
+              </>
+            }
+          />
         </GuideSection>
 
         {/* --- Section 10 --- */}
