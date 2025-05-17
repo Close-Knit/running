@@ -16,6 +16,9 @@ const routesToCheck = [
   '/barefoot-run',
   '/blog',
   '/shoe-reviews',
+  '/start-running-guide',
+  '/intermediate-running-guide',
+  '/advanced-running-guide',
 ];
 
 // Function to check if a route returns a 200 OK status
@@ -24,9 +27,9 @@ async function checkRoute(route) {
     const url = `${siteUrl}${route}`;
     const response = await fetch(url);
     const status = response.status;
-    
+
     console.log(`${url}: ${status} ${response.statusText}`);
-    
+
     return {
       route,
       url,
@@ -49,32 +52,33 @@ async function checkRoute(route) {
 // Check all routes and print a summary
 async function checkAllRoutes() {
   console.log('Checking routes...');
-  
+
   const results = await Promise.all(routesToCheck.map(route => checkRoute(route)));
-  
+
   console.log('\nSummary:');
   console.log('--------');
-  
+
   const workingRoutes = results.filter(result => result.exists);
   const brokenRoutes = results.filter(result => !result.exists);
-  
+
   console.log(`Working routes (${workingRoutes.length}):`);
   workingRoutes.forEach(route => {
     console.log(`- ${route.url}`);
   });
-  
+
   console.log(`\nBroken routes (${brokenRoutes.length}):`);
   brokenRoutes.forEach(route => {
     console.log(`- ${route.url}: ${route.status} ${route.statusText}`);
   });
-  
+
   console.log('\nRoutes to include in sitemap:');
   workingRoutes.forEach(route => {
-    const priority = route.route === '/' ? '1.0' : 
-                    route.route === '/events' ? '0.9' : 
+    const priority = route.route === '/' ? '1.0' :
+                    route.route === '/events' ? '0.9' :
                     route.route.includes('blog') || route.route.includes('shoe-reviews') ? '0.7' : '0.8';
-    const changefreq = route.route.includes('blog') || route.route.includes('shoe-reviews') ? 'weekly' : 'daily';
-    
+    const changefreq = route.route.includes('blog') || route.route.includes('shoe-reviews') ? 'weekly' :
+                       route.route.includes('running-guide') ? 'monthly' : 'daily';
+
     console.log(`{ path: '${route.route}', changefreq: '${changefreq}', priority: '${priority}' },`);
   });
 }

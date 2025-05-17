@@ -129,23 +129,29 @@
   display: block;
 }
 
-.dropdown-item {
+.dropdown-item, .mobile-dropdown-item {
   display: block;
   padding: 8px 16px;
   color: #FFFFFF;
   text-decoration: none;
   transition: all 0.3s ease;
   font-size: 0.95em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .dropdown-item:hover {
   background-color: rgba(204, 255, 0, 0.15); /* Very subtle green background */
   text-shadow: 0 0 8px #ccff00, 0 0 12px #b3ff00; /* Green glow effect matching learn-more button */
+  color: #ccff00; /* Bright green color on hover */
+  text-decoration: none;
 }
 
 .dropdown-item.active {
   background-color: rgba(204, 255, 0, 0.2); /* Slightly more visible green background */
   text-shadow: 0 0 8px #ccff00, 0 0 12px #b3ff00; /* Green glow effect matching learn-more button */
+  color: #ccff00; /* Bright green color for active state */
 }
 
 /* Styles for the Link wrapping the logo */
@@ -302,6 +308,14 @@
   .mobile-dropdown-item:hover {
     background-color: rgba(204, 255, 0, 0.15); /* Very subtle green background */
     text-shadow: 0 0 8px #ccff00, 0 0 12px #b3ff00; /* Green glow effect */
+    color: #ccff00; /* Bright green color on hover */
+    text-decoration: none;
+  }
+
+  .mobile-dropdown-item.active {
+    background-color: rgba(204, 255, 0, 0.2); /* Slightly more visible green background */
+    text-shadow: 0 0 8px #ccff00, 0 0 12px #b3ff00; /* Green glow effect */
+    color: #ccff00; /* Bright green color for active state */
   }
 
   /* Hamburger button styles */
