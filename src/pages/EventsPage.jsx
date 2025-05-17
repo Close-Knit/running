@@ -97,7 +97,7 @@ function EventsPage({ eventType }) {
         // Determine which table to query based on country
         const tableName = filters.country === 'CAN' ? 'events_canada' : 'events';
         console.log(`EventsPage: Using table: ${tableName} for country: ${filters.country}`);
-        
+
         let query = supabase.from(tableName).select('*');
 
         // Debug log to see what eventType we're receiving
@@ -167,7 +167,11 @@ function EventsPage({ eventType }) {
 
           // Set the filtered events and exit
           setEvents(filteredEvents);
-          setLoading(false);
+
+          // Use a small delay before setting loading to false to ensure DOM has time to update
+          setTimeout(() => {
+            setLoading(false);
+          }, 300);
           return; // Exit early since we've already set the events
         }
 
@@ -176,10 +180,17 @@ function EventsPage({ eventType }) {
         console.log('Fetched events:', allEvents);
 
         setEvents(allEvents || []);
+
+        // Use a small delay before setting loading to false to ensure DOM has time to update
+        setTimeout(() => {
+          setLoading(false);
+        }, 300);
+        return; // Exit early to prevent the finally block from executing
       } catch (err) {
         console.error('Error fetching events:', err);
         setError(err.message);
-      } finally {
+
+        // Set loading to false immediately in case of error
         setLoading(false);
       }
     }
@@ -276,6 +287,7 @@ function EventsPage({ eventType }) {
       <LocationSidebar
         onFilterChange={handleLocationFilterChange}
         initialFilters={filters}
+        isLoading={loading}
       />
       <div className="homepage-main-content">
         <div className="text-overlay-container">
@@ -308,10 +320,10 @@ function EventsPage({ eventType }) {
           )}
         </div>
 
-        {loading && <p>Loading events...</p>}
+        {/* Don't show loading message here since we're using the loading indicator in the sidebar */}
         {error && <p>Error: {error}</p>}
         {!loading && !error && events.length === 0 && (
-          <p>No events found matching your criteria.</p>
+          <p>No events found matching your criteria. Try adjusting your filters.</p>
         )}
         {!loading && !error && events.length > 0 && (
           <ul className="events-list">

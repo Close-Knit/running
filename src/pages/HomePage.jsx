@@ -230,6 +230,12 @@ function HomePage({ menuType: propMenuType = 'home' }) {
 
           // Update the current page
           setCurrentPage(page);
+
+          // Use a small delay before setting loading to false to ensure DOM has time to update
+          setTimeout(() => {
+            setLoading(false);
+          }, 300);
+          return; // Exit early to prevent the finally block from executing
         } else if (data && data.length > 0) {
           // Even if we don't have month and day filters, still sort by date
           const sortedEvents = sortEventsByDate(data);
@@ -245,12 +251,24 @@ function HomePage({ menuType: propMenuType = 'home' }) {
 
           // Update the current page
           setCurrentPage(page);
+
+          // Use a small delay before setting loading to false to ensure DOM has time to update
+          setTimeout(() => {
+            setLoading(false);
+          }, 300);
+          return; // Exit early to prevent the finally block from executing
         } else {
           if (!isLoadMore) {
             setEvents([]);
           }
           // If we got no results, there are no more to load
           setHasMore(false);
+
+          // Use a small delay before setting loading to false to ensure DOM has time to update
+          setTimeout(() => {
+            setLoading(false);
+          }, 300);
+          return; // Exit early to prevent the finally block from executing
         }
       } catch (err) {
         console.error("Error fetching events:", err);
@@ -258,7 +276,8 @@ function HomePage({ menuType: propMenuType = 'home' }) {
         if (!isLoadMore) {
           setEvents([]);
         }
-      } finally {
+
+        // Set loading to false immediately in case of error
         setLoading(false);
       }
     }
@@ -358,10 +377,10 @@ function HomePage({ menuType: propMenuType = 'home' }) {
         </div>
 
         {/* Display event cards without the "Featured Events" heading */}
-        {loading && <p>Loading events...</p>}
+        {/* Don't show any loading message here since we're using the loading indicator in the sidebar */}
         {error && <p>Error: {error}</p>}
         {!loading && !error && events.length === 0 && (
-          <p>No events at the moment. Check back soon!</p>
+          <p>No events found matching your criteria. Try adjusting your filters.</p>
         )}
         {!loading && !error && events.length > 0 && (
           <>

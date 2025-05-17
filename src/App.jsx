@@ -10,7 +10,7 @@ import HomePage from './pages/HomePage';
 import EventsPage from './pages/EventsPage';
 import EventDetailPage from './pages/EventDetailPage';
 import ShoeReviewsPage from './pages/ShoeReviewsPage';
-import BlogPage from './pages/BlogPage';
+// import BlogPage from './pages/BlogPage'; // Commented out for future branch development
 import NotFoundPage from './pages/NotFoundPage';
 import BeginnerGuidePage from './pages/BeginnerGuidePage';
 
@@ -89,7 +89,7 @@ function App() {
           <Route path="/barefoot-run" element={<EventsPage eventType="barefoot" />} />
           <Route path="/shoe-reviews" element={<ShoeReviewsPage />} />
           <Route path="/start-running-guide" element={<BeginnerGuidePage />} />
-          <Route path="/blog" element={<BlogPage />} />
+          {/* <Route path="/blog" element={<BlogPage />} /> */}
           {/* 404 Not Found Route - catches all unmatched routes */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
