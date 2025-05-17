@@ -1,0 +1,47 @@
+/* src/components/DownloadPdfLink.css */
+.download-guide {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.download-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #32CD32; /* Bright green */
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.download-button:hover {
+  background-color: #2db82d; /* Slightly darker green */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.download-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.download-icon {
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .download-button {
+    font-size: 1rem;
+    padding: 0.7rem 1.2rem;
+  }
+}

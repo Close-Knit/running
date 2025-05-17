@@ -1,0 +1,156 @@
+/* src/components/TrainingPlanDisplay.css */
+.training-plan {
+  margin: 2rem 0;
+  overflow-x: auto;
+}
+
+.training-plan-grid {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.training-plan-header {
+  display: table-row;
+  background-color: #32CD32; /* Bright green */
+  color: white;
+  font-weight: bold;
+}
+
+.week-header, .workout-header, .total-time-header {
+  display: table-cell;
+  padding: 1rem;
+  text-align: center;
+}
+
+.week-header {
+  width: 15%;
+}
+
+.workout-header {
+  width: 65%;
+}
+
+.total-time-header {
+  width: 20%;
+}
+
+.training-plan-row {
+  display: table-row;
+  border-bottom: 1px solid #eee;
+}
+
+.training-plan-row:nth-child(even) {
+  background-color: rgba(50, 205, 50, 0.05); /* Very light green */
+}
+
+.training-plan-row:hover {
+  background-color: rgba(50, 205, 50, 0.1); /* Light green on hover */
+}
+
+.week-number, .workout-description, .total-time {
+  display: table-cell;
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+.week-number {
+  text-align: center;
+  font-weight: bold;
+  background-color: rgba(50, 205, 50, 0.2); /* Light green background */
+}
+
+.workout-description {
+  line-height: 1.5;
+}
+
+.workout-description p {
+  margin: 0 0 0.5rem 0;
+}
+
+.workout-description p:last-child {
+  margin-bottom: 0;
+}
+
+.workout-note {
+  font-style: italic;
+  color: #666;
+  font-size: 0.9em;
+}
+
+.total-time {
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Print styles for PDF generation */
+@media print {
+  .training-plan {
+    margin: 10mm 0;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .training-plan-grid {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+
+  .training-plan-header {
+    background-color: #f0f0f0 !important;
+    color: #333 !important;
+    border-bottom: 2px solid #32CD32;
+  }
+
+  .week-number {
+    background-color: #f9f9f9 !important;
+    border-right: 1px solid #ddd;
+  }
+
+  .training-plan-row {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Ensure each week is treated as a unit that shouldn't be split */
+  .training-plan-row {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Add borders for better definition in print */
+  .week-number, .workout-description, .total-time {
+    border-bottom: 1px solid #ddd;
+  }
+
+  .total-time {
+    border-left: 1px solid #ddd;
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .training-plan-grid {
+    font-size: 0.9rem;
+  }
+
+  .week-header, .workout-header, .total-time-header,
+  .week-number, .workout-description, .total-time {
+    padding: 0.8rem 0.5rem;
+  }
+
+  .week-header {
+    width: 20%;
+  }
+
+  .workout-header {
+    width: 55%;
+  }
+
+  .total-time-header {
+    width: 25%;
+  }
+}

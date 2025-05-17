@@ -26,3 +26,10 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+# PDF headers removed - will be added back when PDF is manually created
+# [[headers]]
+#   for = "/alt-run-beginner-guide.pdf"
+#   [headers.values]
+#     Content-Type = "application/pdf"
+#     Content-Disposition = "inline; filename=alt-run-beginner-guide.pdf"

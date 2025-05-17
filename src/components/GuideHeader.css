@@ -1,0 +1,49 @@
+/* src/components/GuideHeader.css */
+.guide-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 2rem 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+}
+
+.guide-logo {
+  height: 60px;
+  margin-bottom: 1.5rem;
+}
+
+.guide-header h1 {
+  color: #000;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.guide-header h2 {
+  color: #32CD32; /* Bright green */
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.guide-intro {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
+  color: #333; /* Dark gray for better readability */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .guide-header h1 {
+    font-size: 2rem;
+  }
+
+  .guide-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .guide-intro {
+    font-size: 1rem;
+  }
+}

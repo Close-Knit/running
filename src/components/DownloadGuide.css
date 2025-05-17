@@ -1,0 +1,52 @@
+/* src/components/DownloadGuide.css */
+.download-guide {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.download-button {
+  background-color: #32CD32; /* Bright green */
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 8px rgba(50, 205, 50, 0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.download-button:hover {
+  background-color: #28a428; /* Darker green on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(50, 205, 50, 0.4);
+}
+
+.download-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(50, 205, 50, 0.3);
+}
+
+.download-button:disabled {
+  background-color: #a0d8a0; /* Light green when disabled */
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.download-icon {
+  margin-right: 0.8rem;
+  font-size: 1.2rem;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .download-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+}

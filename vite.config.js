@@ -30,5 +30,23 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true
+  },
+  // Configure server to handle PDF files correctly
+  server: {
+    fs: {
+      // Allow serving files from the public directory
+      allow: ['..']
+    },
+    // Custom middleware to set correct MIME types
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        // Set correct MIME type for PDF files
+        if (req.url.endsWith('.pdf')) {
+          res.setHeader('Content-Type', 'application/pdf');
+          res.setHeader('Content-Disposition', 'inline; filename=alt-run-beginner-guide.pdf');
+        }
+        next();
+      });
+    }
   }
 })

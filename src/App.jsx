@@ -12,6 +12,7 @@ import EventDetailPage from './pages/EventDetailPage';
 import ShoeReviewsPage from './pages/ShoeReviewsPage';
 import BlogPage from './pages/BlogPage';
 import NotFoundPage from './pages/NotFoundPage';
+import BeginnerGuidePage from './pages/BeginnerGuidePage';
 
 // Layout component imports
 import Header from './components/Header';
@@ -87,6 +88,7 @@ function App() {
           <Route path="/virtual-run" element={<EventsPage eventType="virtual" />} />
           <Route path="/barefoot-run" element={<EventsPage eventType="barefoot" />} />
           <Route path="/shoe-reviews" element={<ShoeReviewsPage />} />
+          <Route path="/start-running-guide" element={<BeginnerGuidePage />} />
           <Route path="/blog" element={<BlogPage />} />
           {/* 404 Not Found Route - catches all unmatched routes */}
           <Route path="*" element={<NotFoundPage />} />

@@ -1,0 +1,4 @@
+# Netlify redirects file
+# Ensure PDF downloads work correctly
+/download-pdf /alt-run-beginner-guide.pdf 200
+/beginner-guide.pdf /alt-run-beginner-guide.pdf 200

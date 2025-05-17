@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Downloading Alt.Run Beginner's Guide...</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #32CD32;
+    }
+    .download-container {
+      margin: 40px 0;
+    }
+    .download-button {
+      display: inline-block;
+      background-color: #32CD32;
+      color: white;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      margin-top: 20px;
+    }
+    .download-button:hover {
+      background-color: #2db82d;
+    }
+    .logo {
+      max-width: 200px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <img src="/logo-glow.webp" alt="Alt.Run Logo" class="logo">
+  <h1>Alt.Run Beginner's Guide</h1>
+  
+  <div class="download-container">
+    <p>Your download should begin automatically. If it doesn't, click the button below:</p>
+    <a href="/alt-run-beginner-guide.pdf" class="download-button" download="alt-run-beginner-guide.pdf">
+      Download PDF
+    </a>
+  </div>
+  
+  <p>Thank you for downloading our Beginner's Guide to Running!</p>
+  <p><a href="/start-running-guide">Return to the guide</a></p>
+
+  <script>
+    // Automatically trigger download after a short delay
+    window.onload = function() {
+      setTimeout(function() {
+        window.location.href = '/alt-run-beginner-guide.pdf';
+      }, 1500);
+    };
+  </script>
+</body>
+</html>

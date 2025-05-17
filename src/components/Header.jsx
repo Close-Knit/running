@@ -65,7 +65,7 @@ function Header() {
           </div>
           <div className="header-right">
             <nav className="secondary-nav">
-              <NavLink to="/shoe-reviews" className="nav-link">Shoe Reviews</NavLink>
+              <NavLink to="/start-running-guide" className="nav-link">Start Running: Beginner Guide</NavLink>
               <NavLink to="/blog" className="nav-link">Blog</NavLink>
             </nav>
           </div>
@@ -97,7 +97,7 @@ function Header() {
               <NavLink to="/virtual-run" className="nav-link" onClick={closeMobileMenu}>Virtual Run</NavLink>
               <NavLink to="/barefoot-run" className="nav-link" onClick={closeMobileMenu}>Barefoot Run</NavLink>
               <div className="mobile-secondary-nav">
-                <NavLink to="/shoe-reviews" className="nav-link" onClick={closeMobileMenu}>Shoe Reviews</NavLink>
+                <NavLink to="/start-running-guide" className="nav-link" onClick={closeMobileMenu}>Start Running: Beginner Guide</NavLink>
                 <NavLink to="/blog" className="nav-link" onClick={closeMobileMenu}>Blog</NavLink>
               </div>
             </nav>

@@ -1,0 +1,123 @@
+/* src/components/FAQItem.css */
+.faq-item {
+  margin-bottom: 1rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.faq-question {
+  width: 100%;
+  background-color: #f9f9f9;
+  padding: 1rem 1.5rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s ease;
+  color: #32CD32; /* Bright green for better visibility */
+}
+
+.faq-question:hover {
+  background-color: rgba(50, 205, 50, 0.1); /* Light green on hover */
+}
+
+.faq-item.open .faq-question {
+  background-color: rgba(50, 205, 50, 0.15); /* Slightly darker green when open */
+  color: #32CD32; /* Bright green text */
+}
+
+.faq-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #32CD32; /* Bright green */
+}
+
+.faq-answer {
+  padding: 1.5rem;
+  background-color: white;
+  line-height: 1.6;
+  color: #333; /* Dark gray for better readability */
+}
+
+.faq-answer p {
+  margin-bottom: 1rem;
+}
+
+.faq-answer p:last-child {
+  margin-bottom: 0;
+}
+
+.faq-answer ul, .faq-answer ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.faq-answer li {
+  margin-bottom: 0.5rem;
+}
+
+/* Special class for PDF rendering */
+@media print {
+  .faq-item {
+    margin-bottom: 15px !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .faq-question {
+    font-weight: bold !important;
+    color: #32CD32 !important;
+    background-color: #f9f9f9 !important;
+    padding: 10px !important;
+    border-radius: 5px !important;
+    pointer-events: none !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* Force display of FAQ answers in PDF regardless of state */
+  .faq-answer {
+    display: block !important;
+    visibility: visible !important;
+    height: auto !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+    padding: 10px !important;
+    margin-top: 5px !important;
+    background-color: white !important;
+    border: 1px solid #eee !important;
+    border-radius: 5px !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Target answers with the special data attribute */
+  [data-print-visible="true"] {
+    display: block !important;
+    visibility: visible !important;
+    height: auto !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+  }
+
+  .faq-icon {
+    display: none !important;
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .faq-question {
+    font-size: 1rem;
+    padding: 0.8rem 1rem;
+  }
+
+  .faq-answer {
+    padding: 1rem;
+  }
+}
