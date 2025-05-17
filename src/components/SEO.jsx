@@ -106,6 +106,13 @@ function SEO({
     return schemas;
   };
 
+  // Before setting the OG title, decode any HTML entities
+  const decodeHtmlEntities = (text) => {
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = text;
+    return textarea.value;
+  };
+
   return (
     <Helmet>
       {/* Basic Meta Tags */}
@@ -124,7 +131,7 @@ function SEO({
       {/* Open Graph / Facebook */}
       <meta property="og:type" content={ogType} />
       <meta property="og:url" content={fullCanonicalUrl} />
-      <meta property="og:title" content={title} />
+      <meta property="og:title" content={decodeHtmlEntities(title)} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={fullOgImageUrl} />
       <meta property="og:site_name" content="Alt.Run" />
@@ -162,3 +169,4 @@ SEO.propTypes = {
 };
 
 export default SEO;
+
