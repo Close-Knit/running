@@ -66,7 +66,7 @@ export default function BeginnerGuidePage() {
   useEffect(() => {
     const pageBackground = document.querySelector('.page-background');
     if (pageBackground) {
-      pageBackground.style.backgroundImage = 'url(/images/running-start.jpg)';
+      pageBackground.style.backgroundImage = 'url(/images/start-running.jpg)';
 
       // Optimize background position for mobile
       const optimizeForMobile = () => {
@@ -123,7 +123,7 @@ export default function BeginnerGuidePage() {
       "mainEntityOfPage": { "@id": "https://alt.run/start-running-guide#webpage" },
       "image": {
         "@type": "ImageObject",
-        "url": "https://alt.run/images/running-start.jpg",
+        "url": "https://alt.run/images/start-running.jpg",
         "width": 1200,
         "height": 630
       },

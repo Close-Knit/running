@@ -62,17 +62,90 @@
 
 .app-header .secondary-nav .nav-link:hover {
   color: #FFFFFF; /* Stay white on hover */
-  text-shadow: 0 0 8px #ff8c00, 0 0 12px #ff6600; /* Orange glow effect */
-  box-shadow: 0 0 10px rgba(255, 140, 0, 0.5); /* Subtle orange box glow */
-  background-color: rgba(255, 140, 0, 0.15); /* Very subtle orange background */
+  text-shadow: 0 0 8px #ccff00, 0 0 12px #b3ff00; /* Green glow effect matching learn-more button */
+  box-shadow: 0 0 10px rgba(204, 255, 0, 0.5); /* Subtle green box glow */
+  background-color: rgba(204, 255, 0, 0.15); /* Very subtle green background */
 }
 
 /* Style for active/selected secondary nav link */
 .app-header .secondary-nav .nav-link.active {
   color: #FFFFFF;
-  text-shadow: 0 0 8px #ff8c00, 0 0 12px #ff6600; /* Orange glow effect */
-  box-shadow: 0 0 10px rgba(255, 140, 0, 0.5); /* Subtle orange box glow */
-  background-color: rgba(255, 140, 0, 0.2); /* Slightly more visible orange background */
+  text-shadow: 0 0 8px #ccff00, 0 0 12px #b3ff00; /* Green glow effect matching learn-more button */
+  box-shadow: 0 0 10px rgba(204, 255, 0, 0.5); /* Subtle green box glow */
+  background-color: rgba(204, 255, 0, 0.2); /* Slightly more visible green background */
+}
+
+/* Dropdown Menu Styles */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  font-weight: 500;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 1em;
+  white-space: nowrap;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.dropdown-toggle::after {
+  content: '▼';
+  font-size: 0.7em;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.dropdown-toggle:hover, .dropdown-toggle.active {
+  color: #FFFFFF;
+  text-shadow: 0 0 8px #ccff00, 0 0 12px #b3ff00; /* Green glow effect matching learn-more button */
+  box-shadow: 0 0 10px rgba(204, 255, 0, 0.5); /* Subtle green box glow */
+  background-color: rgba(204, 255, 0, 0.15); /* Very subtle green background */
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  min-width: 220px;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 8px 0;
+  z-index: 20;
+  display: none;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 8px 16px;
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 0.95em;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(204, 255, 0, 0.15); /* Very subtle green background */
+  text-shadow: 0 0 8px #ccff00, 0 0 12px #b3ff00; /* Green glow effect matching learn-more button */
+}
+
+.dropdown-item.active {
+  background-color: rgba(204, 255, 0, 0.2); /* Slightly more visible green background */
+  text-shadow: 0 0 8px #ccff00, 0 0 12px #b3ff00; /* Green glow effect matching learn-more button */
 }
 
 /* Styles for the Link wrapping the logo */
@@ -247,6 +320,17 @@
     border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
 
+  .mobile-section-title {
+    color: #ccff00; /* Bright green color */
+    font-weight: 500;
+    margin: 8px 0;
+    width: 80%;
+    text-align: center;
+    font-size: 1.1em;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(204, 255, 0, 0.3); /* Green border */
+  }
+
   .mobile-secondary-nav .nav-link {
     color: white;
     text-shadow: none;
@@ -256,9 +340,9 @@
   .mobile-secondary-nav .nav-link:hover,
   .mobile-secondary-nav .nav-link.active {
     color: white;
-    text-shadow: 0 0 8px #ff8c00, 0 0 12px #ff6600;
-    box-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
-    background-color: rgba(255, 140, 0, 0.15);
+    text-shadow: 0 0 8px #ccff00, 0 0 12px #b3ff00; /* Green glow effect matching learn-more button */
+    box-shadow: 0 0 10px rgba(204, 255, 0, 0.5); /* Subtle green box glow */
+    background-color: rgba(204, 255, 0, 0.15); /* Very subtle green background */
   }
 }
 

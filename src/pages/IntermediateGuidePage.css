@@ -1,0 +1,126 @@
+/* src/pages/IntermediateGuidePage.css */
+.guide-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.guide-main-content {
+  margin-top: 2rem;
+}
+
+.user-instructions, .disclaimer-box {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-left: 4px solid #32CD32; /* Bright green */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.disclaimer-box {
+  border-left-color: #FFA500; /* Orange for disclaimer */
+  background-color: rgba(255, 250, 240, 0.9); /* Light orange tint */
+}
+
+.user-instructions h3 {
+  color: #32CD32;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.user-instructions ul {
+  margin-bottom: 0;
+}
+
+.guide-footer {
+  text-align: center;
+  margin-top: 3rem;
+  padding: 2rem 0;
+}
+
+.guide-footer-logo {
+  height: 40px;
+  width: auto;
+}
+
+/* Physiological Adaptation Table Styles */
+.physio-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.physio-table th {
+  background-color: #32CD32;
+  color: white;
+  text-align: left;
+  padding: 1rem;
+}
+
+.physio-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.physio-table tr:last-child td {
+  border-bottom: none;
+}
+
+.physio-table tr:nth-child(even) {
+  background-color: rgba(50, 205, 50, 0.05);
+}
+
+/* Training Plan Styles */
+.training-phase {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.training-phase h4 {
+  color: #32CD32;
+  margin-top: 0;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.training-phase-description {
+  margin-bottom: 1rem;
+}
+
+.workout-examples {
+  background-color: rgba(50, 205, 50, 0.05);
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.workout-examples h5 {
+  margin-top: 0;
+  color: #333;
+}
+
+.workout-examples ul {
+  margin-bottom: 0;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .guide-container {
+    padding: 1rem;
+  }
+
+  .physio-table th,
+  .physio-table td {
+    padding: 0.75rem;
+  }
+}

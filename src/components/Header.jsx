@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'; // Import React hooks
 function Header() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   // Toggle mobile menu
   const toggleMobileMenu = () => {
@@ -16,6 +17,26 @@ function Header() {
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
   };
+
+  // Toggle dropdown menu
+  const toggleDropdown = (e) => {
+    e.preventDefault();
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const closeDropdown = (e) => {
+      if (!e.target.closest('.dropdown')) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('click', closeDropdown);
+    return () => {
+      document.removeEventListener('click', closeDropdown);
+    };
+  }, []);
 
   // Update isMobile state when window is resized
   useEffect(() => {
@@ -65,7 +86,19 @@ function Header() {
           </div>
           <div className="header-right">
             <nav className="secondary-nav">
-              <NavLink to="/start-running-guide" className="nav-link">Start Running: Beginner Guide</NavLink>
+              <div className="dropdown">
+                <button
+                  className={`dropdown-toggle ${dropdownOpen ? 'active' : ''}`}
+                  onClick={toggleDropdown}
+                  aria-expanded={dropdownOpen}
+                >
+                  Running Guides
+                </button>
+                <div className={`dropdown-menu ${dropdownOpen ? 'show' : ''}`}>
+                  <NavLink to="/start-running-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Start Running: Beginner Guide</NavLink>
+                  <NavLink to="/intermediate-running-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Intermediate Runner's Guide</NavLink>
+                </div>
+              </div>
               {/* <NavLink to="/blog" className="nav-link">Blog</NavLink> */}
             </nav>
           </div>
@@ -97,7 +130,9 @@ function Header() {
               <NavLink to="/virtual-run" className="nav-link" onClick={closeMobileMenu}>Virtual Run</NavLink>
               <NavLink to="/barefoot-run" className="nav-link" onClick={closeMobileMenu}>Barefoot Run</NavLink>
               <div className="mobile-secondary-nav">
+                <div className="mobile-section-title">Running Guides</div>
                 <NavLink to="/start-running-guide" className="nav-link" onClick={closeMobileMenu}>Start Running: Beginner Guide</NavLink>
+                <NavLink to="/intermediate-running-guide" className="nav-link" onClick={closeMobileMenu}>Intermediate Runner's Guide</NavLink>
                 {/* <NavLink to="/blog" className="nav-link" onClick={closeMobileMenu}>Blog</NavLink> */}
               </div>
             </nav>
