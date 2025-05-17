@@ -131,8 +131,8 @@ function Header() {
               <NavLink to="/barefoot-run" className="nav-link" onClick={closeMobileMenu}>Barefoot Run</NavLink>
               <div className="mobile-secondary-nav">
                 <div className="mobile-section-title">Running Guides</div>
-                <NavLink to="/start-running-guide" className="nav-link" onClick={closeMobileMenu}>Start Running: Beginner Guide</NavLink>
-                <NavLink to="/intermediate-running-guide" className="nav-link" onClick={closeMobileMenu}>Intermediate Runner's Guide</NavLink>
+                <NavLink to="/start-running-guide" className="nav-link mobile-guide-link" onClick={closeMobileMenu}>Start Running: Beginner Guide</NavLink>
+                <NavLink to="/intermediate-running-guide" className="nav-link mobile-guide-link" onClick={closeMobileMenu}>Intermediate Runner's Guide</NavLink>
                 {/* <NavLink to="/blog" className="nav-link" onClick={closeMobileMenu}>Blog</NavLink> */}
               </div>
             </nav>

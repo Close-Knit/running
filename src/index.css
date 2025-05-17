@@ -171,3 +171,22 @@ hr {
 .event-detail-nav {
   margin-top: 20px;
 }
+
+/* Make guide links more visible in mobile menu */
+.mobile-guide-link {
+  display: block;
+  padding: 10px 15px;
+  margin: 5px 0;
+  font-weight: 500;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.mobile-section-title {
+  font-weight: bold;
+  margin: 15px 0 10px;
+  padding: 0 15px;
+  color: #32CD32; /* Using the green color from your theme */
+}
+
