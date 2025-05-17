@@ -225,6 +225,18 @@
     z-index: 1001; /* Same as hamburger button */
   }
 
+  /* Ensure mobile dropdown is visible on all devices */
+  @media (max-width: 320px) {
+    .mobile-dropdown {
+      margin-right: 8px;
+    }
+
+    .mobile-dropdown-toggle {
+      padding: 5px 8px;
+      font-size: 0.8em;
+    }
+  }
+
   .mobile-dropdown-toggle {
     background: transparent;
     border: none;
@@ -244,6 +256,11 @@
     font-size: 0.7em;
     margin-left: 6px;
     vertical-align: middle;
+    transition: transform 0.3s ease;
+  }
+
+  .mobile-dropdown-toggle.active::after {
+    transform: rotate(180deg);
   }
 
   .mobile-dropdown-toggle:hover, .mobile-dropdown-toggle.active {

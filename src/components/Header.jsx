@@ -12,6 +12,10 @@ function Header() {
   // Toggle mobile menu
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
+    // Close mobile dropdown when opening mobile menu
+    if (mobileDropdownOpen) {
+      setMobileDropdownOpen(false);
+    }
   };
 
   // Close mobile menu when a link is clicked
@@ -29,6 +33,10 @@ function Header() {
   const toggleMobileDropdown = (e) => {
     e.preventDefault();
     setMobileDropdownOpen(!mobileDropdownOpen);
+    // Close mobile menu when opening mobile dropdown
+    if (mobileMenuOpen) {
+      setMobileMenuOpen(false);
+    }
   };
 
   // Close dropdowns when clicking outside
@@ -128,8 +136,26 @@ function Header() {
               Running Guides
             </button>
             <div className={`mobile-dropdown-menu ${mobileDropdownOpen ? 'show' : ''}`}>
-              <NavLink to="/start-running-guide" className="mobile-dropdown-item" onClick={() => setMobileDropdownOpen(false)}>Start Running: Beginner Guide</NavLink>
-              <NavLink to="/intermediate-running-guide" className="mobile-dropdown-item" onClick={() => setMobileDropdownOpen(false)}>Intermediate Runner's Guide</NavLink>
+              <NavLink
+                to="/start-running-guide"
+                className="mobile-dropdown-item"
+                onClick={() => {
+                  setMobileDropdownOpen(false);
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Start Running: Beginner Guide
+              </NavLink>
+              <NavLink
+                to="/intermediate-running-guide"
+                className="mobile-dropdown-item"
+                onClick={() => {
+                  setMobileDropdownOpen(false);
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Intermediate Runner's Guide
+              </NavLink>
             </div>
           </div>
 
