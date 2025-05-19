@@ -16,6 +16,7 @@ import BeginnerGuidePage from './pages/BeginnerGuidePage';
 import IntermediateGuidePage from './pages/IntermediateGuidePage';
 import AdvancedRunningGuidePage from './pages/AdvancedRunningGuidePage';
 import RunningGearGuidePage from './pages/RunningGearGuidePage';
+import RunningInjuriesGuidePage from './pages/RunningInjuriesGuidePage';
 
 // Layout component imports
 import Header from './components/Header';
@@ -95,6 +96,7 @@ function App() {
           <Route path="/intermediate-running-guide" element={<IntermediateGuidePage />} />
           <Route path="/advanced-running-guide" element={<AdvancedRunningGuidePage />} />
           <Route path="/running-gear-guide" element={<RunningGearGuidePage />} />
+          <Route path="/common-running-injuries-guide" element={<RunningInjuriesGuidePage />} />
           {/* <Route path="/blog" element={<BlogPage />} /> */}
           {/* 404 Not Found Route - catches all unmatched routes */}
           <Route path="*" element={<NotFoundPage />} />
