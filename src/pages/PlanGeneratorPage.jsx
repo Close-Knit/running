@@ -14,6 +14,7 @@ import ShareButton from '../components/ShareButton';
 import { generateRunningPlan } from '../logic/planGenerator';
 import '../components/GuideHeader.css';
 import '../components/ShareButton.css';
+import './PlanGeneratorPage.css';
 
 /**
  * Plan Generator Page component
@@ -44,11 +45,29 @@ function PlanGeneratorPage() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Move all useEffect hooks here, before any conditional returns
+  // Set the background image for the plan generator page
   useEffect(() => {
     const pageBackground = document.querySelector('.page-background');
     if (pageBackground) {
       pageBackground.style.backgroundImage = 'url(/images/running-plan.jpg)';
+
+      // Optimize background position for mobile
+      const optimizeForMobile = () => {
+        if (window.innerWidth <= 768) {
+          pageBackground.style.backgroundPosition = 'center center';
+        } else {
+          pageBackground.style.backgroundPosition = 'center';
+        }
+      };
+
+      // Run optimization immediately and on resize
+      optimizeForMobile();
+      window.addEventListener('resize', optimizeForMobile);
+
+      // Clean up event listener on component unmount
+      return () => {
+        window.removeEventListener('resize', optimizeForMobile);
+      };
     }
   }, []);
 
@@ -101,6 +120,12 @@ function PlanGeneratorPage() {
       }
 
       console.log('Data being inserted:', insertData);
+
+      // Make sure the background image is still set to running-plan.jpg before navigating
+      const pageBackground = document.querySelector('.page-background');
+      if (pageBackground) {
+        pageBackground.style.backgroundImage = 'url(/images/running-plan.jpg)';
+      }
 
       const { data: newPlan, error: insertError } = await supabase
         .from('running_plans')
@@ -158,8 +183,8 @@ function PlanGeneratorPage() {
 
   // Define SEO data for the running plans page
   const seoData = {
-    title: "Alt.Run: Custom Running Plan Generator",
-    description: "Create a personalized running training plan tailored to your goals, experience level, and lifestyle with Alt.Run's free running plan generator.",
+    title: "Alt.Run: Free Running Planner",
+    description: "Create a personalized running training plan tailored to your goals, experience level, and lifestyle with Alt.Run's free running planner.",
     canonicalUrl: "/running-plans",
     keywords: [
       "running plan generator", "custom training plan", "personalized running program",
@@ -171,34 +196,35 @@ function PlanGeneratorPage() {
       "@type": "WebPage",
       "@id": "https://alt.run/running-plans#webpage",
       "url": "https://alt.run/running-plans",
-      "name": "Alt.Run: Custom Running Plan Generator",
-      "description": "Create a personalized running training plan tailored to your goals, experience level, and lifestyle with Alt.Run's free running plan generator.",
+      "name": "Alt.Run: Free Running Planner",
+      "description": "Create a personalized running training plan tailored to your goals, experience level, and lifestyle with Alt.Run's free running planner.",
       "isPartOf": { "@id": "https://alt.run/#website" }
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="running-plans-page">
-        <SEO {...seoData} />
-        <LoadingSpinner />
-      </div>
-    );
-  }
+  // We no longer return a completely different component when loading
+  // Instead, we'll show an overlay with the spinner while keeping the background intact
 
   return (
     <div className="running-plans-page">
       <SEO {...seoData} />
 
+      {/* Loading Overlay - only shown when isLoading is true */}
+      {isLoading && (
+        <div className="loading-overlay">
+          <LoadingSpinner />
+        </div>
+      )}
+
       <div className="running-plans-header">
         <div className="guide-header-top">
           <img src="/logo-glow.webp" alt="Alt.Run Logo" className="guide-logo" />
           <ShareButton
-            title="Alt.Run Plan Generator"
-            text="Create your personalized running plan with Alt.Run's free plan generator!"
+            title="Alt.Run Free Running Planner"
+            text="Create your personalized running plan with Alt.Run's free running planner!"
           />
         </div>
-        <h1>Plan Generator</h1>
+        <h1>Free Running Planner</h1>
         <p>Create your personalized running plan in just a few steps</p>
       </div>
 

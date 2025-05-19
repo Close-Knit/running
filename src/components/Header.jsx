@@ -100,7 +100,7 @@ function Header() {
               <NavLink to="/obstacle-run" className="nav-link">Obstacle Run</NavLink>
               <NavLink to="/virtual-run" className="nav-link">Virtual Run</NavLink>
               <NavLink to="/barefoot-run" className="nav-link">Barefoot Run</NavLink>
-              <NavLink to="/running-plans" className="nav-link">Free Training Plans</NavLink>
+              <NavLink to="/running-plans" className="nav-link">Free Running Planner</NavLink>
             </nav>
           </div>
           <div className="header-right">
@@ -114,7 +114,6 @@ function Header() {
                   Running Guides
                 </button>
                 <div className={`dropdown-menu ${dropdownOpen ? 'show' : ''}`}>
-                  <NavLink to="/running-plans" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Free Training Plans</NavLink>
                   <NavLink to="/start-running-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Beginner Running Guide</NavLink>
                   <NavLink to="/intermediate-running-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Intermediate Running Guide</NavLink>
                   <NavLink to="/advanced-running-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Advanced Running Guide</NavLink>
@@ -142,16 +141,6 @@ function Header() {
               Running Guides
             </button>
             <div className={`mobile-dropdown-menu ${mobileDropdownOpen ? 'show' : ''}`}>
-              <NavLink
-                to="/running-plans"
-                className="mobile-dropdown-item"
-                onClick={() => {
-                  setMobileDropdownOpen(false);
-                  setMobileMenuOpen(false);
-                }}
-              >
-                Free Training Plans
-              </NavLink>
               <NavLink
                 to="/start-running-guide"
                 className="mobile-dropdown-item"
@@ -236,7 +225,7 @@ function Header() {
               <NavLink to="/obstacle-run" className="nav-link" onClick={closeMobileMenu}>Obstacle Run</NavLink>
               <NavLink to="/virtual-run" className="nav-link" onClick={closeMobileMenu}>Virtual Run</NavLink>
               <NavLink to="/barefoot-run" className="nav-link" onClick={closeMobileMenu}>Barefoot Run</NavLink>
-              <NavLink to="/running-plans" className="nav-link" onClick={closeMobileMenu}>Free Training Plans</NavLink>
+              <NavLink to="/running-plans" className="nav-link" onClick={closeMobileMenu}>Free Running Planner</NavLink>
               {/* <NavLink to="/blog" className="nav-link" onClick={closeMobileMenu}>Blog</NavLink> */}
             </nav>
           </div>

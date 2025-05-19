@@ -14,12 +14,10 @@ import './RunningPlansPage.css';
  * @returns {JSX.Element} The running plans page component
  */
 function RunningPlansPage() {
-  // Set the background image for the running plans page
+  // We don't need to set the background image here as it's handled by child components
+  // This prevents potential race conditions with child components setting the background
   useEffect(() => {
-    const pageBackground = document.querySelector('.page-background');
-    if (pageBackground) {
-      pageBackground.style.backgroundImage = 'url(/images/running-plan.jpg)';
-    }
+    // No background setting here, let child components handle it
 
     // Cleanup function to reset background if needed
     return () => {
@@ -32,8 +30,8 @@ function RunningPlansPage() {
 
   // Define SEO data for the running plans page
   const seoData = {
-    title: "Alt.Run: Custom Running Plan Generator",
-    description: "Create a personalized running training plan tailored to your goals, experience level, and lifestyle with Alt.Run's free running plan generator.",
+    title: "Alt.Run: Free Running Planner",
+    description: "Create a personalized running training plan tailored to your goals, experience level, and lifestyle with Alt.Run's free running planner.",
     canonicalUrl: "/running-plans",
     keywords: [
       "running plan generator", "custom training plan", "personalized running program",
@@ -45,8 +43,8 @@ function RunningPlansPage() {
       "@type": "WebPage",
       "@id": "https://alt.run/running-plans#webpage",
       "url": "https://alt.run/running-plans",
-      "name": "Alt.Run: Custom Running Plan Generator",
-      "description": "Create a personalized running training plan tailored to your goals, experience level, and lifestyle with Alt.Run's free running plan generator.",
+      "name": "Alt.Run: Free Running Planner",
+      "description": "Create a personalized running training plan tailored to your goals, experience level, and lifestyle with Alt.Run's free running planner.",
       "isPartOf": { "@id": "https://alt.run/#website" }
     }
   };

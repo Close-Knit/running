@@ -32,6 +32,7 @@ const routes = [
   { path: '/common-running-injuries-guide', changefreq: 'monthly', priority: '0.8' },
   { path: '/womens-running-health-guide', changefreq: 'monthly', priority: '0.8' },
   { path: '/running-plans', changefreq: 'monthly', priority: '0.8' },
+  { path: '/running-plans/plan', changefreq: 'monthly', priority: '0.7' }, // Add this for the nested route pattern
   // Note: We don't include dynamic routes like /events/:slug or /plan/:planId here
   // Those would be generated separately if needed
 ];

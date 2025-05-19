@@ -66,7 +66,10 @@ const styles = StyleSheet.create({
   },
   tableRow: {
     margin: "auto",
-    flexDirection: "row"
+    flexDirection: "row",
+    // Allow table rows to break across pages
+    minHeight: 25, // Ensure minimum height for each row
+    // Remove any fixed height that might prevent breaking
   },
   tableColHeader: {
     width: "12.5%", // 8 columns (Week + 7 days)
@@ -88,6 +91,11 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     padding: 3,
     fontSize: 8,
+  },
+  tableText: {
+    // Ensure text can wrap within cells
+    fontSize: 8,
+    wrap: true,
   },
   phaseBox: {
     padding: 10,
@@ -118,8 +126,14 @@ const styles = StyleSheet.create({
   }
 });
 
-// Logo path - using the logo-glow.webp file from the public directory
-const logoUrl = '/logo-glow.webp';
+// Logo path - using the logo-glow.png file from the public directory
+// Using PNG instead of WebP for better compatibility with @react-pdf/renderer
+const logoUrl = 'https://alt.run/logo-glow.png';
+
+// Fallback to local path if the site is running locally
+const isLocalhost = typeof window !== 'undefined' &&
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+const logoPath = isLocalhost ? '/logo-glow.png' : logoUrl;
 
 /**
  * PDF Document component for rendering a running plan as a PDF
@@ -132,7 +146,7 @@ const PlanPDFDocument = ({ planData }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       {/* Logo and Header */}
-      <Image src={logoUrl} style={styles.logo} />
+      <Image src={logoPath} style={styles.logo} />
       <Text style={styles.header}>Alt.Run Training Plan</Text>
       <Text style={{ fontSize: 16, textAlign: 'center', marginBottom: 10 }}>
         {planData.summary || 'Your Personalized Running Plan'}
@@ -182,30 +196,30 @@ const PlanPDFDocument = ({ planData }) => (
 
         {/* Table Rows */}
         {planData.weeklySchedule && planData.weeklySchedule.map((week, index) => (
-          <View style={styles.tableRow} key={index}>
+          <View style={styles.tableRow} key={index} wrap={true}>
             <View style={styles.tableCol}>
-              <Text>{week.week} ({week.phase})</Text>
+              <Text style={styles.tableText}>{week.week} ({week.phase})</Text>
             </View>
             <View style={styles.tableCol}>
-              <Text>{week.Monday || 'REST'}</Text>
+              <Text style={styles.tableText}>{week.Monday || 'REST'}</Text>
             </View>
             <View style={styles.tableCol}>
-              <Text>{week.Tuesday || 'REST'}</Text>
+              <Text style={styles.tableText}>{week.Tuesday || 'REST'}</Text>
             </View>
             <View style={styles.tableCol}>
-              <Text>{week.Wednesday || 'REST'}</Text>
+              <Text style={styles.tableText}>{week.Wednesday || 'REST'}</Text>
             </View>
             <View style={styles.tableCol}>
-              <Text>{week.Thursday || 'REST'}</Text>
+              <Text style={styles.tableText}>{week.Thursday || 'REST'}</Text>
             </View>
             <View style={styles.tableCol}>
-              <Text>{week.Friday || 'REST'}</Text>
+              <Text style={styles.tableText}>{week.Friday || 'REST'}</Text>
             </View>
             <View style={styles.tableCol}>
-              <Text>{week.Saturday || 'REST'}</Text>
+              <Text style={styles.tableText}>{week.Saturday || 'REST'}</Text>
             </View>
             <View style={styles.tableCol}>
-              <Text>{week.Sunday || 'REST'}</Text>
+              <Text style={styles.tableText}>{week.Sunday || 'REST'}</Text>
             </View>
           </View>
         ))}

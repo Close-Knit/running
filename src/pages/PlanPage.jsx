@@ -31,8 +31,19 @@ function PlanPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [emailAssociated, setEmailAssociated] = useState(false);
-  const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
-  const shareTitle = "Check out my Alt.Run training plan!";
+
+  // Create a proper share URL that works even on localhost
+  const isLocalhost = typeof window !== 'undefined' &&
+    (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+  const deployedBaseUrl = 'https://alt.run'; // The production URL
+
+  // Always use the absolute URL with https protocol for sharing
+  // This ensures social media platforms can properly parse the URL
+  const shareUrl = isLocalhost
+    ? `${deployedBaseUrl}/running-plans/plan/${planId}` // Use production URL when on localhost
+    : `${deployedBaseUrl}/running-plans/plan/${planId}`; // Always use the absolute URL for sharing
+
+  const shareTitle = "Check out my personalized Alt.Run running plan!";
 
   // Handle email association with the plan
   const handleEmailAssociated = (email) => {
@@ -74,7 +85,8 @@ function PlanPage() {
   useEffect(() => {
     const pageBackground = document.querySelector('.page-background');
     if (pageBackground) {
-      pageBackground.style.backgroundImage = 'url(/images/running-plans.jpg)';
+      // Use the same background image as PlanGeneratorPage
+      pageBackground.style.backgroundImage = 'url(/images/running-plan.jpg)';
 
       // Optimize background position for mobile
       const optimizeForMobile = () => {
@@ -138,8 +150,8 @@ function PlanPage() {
 
         // Add event to array
         events.push({
-          title: `Alt.Run Plan: ${workout}`,
-          description: `Workout from your Alt.Run training plan: ${plan.plan_data.summary}`,
+          title: `Alt.Run Running Plan: ${workout}`,
+          description: `Workout from your personalized Alt.Run running plan: ${plan.plan_data.summary}`,
           start: [year, month, date],
           duration: { hours: 1 }, // Default duration
         });
@@ -169,8 +181,8 @@ function PlanPage() {
   const seoData = {
     title: plan && plan.plan_data && plan.plan_data.summary
       ? `Alt.Run: ${plan.plan_data.summary}`
-      : "Alt.Run: Running Plan",
-    description: "Your personalized running training plan from Alt.Run, tailored to your goals, experience level, and lifestyle.",
+      : "Alt.Run: Your Running Plan",
+    description: "Your personalized running plan from Alt.Run, tailored to your goals, experience level, and lifestyle.",
     canonicalUrl: `/running-plans/plan/${planId}`,
     noindex: true, // Don't index individual plan pages
   };
@@ -188,7 +200,7 @@ function PlanPage() {
       <div className="plan-error">
         <h2>Error Loading Plan</h2>
         <p>{error}</p>
-        <Link to="/running-plans" className="button">Create New Plan</Link>
+        <Link to="/running-plans" className="button">Create New Running Plan</Link>
       </div>
     </div>
   );
@@ -199,7 +211,7 @@ function PlanPage() {
       <div className="plan-error">
         <h2>Plan Not Found</h2>
         <p>The requested plan could not be found.</p>
-        <Link to="/running-plans" className="button">Create New Plan</Link>
+        <Link to="/running-plans" className="button">Create New Running Plan</Link>
       </div>
     </div>
   );
@@ -313,7 +325,7 @@ function PlanPage() {
         ) : (
           <button className="button" onClick={() => window.print()}>Print Plan</button>
         )}
-        <Link to="/running-plans" className="button">Create New Plan</Link>
+        <Link to="/running-plans" className="button">Create New Running Plan</Link>
       </div>
 
       <div className="plan-disclaimer">

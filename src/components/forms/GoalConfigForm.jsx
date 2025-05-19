@@ -1,10 +1,12 @@
 // src/components/forms/GoalConfigForm.jsx
 import React, { useState, useEffect } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import './FormStyles.css';
 
 /**
  * Form component for collecting goal configuration information
- * 
+ *
  * @param {Object} props - Component props
  * @param {Object} props.initialData - Initial form data
  * @param {Function} props.onSave - Function to call when form is submitted
@@ -38,6 +40,16 @@ function GoalConfigForm({ initialData, onSave, onBack, title }) {
     }));
   };
 
+  // Handle date change from DatePicker
+  const handleDateChange = (date) => {
+    // Format date as YYYY-MM-DD for consistency with the existing code
+    const formattedDate = date ? date.toISOString().split('T')[0] : '';
+    setFormData(prevData => ({
+      ...prevData,
+      targetDate: formattedDate
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave(formData);
@@ -56,10 +68,10 @@ function GoalConfigForm({ initialData, onSave, onBack, title }) {
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="raceType">Race Type:</label>
-          <select 
-            id="raceType" 
-            name="raceType" 
-            value={formData.raceType} 
+          <select
+            id="raceType"
+            name="raceType"
+            value={formData.raceType}
             onChange={handleChange}
             required
           >
@@ -88,11 +100,11 @@ function GoalConfigForm({ initialData, onSave, onBack, title }) {
         {(formData.raceType === 'Custom Road' || formData.raceType === 'Custom Trail') && (
           <div className="form-group">
             <label htmlFor="raceDistanceCustom">Custom Race Distance:</label>
-            <input 
-              type="text" 
-              id="raceDistanceCustom" 
-              name="raceDistanceCustom" 
-              value={formData.raceDistanceCustom} 
+            <input
+              type="text"
+              id="raceDistanceCustom"
+              name="raceDistanceCustom"
+              value={formData.raceDistanceCustom}
               onChange={handleChange}
               placeholder="e.g., 15K, 30 miles, etc."
               required
@@ -102,24 +114,36 @@ function GoalConfigForm({ initialData, onSave, onBack, title }) {
 
         <div className="form-group">
           <label htmlFor="targetDate">Target Race Date:</label>
-          <input 
-            type="date" 
-            id="targetDate" 
-            name="targetDate" 
-            value={formData.targetDate} 
-            onChange={handleChange}
-            min={minDate}
-            max={maxDate}
-            required
-          />
+          <div className="datepicker-container">
+            <DatePicker
+              id="targetDate"
+              selected={formData.targetDate ? new Date(formData.targetDate) : null}
+              onChange={handleDateChange}
+              minDate={new Date(minDate)}
+              maxDate={new Date(maxDate)}
+              dateFormat="yyyy-MM-dd"
+              placeholderText="Select a date"
+              required
+              className="datepicker-input"
+              calendarClassName="datepicker-calendar"
+              popperClassName="datepicker-popper"
+              popperPlacement="bottom-start"
+              showPopperArrow={false}
+              isClearable={false}
+              showMonthDropdown
+              showYearDropdown
+              dropdownMode="select"
+              yearDropdownItemNumber={5}
+            />
+          </div>
         </div>
 
         <div className="form-group">
           <label htmlFor="optimizationFocus">Training Focus:</label>
-          <select 
-            id="optimizationFocus" 
-            name="optimizationFocus" 
-            value={formData.optimizationFocus} 
+          <select
+            id="optimizationFocus"
+            name="optimizationFocus"
+            value={formData.optimizationFocus}
             onChange={handleChange}
             required
           >

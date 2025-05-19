@@ -4,7 +4,7 @@ import './FormStyles.css';
 
 /**
  * Form component for collecting training history information
- * 
+ *
  * @param {Object} props - Component props
  * @param {Object} props.initialData - Initial form data
  * @param {Function} props.onSave - Function to call when form is submitted
@@ -44,7 +44,7 @@ function TrainingHistoryForm({ initialData, onSave, onBack, title }) {
       ...updatedRaces[index],
       [field]: value
     };
-    
+
     setFormData(prevData => ({
       ...prevData,
       recentRaces: updatedRaces
@@ -62,7 +62,7 @@ function TrainingHistoryForm({ initialData, onSave, onBack, title }) {
     if (formData.recentRaces.length > 1) {
       const updatedRaces = [...formData.recentRaces];
       updatedRaces.splice(index, 1);
-      
+
       setFormData(prevData => ({
         ...prevData,
         recentRaces: updatedRaces
@@ -82,19 +82,19 @@ function TrainingHistoryForm({ initialData, onSave, onBack, title }) {
         <div className="form-group">
           <label htmlFor="currentWeeklyMileage">Current Weekly Mileage:</label>
           <div className="input-with-unit">
-            <input 
-              type="number" 
-              id="currentWeeklyMileage" 
-              name="currentWeeklyMileage" 
-              min="0" 
-              max="500" 
-              value={formData.currentWeeklyMileage} 
+            <input
+              type="number"
+              id="currentWeeklyMileage"
+              name="currentWeeklyMileage"
+              min="0"
+              max="500"
+              value={formData.currentWeeklyMileage}
               onChange={handleChange}
               required
             />
-            <select 
-              name="mileageUnit" 
-              value={formData.mileageUnit} 
+            <select
+              name="mileageUnit"
+              value={formData.mileageUnit}
               onChange={handleChange}
             >
               <option value="km">km</option>
@@ -108,22 +108,22 @@ function TrainingHistoryForm({ initialData, onSave, onBack, title }) {
           {formData.recentRaces.map((race, index) => (
             <div key={index} className="race-entry">
               <div className="race-inputs">
-                <input 
-                  type="text" 
-                  placeholder="Distance (e.g., 5K, 10K, Half Marathon)" 
-                  value={race.distance} 
+                <input
+                  type="text"
+                  placeholder="Distance (e.g., 5K, 10K, Half Marathon)"
+                  value={race.distance}
                   onChange={(e) => handleRaceChange(index, 'distance', e.target.value)}
                 />
-                <input 
-                  type="text" 
-                  placeholder="Time (e.g., 25:30, 1:45:20)" 
-                  value={race.time} 
+                <input
+                  type="text"
+                  placeholder="Time (e.g., 25:30, 1:45:20)"
+                  value={race.time}
                   onChange={(e) => handleRaceChange(index, 'time', e.target.value)}
                 />
               </div>
-              <button 
-                type="button" 
-                className="remove-button" 
+              <button
+                type="button"
+                className="remove-button"
                 onClick={() => removeRace(index)}
                 disabled={formData.recentRaces.length <= 1}
               >
@@ -138,14 +138,18 @@ function TrainingHistoryForm({ initialData, onSave, onBack, title }) {
 
         <div className="form-group">
           <label htmlFor="injuryHistory">Injury History (Optional):</label>
-          <textarea 
-            id="injuryHistory" 
-            name="injuryHistory" 
-            value={formData.injuryHistory} 
+          <textarea
+            id="injuryHistory"
+            name="injuryHistory"
+            value={formData.injuryHistory}
             onChange={handleChange}
             placeholder="Describe any recent or recurring injuries that might affect your training"
             rows="4"
           />
+          <p className="form-note">
+            <em>Note: While we collect injury history, this basic plan does not yet fully customize for specific injuries.
+            Always listen to your body and consult a professional.</em>
+          </p>
         </div>
 
         <div className="form-buttons">

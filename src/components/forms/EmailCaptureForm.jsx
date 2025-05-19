@@ -27,7 +27,13 @@ function EmailCaptureForm({ planId, onEmailAssociated }) {
   const [error, setError] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
 
-  const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
+  // Create a proper share URL that works even on localhost
+  const isLocalhost = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+  const deployedBaseUrl = 'https://alt.run'; // The production URL
+  const shareUrl = isLocalhost
+    ? `${deployedBaseUrl}/running-plans/plan/${planId}` // Use production URL when on localhost
+    : (typeof window !== 'undefined' ? window.location.href : ''); // Use actual URL in production
+
   const shareTitle = "Check out my Alt.Run training plan!";
 
   const handleEmailChange = (e) => {

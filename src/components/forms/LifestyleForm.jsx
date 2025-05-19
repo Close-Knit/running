@@ -4,7 +4,7 @@ import './FormStyles.css';
 
 /**
  * Form component for collecting lifestyle information
- * 
+ *
  * @param {Object} props - Component props
  * @param {Object} props.initialData - Initial form data
  * @param {Function} props.onSave - Function to call when form is submitted
@@ -32,19 +32,24 @@ function LifestyleForm({ initialData, onSave, onBack, title }) {
 
   const handleCheckboxChange = (e, category) => {
     const { value, checked } = e.target;
-    
+
     setFormData(prevData => {
+      let updatedData;
       if (checked) {
-        return {
+        updatedData = {
           ...prevData,
           [category]: [...prevData[category], value]
         };
       } else {
-        return {
+        updatedData = {
           ...prevData,
           [category]: prevData[category].filter(item => item !== value)
         };
       }
+
+      // Debug log to verify the data is being updated correctly
+      console.log(`Updated ${category}:`, updatedData[category]);
+      return updatedData;
     });
   };
 
@@ -58,7 +63,21 @@ function LifestyleForm({ initialData, onSave, onBack, title }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(formData);
+
+    // Make sure we have at least one day selected
+    if (formData.availableDays.length === 0) {
+      // If no days are selected, default to all days
+      const allDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+      const updatedFormData = {
+        ...formData,
+        availableDays: allDays
+      };
+      console.log('No days selected, defaulting to all days:', updatedFormData.availableDays);
+      onSave(updatedFormData);
+    } else {
+      console.log('Submitting lifestyle form with days:', formData.availableDays);
+      onSave(formData);
+    }
   };
 
   const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -74,12 +93,13 @@ function LifestyleForm({ initialData, onSave, onBack, title }) {
           <div className="checkbox-group">
             {weekdays.map(day => (
               <div key={day} className="checkbox-item">
-                <input 
-                  type="checkbox" 
-                  id={`day-${day}`} 
-                  value={day} 
-                  checked={formData.availableDays.includes(day)} 
+                <input
+                  type="checkbox"
+                  id={`day-${day}`}
+                  value={day}
+                  checked={formData.availableDays.includes(day)}
                   onChange={(e) => handleCheckboxChange(e, 'availableDays')}
+                  name="availableDays"
                 />
                 <label htmlFor={`day-${day}`}>{day}</label>
               </div>
@@ -92,11 +112,11 @@ function LifestyleForm({ initialData, onSave, onBack, title }) {
           <div className="checkbox-group">
             {workoutTypes.map(workout => (
               <div key={workout} className="checkbox-item">
-                <input 
-                  type="checkbox" 
-                  id={`workout-${workout.replace(/\s+/g, '-').toLowerCase()}`} 
-                  value={workout} 
-                  checked={formData.preferredWorkouts.includes(workout)} 
+                <input
+                  type="checkbox"
+                  id={`workout-${workout.replace(/\s+/g, '-').toLowerCase()}`}
+                  value={workout}
+                  checked={formData.preferredWorkouts.includes(workout)}
                   onChange={(e) => handleCheckboxChange(e, 'preferredWorkouts')}
                 />
                 <label htmlFor={`workout-${workout.replace(/\s+/g, '-').toLowerCase()}`}>{workout}</label>
@@ -110,11 +130,11 @@ function LifestyleForm({ initialData, onSave, onBack, title }) {
           <div className="checkbox-group">
             {equipmentTypes.map(equipment => (
               <div key={equipment} className="checkbox-item">
-                <input 
-                  type="checkbox" 
-                  id={`equipment-${equipment.replace(/\s+/g, '-').toLowerCase()}`} 
-                  value={equipment} 
-                  checked={formData.equipmentAccess.includes(equipment)} 
+                <input
+                  type="checkbox"
+                  id={`equipment-${equipment.replace(/\s+/g, '-').toLowerCase()}`}
+                  value={equipment}
+                  checked={formData.equipmentAccess.includes(equipment)}
                   onChange={(e) => handleCheckboxChange(e, 'equipmentAccess')}
                 />
                 <label htmlFor={`equipment-${equipment.replace(/\s+/g, '-').toLowerCase()}`}>{equipment}</label>
@@ -125,11 +145,11 @@ function LifestyleForm({ initialData, onSave, onBack, title }) {
 
         <div className="form-group">
           <div className="toggle-item">
-            <input 
-              type="checkbox" 
-              id="interestedInBarefoot" 
-              name="interestedInBarefoot" 
-              checked={formData.interestedInBarefoot} 
+            <input
+              type="checkbox"
+              id="interestedInBarefoot"
+              name="interestedInBarefoot"
+              checked={formData.interestedInBarefoot}
               onChange={handleToggleChange}
             />
             <label htmlFor="interestedInBarefoot">Interested in barefoot/minimalist running?</label>
