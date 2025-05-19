@@ -29,7 +29,10 @@ const routes = [
   { path: '/intermediate-running-guide', changefreq: 'monthly', priority: '0.8' },
   { path: '/advanced-running-guide', changefreq: 'monthly', priority: '0.8' },
   { path: '/running-gear-guide', changefreq: 'monthly', priority: '0.8' },
-  // Note: We don't include dynamic routes like /events/:slug here
+  { path: '/common-running-injuries-guide', changefreq: 'monthly', priority: '0.8' },
+  { path: '/womens-running-health-guide', changefreq: 'monthly', priority: '0.8' },
+  { path: '/running-plans', changefreq: 'monthly', priority: '0.8' },
+  // Note: We don't include dynamic routes like /events/:slug or /plan/:planId here
   // Those would be generated separately if needed
 ];
 

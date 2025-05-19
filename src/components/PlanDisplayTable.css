@@ -1,0 +1,53 @@
+/* src/components/PlanDisplayTable.css */
+.schedule-table {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 1.5rem;
+}
+
+.schedule-header {
+  display: flex;
+  background-color: rgba(50, 205, 50, 0.2);
+  font-weight: bold;
+}
+
+.schedule-row {
+  display: flex;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.schedule-row:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.schedule-cell {
+  flex: 1;
+  padding: 1rem;
+  min-width: 100px;
+  word-wrap: break-word;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.schedule-cell:first-child {
+  flex: 0 0 60px;
+  font-weight: bold;
+  background-color: rgba(50, 205, 50, 0.1);
+}
+
+.schedule-cell:last-child {
+  border-right: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .schedule-table {
+    font-size: 0.9rem;
+  }
+  
+  .schedule-cell {
+    padding: 0.75rem;
+    min-width: 80px;
+  }
+}

@@ -113,6 +113,7 @@ function Header() {
                   Running Guides
                 </button>
                 <div className={`dropdown-menu ${dropdownOpen ? 'show' : ''}`}>
+                  <NavLink to="/running-plans" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Running Plans</NavLink>
                   <NavLink to="/start-running-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Beginner Running Guide</NavLink>
                   <NavLink to="/intermediate-running-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Intermediate Running Guide</NavLink>
                   <NavLink to="/advanced-running-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Advanced Running Guide</NavLink>
@@ -140,6 +141,16 @@ function Header() {
               Running Guides
             </button>
             <div className={`mobile-dropdown-menu ${mobileDropdownOpen ? 'show' : ''}`}>
+              <NavLink
+                to="/running-plans"
+                className="mobile-dropdown-item"
+                onClick={() => {
+                  setMobileDropdownOpen(false);
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Running Plans
+              </NavLink>
               <NavLink
                 to="/start-running-guide"
                 className="mobile-dropdown-item"

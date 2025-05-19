@@ -24,6 +24,9 @@ const routes = [
   '/intermediate-running-guide',
   '/advanced-running-guide',
   '/running-gear-guide',
+  '/common-running-injuries-guide',
+  '/womens-running-health-guide',
+  '/running-plans',
 ];
 
 // Function to create directory if it doesn't exist
