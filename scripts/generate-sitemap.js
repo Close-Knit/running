@@ -28,6 +28,7 @@ const routes = [
   { path: '/start-running-guide', changefreq: 'monthly', priority: '0.8' },
   { path: '/intermediate-running-guide', changefreq: 'monthly', priority: '0.8' },
   { path: '/advanced-running-guide', changefreq: 'monthly', priority: '0.8' },
+  { path: '/running-gear-guide', changefreq: 'monthly', priority: '0.8' },
   // Note: We don't include dynamic routes like /events/:slug here
   // Those would be generated separately if needed
 ];

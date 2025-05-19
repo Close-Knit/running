@@ -7,9 +7,16 @@
   border-radius: 8px;
 }
 
+.guide-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 0 1rem;
+}
+
 .guide-logo {
   height: 60px;
-  margin-bottom: 1.5rem;
 }
 
 .guide-header h1 {
@@ -35,6 +42,18 @@
 
 /* Responsive styles */
 @media (max-width: 768px) {
+  .guide-header {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .guide-header-top {
+    padding: 0 0.5rem;
+  }
+
+  .guide-logo {
+    height: 45px;
+  }
+
   .guide-header h1 {
     font-size: 2rem;
   }

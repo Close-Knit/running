@@ -1,6 +1,7 @@
 // src/components/GuideHeader.jsx
 import React from 'react';
 import PropTypes from 'prop-types';
+import ShareButton from './ShareButton';
 import './GuideHeader.css';
 
 /**
@@ -12,9 +13,22 @@ import './GuideHeader.css';
  * @param {string} props.intro - Introductory paragraph
  */
 function GuideHeader({ title, subtitle, intro }) {
+  // Prepare share data
+  const shareData = {
+    title: title,
+    text: subtitle || 'Check out this running guide from Alt.Run!',
+    // URL will default to current URL in the ShareButton component
+  };
+
   return (
     <div className="guide-header">
-      <img src="/logo-glow.webp" alt="Alt.Run Logo" className="guide-logo" />
+      <div className="guide-header-top">
+        <img src="/logo-glow.webp" alt="Alt.Run Logo" className="guide-logo" />
+        <ShareButton
+          title={shareData.title}
+          text={shareData.text}
+        />
+      </div>
       <h1>{title}</h1>
       <h2>{subtitle}</h2>
       <p className="guide-intro">{intro}</p>
