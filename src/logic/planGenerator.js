@@ -2,7 +2,7 @@
 
 /**
  * Generates a periodization plan based on the target date and current fitness level
- * 
+ *
  * @param {string} targetDateString - The target race date in ISO format
  * @param {number|string} currentFitnessLevel - Current weekly mileage as a proxy for fitness
  * @returns {Object} Periodization plan with base, intensity, taper phases and total weeks
@@ -17,11 +17,11 @@ function generatePeriodization(targetDateString, currentFitnessLevel) {
     // Handle too short duration: maybe return an error or a very basic, fixed plan
     console.warn("Target date is too soon for standard periodization. Adjusting to a minimum plan length.");
     // For now, let's default to a short plan structure if too few weeks
-    return { 
-      base: Math.max(1, Math.floor(totalWeeks * 0.5)), 
-      intensity: Math.max(1, Math.floor(totalWeeks * 0.3)), 
-      taper: Math.max(1, Math.floor(totalWeeks * 0.2)), 
-      totalWeeks: Math.max(4, totalWeeks) 
+    return {
+      base: Math.max(1, Math.floor(totalWeeks * 0.5)),
+      intensity: Math.max(1, Math.floor(totalWeeks * 0.3)),
+      taper: Math.max(1, Math.floor(totalWeeks * 0.2)),
+      totalWeeks: Math.max(4, totalWeeks)
     };
   }
 
@@ -46,13 +46,13 @@ function generatePeriodization(targetDateString, currentFitnessLevel) {
         intensityWeeks = Math.max(1, totalWeeks - baseWeeks - taperWeeks);
     }
   }
-  
+
   // Ensure minimums for each phase if totalWeeks allows
   if (totalWeeks >= 8) { // Example threshold for full periodization
     baseWeeks = Math.max(4, baseWeeks); // Min 4 weeks base
     intensityWeeks = Math.max(2, intensityWeeks); // Min 2 weeks intensity
     taperWeeks = Math.max(1, Math.min(3, taperWeeks)); // Taper usually 1-3 weeks
-    
+
     // Re-adjust if minimums push sum over totalWeeks
     let currentSum = baseWeeks + intensityWeeks + taperWeeks;
     if (currentSum > totalWeeks) {
@@ -63,7 +63,7 @@ function generatePeriodization(targetDateString, currentFitnessLevel) {
           intensityWeeks -= (diff - (currentSum - totalWeeks - baseWeeks + 1));
         }
     }
-    
+
     // Final check to ensure sum matches totalWeeks
     intensityWeeks = totalWeeks - baseWeeks - taperWeeks;
   }
@@ -78,7 +78,7 @@ function generatePeriodization(targetDateString, currentFitnessLevel) {
 
 /**
  * Determines the training phase for a given week
- * 
+ *
  * @param {number} weekNumber - The current week number
  * @param {Object} periodization - The periodization plan
  * @returns {string} The phase name ('base', 'intensity', or 'taper')
@@ -91,15 +91,29 @@ function determinePhase(weekNumber, periodization) {
 
 /**
  * Generates a weekly schedule based on periodization and user preferences
- * 
+ *
  * @param {Object} periodization - The periodization plan
  * @param {Object} formData - User form data
  * @returns {Array} Array of weekly schedule objects
  */
 function generateWeeklySchedule(periodization, formData) {
   const weeklySchedule = [];
-  const availableDays = formData.lifestyle.availableDays; // e.g., ['Monday', 'Wednesday', 'Friday', 'Saturday']
+
+  // Ensure availableDays is an array and has valid values
+  let availableDays = [];
+  if (formData.lifestyle && Array.isArray(formData.lifestyle.availableDays) && formData.lifestyle.availableDays.length > 0) {
+    availableDays = [...formData.lifestyle.availableDays]; // Create a copy to avoid modifying the original
+  } else {
+    // Default to 3 days per week if none selected
+    console.warn("No available days selected or invalid format, defaulting to Monday, Wednesday, Saturday");
+    availableDays = ["Monday", "Wednesday", "Saturday"];
+  }
+
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+  // Debug: Log available days at the start of function
+  console.log("AVAILABLE DAYS IN GENERATOR:", availableDays);
+  console.log("AVAILABLE DAYS TYPE:", typeof availableDays, Array.isArray(availableDays));
 
   let currentLongRunDuration = 60; // Placeholder, base this on current mileage / experience later
   if (formData.trainingHistory.currentWeeklyMileage) {
@@ -123,39 +137,103 @@ function generateWeeklySchedule(periodization, formData) {
     };
 
     let workoutCount = 0;
+    console.log(`Week ${i}, Phase: ${phase}, Processing available days:`, availableDays);
+
+    // First, handle the long run assignment (prioritize Saturday or Sunday)
+    const hasLongRunDay = availableDays.some(day => day === 'Saturday' || day === 'Sunday');
+
+    // Process each available day
     availableDays.forEach(day => {
+      console.log(`  Processing day: ${day}, Current workoutCount: ${workoutCount}`);
+
+      // Verify day is a valid property name
+      if (!daysOfWeek.includes(day)) {
+        console.error(`Invalid day name: ${day}`);
+        return; // Skip this iteration
+      }
+
+      // Assign workouts based on phase
       if (phase === 'base') {
-        if (day === 'Saturday' || (day === 'Sunday' && !availableDays.includes('Saturday'))) { // Prioritize weekend for long run
+        // Long run assignment (weekend priority)
+        if (day === 'Saturday' || (day === 'Sunday' && !availableDays.includes('Saturday'))) {
           weekData[day] = `Long Run: ${currentLongRunDuration} minutes`;
-        } else if (workoutCount < 2) { // Aim for 2-3 other runs in base
-          weekData[day] = "30-45 min Easy Run";
-          workoutCount++;
-        } else if (workoutCount === 2 && (day === 'Wednesday' || day === 'Tuesday')) {
+          console.log(`    Assigned Long Run to ${day}`);
+        }
+        // Quality workout (speed work)
+        else if (workoutCount === 0 && (day === 'Tuesday' || day === 'Wednesday')) {
           weekData[day] = "Fartlek: 6x1 min fast, 2 min jog";
           workoutCount++;
+          console.log(`    Assigned Fartlek to ${day}, workoutCount now: ${workoutCount}`);
         }
-      } else if (phase === 'intensity') {
-        if (day === 'Saturday' || (day === 'Sunday' && !availableDays.includes('Saturday'))) {
-          weekData[day] = `Long Run: ${currentLongRunDuration * 0.9}-${currentLongRunDuration} minutes (maintain/slight decrease)`;
-        } else if ((day === 'Tuesday' || day === 'Wednesday') && workoutCount === 0) {
-          weekData[day] = "Intervals: 5x800m @ Target Race Pace (or faster)";
+        // Easy runs
+        else if (workoutCount < 3) { // Allow up to 3 easy runs
+          weekData[day] = "30-45 min Easy Run";
           workoutCount++;
-        } else if ((day === 'Thursday' || day === 'Friday') && workoutCount === 1) {
+          console.log(`    Assigned Easy Run to ${day}, workoutCount now: ${workoutCount}`);
+        }
+        // Recovery/cross-training for additional days
+        else {
+          weekData[day] = "Cross-Training or Recovery";
+          console.log(`    Assigned Cross-Training to ${day}`);
+        }
+      }
+      else if (phase === 'intensity') {
+        // Long run assignment (weekend priority)
+        if (day === 'Saturday' || (day === 'Sunday' && !availableDays.includes('Saturday'))) {
+          weekData[day] = `Long Run: ${currentLongRunDuration * 0.9}-${currentLongRunDuration} minutes`;
+          console.log(`    Assigned Long Run to ${day}`);
+        }
+        // Interval workout (early week)
+        else if (workoutCount === 0 && (day === 'Tuesday' || day === 'Wednesday')) {
+          weekData[day] = "Intervals: 5x800m @ Target Race Pace";
+          workoutCount++;
+          console.log(`    Assigned Intervals to ${day}, workoutCount now: ${workoutCount}`);
+        }
+        // Tempo workout (mid-week)
+        else if (workoutCount === 1 && (day === 'Thursday' || day === 'Friday')) {
           weekData[day] = "Tempo Run: 20-30 minutes @ Threshold";
           workoutCount++;
-        } else if (workoutCount < 3) {
-           weekData[day] = "30-40 min Easy Run";
-           workoutCount++;
+          console.log(`    Assigned Tempo Run to ${day}, workoutCount now: ${workoutCount}`);
         }
-      } else { // Taper phase
+        // Easy runs
+        else if (workoutCount < 4) { // Allow up to 4 runs in intensity phase
+          weekData[day] = "30-40 min Easy Run";
+          workoutCount++;
+          console.log(`    Assigned Easy Run to ${day}, workoutCount now: ${workoutCount}`);
+        }
+        // Recovery/cross-training for additional days
+        else {
+          weekData[day] = "Cross-Training or Recovery";
+          console.log(`    Assigned Cross-Training to ${day}`);
+        }
+      }
+      else { // Taper phase
+        // Long run assignment (weekend priority, but shorter)
         if (day === 'Saturday' || (day === 'Sunday' && !availableDays.includes('Saturday'))) {
           weekData[day] = `Long Run: ${Math.max(30, currentLongRunDuration * 0.5)} minutes (shorter)`;
-        } else if (workoutCount < 2) { // Fewer runs, shorter
+          console.log(`    Assigned Taper Long Run to ${day}`);
+        }
+        // Quality workout (maintain some intensity)
+        else if (workoutCount === 0 && (day === 'Tuesday' || day === 'Wednesday')) {
+          weekData[day] = "Short Intervals: 4x400m @ Race Pace";
+          workoutCount++;
+          console.log(`    Assigned Short Intervals to ${day}, workoutCount now: ${workoutCount}`);
+        }
+        // Easy runs (reduced volume)
+        else if (workoutCount < 3) {
           weekData[day] = "20-30 min Easy Run";
           workoutCount++;
+          console.log(`    Assigned Taper Easy Run to ${day}, workoutCount now: ${workoutCount}`);
+        }
+        // Rest or very light activity
+        else {
+          weekData[day] = "Rest or 15-20 min Very Easy Jog";
+          console.log(`    Assigned Rest/Easy Jog to ${day}`);
         }
       }
     });
+
+    console.log(`Week ${i} final schedule:`, weekData);
 
     weeklySchedule.push(weekData);
 
@@ -169,11 +247,14 @@ function generateWeeklySchedule(periodization, formData) {
 
 /**
  * Generates a complete running plan based on user form data
- * 
+ *
  * @param {Object} formData - User form data from all steps
  * @returns {Object} Complete running plan with summary, periodization, and weekly schedule
  */
 export function generateRunningPlan(formData) {
+  // Debug: Log the entire form data
+  console.log("FULL FORM DATA IN PLAN GENERATOR:", JSON.stringify(formData, null, 2));
+
   // Basic validation for targetDate
   if (!formData.goalConfig.targetDate) {
     // Handle error: perhaps return a specific error object or throw
@@ -187,7 +268,7 @@ export function generateRunningPlan(formData) {
     formData.trainingHistory.currentWeeklyMileage
   );
 
-  if (periodization.totalWeeks < 4 && !formData.goalConfig.targetDate) { 
+  if (periodization.totalWeeks < 4 && !formData.goalConfig.targetDate) {
     // This check might be redundant if generatePeriodization handles it robustly
     console.warn("Plan duration is very short. Consider selecting a target date further in the future.");
   }

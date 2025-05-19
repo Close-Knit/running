@@ -1,12 +1,20 @@
 // src/components/forms/EmailCaptureForm.jsx
 import React, { useState } from 'react';
 import { supabase } from '../../supabaseClient';
+import {
+  TwitterShareButton,
+  FacebookShareButton,
+  RedditShareButton,
+  TwitterIcon,
+  FacebookIcon,
+  RedditIcon
+} from 'react-share';
 import './FormStyles.css';
 
 /**
  * Form component for capturing user email to associate with a plan
  * and sending a magic link for authentication
- * 
+ *
  * @param {Object} props - Component props
  * @param {string} props.planId - The ID of the plan to associate with the email
  * @param {Function} props.onEmailAssociated - Callback function to call when email is successfully associated
@@ -19,6 +27,9 @@ function EmailCaptureForm({ planId, onEmailAssociated }) {
   const [error, setError] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
 
+  const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const shareTitle = "Check out my Alt.Run training plan!";
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
     // Clear any previous messages when the user types
@@ -30,7 +41,7 @@ function EmailCaptureForm({ planId, onEmailAssociated }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!email) {
       setError('Please enter your email address');
       return;
@@ -51,11 +62,17 @@ function EmailCaptureForm({ planId, onEmailAssociated }) {
         throw updateError;
       }
 
-      // Then, send a magic link to the user's email
+      // Then, send a magic link to the user's email with custom subject and message
       const { error: signInError } = await supabase.auth.signInWithOtp({
         email,
         options: {
           emailRedirectTo: window.location.href, // Redirect back to the current page after authentication
+          data: {
+            // Custom data to include in the email template
+            planId: planId,
+            subject: "Your Alt.Run Training Plan",
+            message: "Thank you for using Alt.Run for your Free Running Plan Generator. Here is your Magic Link to your personalized training plan."
+          }
         },
       });
 
@@ -66,7 +83,7 @@ function EmailCaptureForm({ planId, onEmailAssociated }) {
       // Show success message and confirmation instructions
       setMessage('Success! Check your email for a magic link to access your plan.');
       setShowConfirmation(true);
-      
+
       // Call the callback function to notify parent component
       if (onEmailAssociated) {
         onEmailAssociated(email);
@@ -81,15 +98,16 @@ function EmailCaptureForm({ planId, onEmailAssociated }) {
 
   return (
     <div className="form-container email-capture-form">
-      <h2>Save Your Plan</h2>
-      
+      <h2>Save Your Plan (Optional)</h2>
+
       {!showConfirmation ? (
         <>
           <p className="form-description">
             Enter your email to save this plan and receive a link to access it anytime.
             We'll also send you a magic link for secure access without a password.
+            Please ensure you enter your correct email address.
           </p>
-          
+
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="email">Email Address:</label>
@@ -104,18 +122,31 @@ function EmailCaptureForm({ planId, onEmailAssociated }) {
                 disabled={loading}
               />
             </div>
-            
+
             {error && <div className="form-error">{error}</div>}
             {message && <div className="form-success">{message}</div>}
-            
+
             <div className="form-buttons">
-              <button 
-                type="submit" 
-                className="next-button" 
+              <button
+                type="submit"
+                className="next-button"
                 disabled={loading}
               >
                 {loading ? 'Sending...' : 'Save & Send Magic Link'}
               </button>
+
+              <div className="social-share-inline">
+                <span className="share-label">Share:</span>
+                <TwitterShareButton url={shareUrl} title={shareTitle} className="social-share-button twitter-button">
+                  <TwitterIcon size={28} round />
+                </TwitterShareButton>
+                <FacebookShareButton url={shareUrl} quote={shareTitle} className="social-share-button facebook-button">
+                  <FacebookIcon size={28} round />
+                </FacebookShareButton>
+                <RedditShareButton url={shareUrl} title={shareTitle} className="social-share-button reddit-button">
+                  <RedditIcon size={28} round />
+                </RedditShareButton>
+              </div>
             </div>
           </form>
         </>

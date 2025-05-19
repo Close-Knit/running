@@ -55,36 +55,36 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'grey',
   },
-  table: { 
-    display: "table", 
-    width: "auto", 
-    borderStyle: "solid", 
-    borderWidth: 1, 
-    borderRightWidth: 0, 
+  table: {
+    display: "table",
+    width: "auto",
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderRightWidth: 0,
     borderBottomWidth: 0,
     marginBottom: 10,
-  }, 
-  tableRow: { 
-    margin: "auto", 
-    flexDirection: "row" 
-  }, 
-  tableColHeader: { 
+  },
+  tableRow: {
+    margin: "auto",
+    flexDirection: "row"
+  },
+  tableColHeader: {
     width: "12.5%", // 8 columns (Week + 7 days)
-    borderStyle: "solid", 
-    borderWidth: 1, 
-    borderLeftWidth: 0, 
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderLeftWidth: 0,
     borderTopWidth: 0,
     backgroundColor: '#f0f0f0',
     padding: 3,
     textAlign: 'center',
     fontSize: 9,
     fontWeight: 'bold',
-  }, 
-  tableCol: { 
-    width: "12.5%", 
-    borderStyle: "solid", 
-    borderWidth: 1, 
-    borderLeftWidth: 0, 
+  },
+  tableCol: {
+    width: "12.5%",
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderLeftWidth: 0,
     borderTopWidth: 0,
     padding: 3,
     fontSize: 8,
@@ -123,7 +123,7 @@ const logoUrl = '/logo-glow.webp';
 
 /**
  * PDF Document component for rendering a running plan as a PDF
- * 
+ *
  * @param {Object} props - Component props
  * @param {Object} props.planData - The plan data object
  * @returns {JSX.Element} The PDF document component
@@ -143,22 +143,30 @@ const PlanPDFDocument = ({ planData }) => (
       <View style={styles.phasesContainer}>
         <View style={[styles.phaseBox, { width: '30%' }]}>
           <Text style={styles.phaseTitle}>Base Building</Text>
-          <Text style={styles.phaseValue}>{planData.periodization.base} weeks</Text>
+          <Text style={styles.phaseValue}>
+            {planData.periodization.base} {Number(planData.periodization.base) === 1 ? 'week' : 'weeks'}
+          </Text>
         </View>
         <View style={[styles.phaseBox, { width: '30%' }]}>
           <Text style={styles.phaseTitle}>Intensity Focus</Text>
-          <Text style={styles.phaseValue}>{planData.periodization.intensity} weeks</Text>
+          <Text style={styles.phaseValue}>
+            {planData.periodization.intensity} {Number(planData.periodization.intensity) === 1 ? 'week' : 'weeks'}
+          </Text>
         </View>
         <View style={[styles.phaseBox, { width: '30%' }]}>
           <Text style={styles.phaseTitle}>Taper</Text>
-          <Text style={styles.phaseValue}>{planData.periodization.taper} weeks</Text>
+          <Text style={styles.phaseValue}>
+            {planData.periodization.taper} {Number(planData.periodization.taper) === 1 ? 'week' : 'weeks'}
+          </Text>
         </View>
       </View>
-      <Text style={{ fontSize: 10, marginBottom: 10 }}>Total Plan Duration: {planData.periodization.totalWeeks} weeks</Text>
+      <Text style={{ fontSize: 10, marginBottom: 10 }}>
+        Total Plan Duration: {planData.periodization.totalWeeks} {Number(planData.periodization.totalWeeks) === 1 ? 'week' : 'weeks'}
+      </Text>
 
       {/* Weekly Schedule */}
       <Text style={styles.sectionTitle}>Weekly Schedule</Text>
-      
+
       <View style={styles.table}>
         {/* Table Header */}
         <View style={styles.tableRow}>
@@ -171,7 +179,7 @@ const PlanPDFDocument = ({ planData }) => (
           <View style={styles.tableColHeader}><Text>Sat</Text></View>
           <View style={styles.tableColHeader}><Text>Sun</Text></View>
         </View>
-        
+
         {/* Table Rows */}
         {planData.weeklySchedule && planData.weeklySchedule.map((week, index) => (
           <View style={styles.tableRow} key={index}>
@@ -206,8 +214,8 @@ const PlanPDFDocument = ({ planData }) => (
       {/* Disclaimer */}
       <View style={styles.disclaimer}>
         <Text>
-          Important Disclaimer: This plan is generated based on the information you provided and is intended as a general guide only. 
-          Always consult with a healthcare professional before starting any new exercise program, especially if you have any health concerns or conditions. 
+          Important Disclaimer: This plan is generated based on the information you provided and is intended as a general guide only.
+          Always consult with a healthcare professional before starting any new exercise program, especially if you have any health concerns or conditions.
           Listen to your body and adjust the plan as needed.
         </Text>
       </View>

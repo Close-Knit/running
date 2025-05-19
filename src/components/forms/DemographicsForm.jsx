@@ -19,7 +19,9 @@ function DemographicsForm({ initialData, onSave, onBack, title }) {
     weight: '',
     weightUnit: 'kg',
     height: '',
-    heightUnit: 'cm'
+    heightUnit: 'cm',
+    heightFeet: '',
+    heightInches: ''
   });
 
   // Initialize form data from props when component mounts or initialData changes
@@ -42,7 +44,14 @@ function DemographicsForm({ initialData, onSave, onBack, title }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(formData);
+    
+    // Convert feet/inches to total inches if that unit is selected
+    let dataToSave = {...formData};
+    if (formData.heightUnit === 'in' && formData.heightFeet && formData.heightInches) {
+      dataToSave.height = (parseInt(formData.heightFeet) * 12 + parseInt(formData.heightInches || 0)).toString();
+    }
+    
+    onSave(dataToSave);
   };
 
   return (
@@ -106,16 +115,45 @@ function DemographicsForm({ initialData, onSave, onBack, title }) {
         <div className="form-group">
           <label htmlFor="height">Height:</label>
           <div className="input-with-unit">
-            <input 
-              type="number" 
-              id="height" 
-              name="height" 
-              min="1" 
-              max="300" 
-              value={formData.height} 
-              onChange={handleChange}
-              required
-            />
+            {formData.heightUnit === 'cm' ? (
+              <input 
+                type="number" 
+                id="height" 
+                name="height" 
+                min="1" 
+                max="300" 
+                value={formData.height} 
+                onChange={handleChange}
+                required
+              />
+            ) : (
+              <div className="feet-inches-container">
+                <select
+                  id="heightFeet"
+                  name="heightFeet"
+                  value={formData.heightFeet}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">ft</option>
+                  {Array.from({ length: 8 }, (_, i) => (
+                    <option key={i} value={i + 1}>{i + 1}</option>
+                  ))}
+                </select>
+                <select
+                  id="heightInches"
+                  name="heightInches"
+                  value={formData.heightInches}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">in</option>
+                  {Array.from({ length: 12 }, (_, i) => (
+                    <option key={i} value={i}>{i}</option>
+                  ))}
+                </select>
+              </div>
+            )}
             <select 
               name="heightUnit" 
               value={formData.heightUnit} 

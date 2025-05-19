@@ -1,13 +1,31 @@
 /* src/pages/RunningPlansPage.css */
+.running-plans-container {
+  width: 100%;
+}
+
 .running-plans-page {
-  padding: 2rem;
+  padding: 1rem;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .running-plans-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.running-plans-header .guide-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.running-plans-header .guide-logo {
+  height: 60px;
 }
 
 .running-plans-header h1 {
@@ -19,9 +37,9 @@
 
 .running-plans-header p {
   font-size: 1.2rem;
-  color: white;
+  color: #333;
   max-width: 600px;
-  margin: 0 auto;
+  margin: 0.5rem auto;
 }
 
 .progress-indicator {
@@ -40,13 +58,14 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.7);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
   transition: background-color 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .step-number.active {
@@ -57,7 +76,7 @@
 .step-line {
   height: 3px;
   width: 50px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.5);
   margin: 0 5px;
   transition: background-color 0.3s;
 }
@@ -83,15 +102,31 @@
   .running-plans-page {
     padding: 1rem;
   }
-  
+
+  .running-plans-container {
+    padding: 0;
+  }
+
+  .running-plans-header {
+    padding: 1rem;
+  }
+
+  .running-plans-header .guide-logo {
+    height: 40px;
+  }
+
   .running-plans-header h1 {
     font-size: 2rem;
   }
-  
+
+  .running-plans-header p {
+    font-size: 1rem;
+  }
+
   .step-line {
     width: 30px;
   }
-  
+
   .step-number {
     width: 30px;
     height: 30px;

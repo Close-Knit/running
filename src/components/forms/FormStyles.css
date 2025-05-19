@@ -165,7 +165,20 @@
 .form-buttons {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 2rem;
+}
+
+.social-share-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.share-label {
+  margin-right: 0.5rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .back-button {
@@ -262,4 +275,18 @@
   .remove-button {
     margin-left: 0;
   }
+}
+
+.feet-inches-container {
+  display: flex;
+  flex: 1;
+}
+
+.feet-inches-container select {
+  flex: 1;
+  margin-right: 5px;
+}
+
+.feet-inches-container select:last-child {
+  margin-right: 0;
 }
