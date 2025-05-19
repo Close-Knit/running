@@ -1,0 +1,72 @@
+/* src/components/PlanDisplayTable.css */
+.schedule-table {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 1.5rem;
+}
+
+.schedule-header {
+  display: flex;
+  background-color: rgba(50, 205, 50, 0.3); /* Slightly more opaque green for header */
+  font-weight: bold;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.schedule-row {
+  display: flex;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Zebra striping for alternating rows */
+.schedule-row:nth-child(odd) {
+  background-color: rgba(0, 0, 0, 0.3); /* Darker background for odd rows */
+}
+
+.schedule-row:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.2); /* Lighter background for even rows */
+}
+
+.schedule-cell {
+  flex: 1;
+  padding: 1rem;
+  min-width: 100px;
+  word-wrap: break-word;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Style for cells with workout content (non-REST days) */
+.schedule-cell.workout-day {
+  background-color: rgba(0, 255, 0, 0.3) !important; /* Slightly more opaque bright green with !important to override row background */
+}
+
+.week-phase-cell {
+  flex: 0 0 120px; /* Slightly wider to accommodate text */
+  font-weight: bold;
+  /* No special styling - just use the row's zebra striping */
+}
+
+.schedule-cell:last-child {
+  border-right: none;
+}
+
+/* Additional styling for better visual hierarchy */
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .schedule-table {
+    font-size: 0.9rem;
+  }
+
+  .schedule-cell {
+    padding: 0.75rem;
+    min-width: 80px;
+  }
+
+  .week-phase-cell {
+    flex: 0 0 100px; /* Slightly smaller on mobile */
+  }
+
+  /* No phase label styling needed anymore */
+}

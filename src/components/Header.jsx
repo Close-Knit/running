@@ -100,6 +100,7 @@ function Header() {
               <NavLink to="/obstacle-run" className="nav-link">Obstacle Run</NavLink>
               <NavLink to="/virtual-run" className="nav-link">Virtual Run</NavLink>
               <NavLink to="/barefoot-run" className="nav-link">Barefoot Run</NavLink>
+              <NavLink to="/running-plans" className="nav-link">Free Running Planner</NavLink>
             </nav>
           </div>
           <div className="header-right">
@@ -224,6 +225,7 @@ function Header() {
               <NavLink to="/obstacle-run" className="nav-link" onClick={closeMobileMenu}>Obstacle Run</NavLink>
               <NavLink to="/virtual-run" className="nav-link" onClick={closeMobileMenu}>Virtual Run</NavLink>
               <NavLink to="/barefoot-run" className="nav-link" onClick={closeMobileMenu}>Barefoot Run</NavLink>
+              <NavLink to="/running-plans" className="nav-link" onClick={closeMobileMenu}>Free Running Planner</NavLink>
               {/* <NavLink to="/blog" className="nav-link" onClick={closeMobileMenu}>Blog</NavLink> */}
             </nav>
           </div>

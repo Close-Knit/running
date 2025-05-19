@@ -21,7 +21,13 @@
   status = 301
   force = true
 
-# Redirect all routes to index.html for SPA client-side routing
+# Specific redirect for running plans with dynamic IDs
+[[redirects]]
+  from = "/running-plans/plan/*"
+  to = "/index.html"
+  status = 200
+
+# Redirect all other routes to index.html for SPA client-side routing
 [[redirects]]
   from = "/*"
   to = "/index.html"
