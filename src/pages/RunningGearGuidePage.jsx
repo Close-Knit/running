@@ -14,7 +14,7 @@ export default function RunningGearGuidePage() {
   useEffect(() => {
     const pageBackground = document.querySelector('.page-background');
     if (pageBackground) {
-      pageBackground.style.backgroundImage = 'url(/images/running-gear-guide.jpg)';
+      pageBackground.style.backgroundImage = 'url(/images/running-gear.jpg)';
 
       // Optimize background position for mobile
       const optimizeForMobile = () => {
@@ -301,3 +301,4 @@ export default function RunningGearGuidePage() {
     </div>
   );
 }
+
