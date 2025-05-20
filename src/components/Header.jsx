@@ -121,6 +121,7 @@ function Header() {
                   <NavLink to="/common-running-injuries-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Running Injuries Guide</NavLink>
                   <NavLink to="/womens-running-health-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Women's Running Health Guide</NavLink>
                   <NavLink to="/optimal-running-form-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Optimal Running Form Guide</NavLink>
+                  <NavLink to="/mental-strategies-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Mental Strategies Guide</NavLink>
                 </div>
               </div>
               {/* <NavLink to="/blog" className="nav-link">Blog</NavLink> */}
@@ -211,6 +212,16 @@ function Header() {
                 }}
               >
                 Optimal Form Guide
+              </NavLink>
+              <NavLink
+                to="/mental-strategies-guide"
+                className="mobile-dropdown-item"
+                onClick={() => {
+                  setMobileDropdownOpen(false);
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Mental Strategies Guide
               </NavLink>
             </div>
           </div>

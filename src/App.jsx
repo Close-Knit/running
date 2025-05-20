@@ -19,6 +19,7 @@ import RunningGearGuidePage from './pages/RunningGearGuidePage';
 import RunningInjuriesGuidePage from './pages/RunningInjuriesGuidePage';
 import WomensRunningHealthGuidePage from './pages/WomensRunningHealthGuidePage';
 import OptimalFormGuidePage from './pages/OptimalFormGuidePage';
+import MentalStrategiesGuidePage from './pages/MentalStrategiesGuidePage';
 import RunningPlansPage from './pages/RunningPlansPage';
 import TermsPage from './pages/TermsPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
@@ -104,6 +105,7 @@ function App() {
           <Route path="/common-running-injuries-guide" element={<RunningInjuriesGuidePage />} />
           <Route path="/womens-running-health-guide" element={<WomensRunningHealthGuidePage />} />
           <Route path="/optimal-running-form-guide" element={<OptimalFormGuidePage />} />
+          <Route path="/mental-strategies-guide" element={<MentalStrategiesGuidePage />} />
           <Route path="/running-plans/*" element={<RunningPlansPage />} />
           <Route path="/terms-and-conditions" element={<TermsPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
