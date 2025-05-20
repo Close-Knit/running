@@ -19,6 +19,8 @@ const routesToCheck = [
   '/start-running-guide',
   '/intermediate-running-guide',
   '/advanced-running-guide',
+  '/terms-and-conditions',
+  '/privacy-policy',
 ];
 
 // Function to check if a route returns a 200 OK status

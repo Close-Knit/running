@@ -19,6 +19,8 @@ import RunningGearGuidePage from './pages/RunningGearGuidePage';
 import RunningInjuriesGuidePage from './pages/RunningInjuriesGuidePage';
 import WomensRunningHealthGuidePage from './pages/WomensRunningHealthGuidePage';
 import RunningPlansPage from './pages/RunningPlansPage';
+import TermsPage from './pages/TermsPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 
 // Layout component imports
 import Header from './components/Header';
@@ -101,6 +103,8 @@ function App() {
           <Route path="/common-running-injuries-guide" element={<RunningInjuriesGuidePage />} />
           <Route path="/womens-running-health-guide" element={<WomensRunningHealthGuidePage />} />
           <Route path="/running-plans/*" element={<RunningPlansPage />} />
+          <Route path="/terms-and-conditions" element={<TermsPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           {/* <Route path="/blog" element={<BlogPage />} /> */}
           {/* 404 Not Found Route - catches all unmatched routes */}
           <Route path="*" element={<NotFoundPage />} />

@@ -27,6 +27,8 @@ const routes = [
   '/common-running-injuries-guide',
   '/womens-running-health-guide',
   '/running-plans',
+  '/terms-and-conditions',
+  '/privacy-policy',
 ];
 
 // Define nested routes that need special handling

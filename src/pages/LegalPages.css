@@ -1,0 +1,113 @@
+/* src/pages/LegalPages.css */
+/* Shared styles for Terms and Privacy Policy pages */
+
+.terms-page,
+.privacy-policy-page {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #f0f0f0;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.terms-container,
+.privacy-container {
+  padding: 1rem;
+}
+
+.terms-page h1,
+.privacy-policy-page h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #fff;
+  text-align: center;
+}
+
+.terms-page h2,
+.privacy-policy-page h2 {
+  font-size: 1.8rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: #4CAF50; /* Green color to match the site theme */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.5rem;
+}
+
+.terms-page h3,
+.privacy-policy-page h3 {
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #fff;
+}
+
+.terms-page h4,
+.privacy-policy-page h4 {
+  font-size: 1.2rem;
+  margin-top: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.terms-page p,
+.privacy-policy-page p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.terms-page ul,
+.privacy-policy-page ul {
+  margin-bottom: 1rem;
+  padding-left: 2rem;
+}
+
+.terms-page li,
+.privacy-policy-page li {
+  margin-bottom: 0.5rem;
+}
+
+.terms-page a,
+.privacy-policy-page a {
+  color: #4CAF50; /* Green color to match the site theme */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.terms-page a:hover,
+.privacy-policy-page a:hover {
+  color: #8BC34A; /* Lighter green on hover */
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .terms-page,
+  .privacy-policy-page {
+    padding: 1rem;
+  }
+  
+  .terms-page h1,
+  .privacy-policy-page h1 {
+    font-size: 2rem;
+  }
+  
+  .terms-page h2,
+  .privacy-policy-page h2 {
+    font-size: 1.5rem;
+  }
+  
+  .terms-page h3,
+  .privacy-policy-page h3 {
+    font-size: 1.3rem;
+  }
+  
+  .terms-page h4,
+  .privacy-policy-page h4 {
+    font-size: 1.1rem;
+  }
+}

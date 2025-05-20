@@ -18,7 +18,51 @@
   z-index: 10; /* Ensure footer is above other content */
 }
 
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.footer-link {
+  color: #4CAF50; /* Green color to match the site theme */
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: 0.9em;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #8BC34A; /* Lighter green on hover */
+  text-shadow: 0 0 8px rgba(76, 175, 80, 0.6); /* Green glow effect */
+}
+
 .app-footer p {
   margin: 0;
   font-size: 0.9em;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 480px) {
+  .app-footer {
+    height: auto;
+    padding: 10px 0;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+
+  .footer-link {
+    margin: 5px 0;
+  }
 }
