@@ -15,7 +15,7 @@ export default function OptimalFormGuidePage() {
   useEffect(() => {
     const pageBackground = document.querySelector('.page-background');
     if (pageBackground) {
-      pageBackground.style.backgroundImage = 'url(/images/optimal-form-guide.jpg)';
+      pageBackground.style.backgroundImage = 'url(/images/running-form.jpg)';
 
       // Optimize background position for mobile
       const optimizeForMobile = () => {
@@ -104,7 +104,7 @@ export default function OptimalFormGuidePage() {
       <SEO {...seoData} />
 
       <GuideHeader
-        title="Optimal Form Guide"
+        title="Optimal Running Form Guide"
         subtitle="Unlocking Your Best Run: A Guide to Optimal Running Form for Women and Men"
         intro="Good running form is more than just looking like a pro; it's about running efficiently, reducing your risk of injury, and ultimately, enjoying your runs more. While the fundamental principles of good form are universal, subtle biomechanical differences between men and women mean that some tailored advice can be beneficial. This guide will break down the key elements of good running form, first for women and then for men, making it accessible even if you're just starting your running journey. Remember, improving your form is a gradual process, so be patient with yourself and focus on one or two changes at a time."
       />
@@ -349,3 +349,5 @@ export default function OptimalFormGuidePage() {
     </div>
   );
 }
+
+
