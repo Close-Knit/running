@@ -253,9 +253,12 @@ function PlanPage() {
               <FacebookShareButton url={shareUrl} quote={shareTitle} className="social-share-button facebook-button">
                 <FacebookIcon size={32} round />
               </FacebookShareButton>
-              <RedditShareButton url={shareUrl} title={shareTitle} className="social-share-button reddit-button">
+              <div
+                onClick={() => window.open(`https://www.reddit.com/submit?url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(shareTitle)}`, '_blank')}
+                className="social-share-button reddit-button"
+              >
                 <RedditIcon size={32} round />
-              </RedditShareButton>
+              </div>
             </div>
           </div>
         ) : (
@@ -328,9 +331,9 @@ function PlanPage() {
         <Link to="/running-plans" className="button">Create New Running Plan</Link>
       </div>
 
-      <div className="plan-disclaimer">
-        <h3>Important Disclaimer</h3>
-        <p>This plan is generated based on the information you provided and is intended as a general guide only. Always consult with a healthcare professional before starting any new exercise program, especially if you have any health concerns or conditions. Listen to your body and adjust the plan as needed.</p>
+      <div className="disclaimer-box">
+        <h3>Important Disclaimer:</h3>
+        <p>The information in this guide is intended for educational purposes only and should not replace professional medical advice. Always consult with a healthcare professional before starting any new exercise program, especially if you have any health concerns or conditions. This guide offers general information about running training, but individual cases may vary and require personalized medical attention.</p>
       </div>
     </div>
   );

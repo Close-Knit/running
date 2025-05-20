@@ -182,6 +182,37 @@
   gap: 0.5rem;
 }
 
+/* Ensure consistent sizing for social share buttons */
+.social-share-inline .social-share-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+  overflow: hidden; /* Ensure content doesn't overflow */
+}
+
+.social-share-inline .social-share-button svg {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+.social-share-inline .twitter-button {
+  background-color: #1da1f2;
+}
+
+.social-share-inline .facebook-button {
+  background-color: #4267B2;
+}
+
+.social-share-inline .reddit-button {
+  background-color: #FF5700;
+}
+
 .share-label {
   margin-right: 0.5rem;
   font-size: 0.9rem;

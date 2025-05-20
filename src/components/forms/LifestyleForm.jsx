@@ -33,6 +33,16 @@ function LifestyleForm({ initialData, onSave, onBack, title }) {
   const handleCheckboxChange = (e, category) => {
     const { value, checked } = e.target;
 
+    // Special handling for "All Days" checkbox
+    if (category === 'availableDays' && value === 'all') {
+      const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+      setFormData(prevData => ({
+        ...prevData,
+        availableDays: checked ? weekdays : []
+      }));
+      return;
+    }
+
     setFormData(prevData => {
       let updatedData;
       if (checked) {
@@ -91,6 +101,17 @@ function LifestyleForm({ initialData, onSave, onBack, title }) {
         <div className="form-group">
           <label>Available Days for Training:</label>
           <div className="checkbox-group">
+            <div className="checkbox-item">
+              <input
+                type="checkbox"
+                id="day-all"
+                value="all"
+                checked={formData.availableDays.length === 7}
+                onChange={(e) => handleCheckboxChange(e, 'availableDays')}
+                name="availableDays"
+              />
+              <label htmlFor="day-all"><strong>All Days</strong></label>
+            </div>
             {weekdays.map(day => (
               <div key={day} className="checkbox-item">
                 <input
@@ -123,6 +144,9 @@ function LifestyleForm({ initialData, onSave, onBack, title }) {
               </div>
             ))}
           </div>
+          <p className="form-note">
+            <em>Note: Your preferred workout selections help us customize your training plan. We'll include more of your preferred workout types while still maintaining a balanced training approach.</em>
+          </p>
         </div>
 
         <div className="form-group">
@@ -141,6 +165,9 @@ function LifestyleForm({ initialData, onSave, onBack, title }) {
               </div>
             ))}
           </div>
+          <p className="form-note">
+            <em>Note: Your equipment access helps us tailor workouts to what you have available. For example, if you have a treadmill, we can include specific treadmill workouts, or if you have weights, we'll incorporate strength training with weights.</em>
+          </p>
         </div>
 
         <div className="form-group">
@@ -154,6 +181,9 @@ function LifestyleForm({ initialData, onSave, onBack, title }) {
             />
             <label htmlFor="interestedInBarefoot">Interested in barefoot/minimalist running?</label>
           </div>
+          <p className="form-note">
+            <em>Note: If selected, your plan will include a gradual transition to barefoot/minimalist running with specific exercises to strengthen your feet and lower legs. You'll also receive guidance on proper form and surface selection.</em>
+          </p>
         </div>
 
         <div className="form-buttons">

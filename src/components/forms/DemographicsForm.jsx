@@ -4,7 +4,7 @@ import './FormStyles.css';
 
 /**
  * Form component for collecting demographic information
- * 
+ *
  * @param {Object} props - Component props
  * @param {Object} props.initialData - Initial form data
  * @param {Function} props.onSave - Function to call when form is submitted
@@ -17,9 +17,9 @@ function DemographicsForm({ initialData, onSave, onBack, title }) {
     biologicalSex: '',
     age: '',
     weight: '',
-    weightUnit: 'kg',
+    weightUnit: 'lbs',
     height: '',
-    heightUnit: 'cm',
+    heightUnit: 'in',
     heightFeet: '',
     heightInches: ''
   });
@@ -44,13 +44,13 @@ function DemographicsForm({ initialData, onSave, onBack, title }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     // Convert feet/inches to total inches if that unit is selected
     let dataToSave = {...formData};
     if (formData.heightUnit === 'in' && formData.heightFeet && formData.heightInches) {
       dataToSave.height = (parseInt(formData.heightFeet) * 12 + parseInt(formData.heightInches || 0)).toString();
     }
-    
+
     onSave(dataToSave);
   };
 
@@ -60,10 +60,10 @@ function DemographicsForm({ initialData, onSave, onBack, title }) {
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="biologicalSex">Biological Sex:</label>
-          <select 
-            id="biologicalSex" 
-            name="biologicalSex" 
-            value={formData.biologicalSex} 
+          <select
+            id="biologicalSex"
+            name="biologicalSex"
+            value={formData.biologicalSex}
             onChange={handleChange}
             required
           >
@@ -76,13 +76,13 @@ function DemographicsForm({ initialData, onSave, onBack, title }) {
 
         <div className="form-group">
           <label htmlFor="age">Age:</label>
-          <input 
-            type="number" 
-            id="age" 
-            name="age" 
-            min="1" 
-            max="120" 
-            value={formData.age} 
+          <input
+            type="number"
+            id="age"
+            name="age"
+            min="1"
+            max="120"
+            value={formData.age}
             onChange={handleChange}
             required
           />
@@ -91,23 +91,23 @@ function DemographicsForm({ initialData, onSave, onBack, title }) {
         <div className="form-group">
           <label htmlFor="weight">Weight:</label>
           <div className="input-with-unit">
-            <input 
-              type="number" 
-              id="weight" 
-              name="weight" 
-              min="1" 
-              max="500" 
-              value={formData.weight} 
+            <input
+              type="number"
+              id="weight"
+              name="weight"
+              min="1"
+              max="500"
+              value={formData.weight}
               onChange={handleChange}
               required
             />
-            <select 
-              name="weightUnit" 
-              value={formData.weightUnit} 
+            <select
+              name="weightUnit"
+              value={formData.weightUnit}
               onChange={handleChange}
             >
-              <option value="kg">kg</option>
               <option value="lbs">lbs</option>
+              <option value="kg">kg</option>
             </select>
           </div>
         </div>
@@ -116,13 +116,13 @@ function DemographicsForm({ initialData, onSave, onBack, title }) {
           <label htmlFor="height">Height:</label>
           <div className="input-with-unit">
             {formData.heightUnit === 'cm' ? (
-              <input 
-                type="number" 
-                id="height" 
-                name="height" 
-                min="1" 
-                max="300" 
-                value={formData.height} 
+              <input
+                type="number"
+                id="height"
+                name="height"
+                min="1"
+                max="300"
+                value={formData.height}
                 onChange={handleChange}
                 required
               />
@@ -154,13 +154,13 @@ function DemographicsForm({ initialData, onSave, onBack, title }) {
                 </select>
               </div>
             )}
-            <select 
-              name="heightUnit" 
-              value={formData.heightUnit} 
+            <select
+              name="heightUnit"
+              value={formData.heightUnit}
               onChange={handleChange}
             >
-              <option value="cm">cm</option>
               <option value="in">in</option>
+              <option value="cm">cm</option>
             </select>
           </div>
         </div>

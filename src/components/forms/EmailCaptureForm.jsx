@@ -149,9 +149,12 @@ function EmailCaptureForm({ planId, onEmailAssociated }) {
                 <FacebookShareButton url={shareUrl} quote={shareTitle} className="social-share-button facebook-button">
                   <FacebookIcon size={28} round />
                 </FacebookShareButton>
-                <RedditShareButton url={shareUrl} title={shareTitle} className="social-share-button reddit-button">
+                <div
+                  onClick={() => window.open(`https://www.reddit.com/submit?url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(shareTitle)}`, '_blank')}
+                  className="social-share-button reddit-button"
+                >
                   <RedditIcon size={28} round />
-                </RedditShareButton>
+                </div>
               </div>
             </div>
           </form>

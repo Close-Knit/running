@@ -15,7 +15,7 @@ import './FormStyles.css';
 function TrainingHistoryForm({ initialData, onSave, onBack, title }) {
   const [formData, setFormData] = useState({
     currentWeeklyMileage: '',
-    mileageUnit: 'km',
+    mileageUnit: 'mi',
     recentRaces: [{ distance: '', time: '' }],
     injuryHistory: ''
   });
@@ -97,8 +97,8 @@ function TrainingHistoryForm({ initialData, onSave, onBack, title }) {
               value={formData.mileageUnit}
               onChange={handleChange}
             >
-              <option value="km">km</option>
               <option value="mi">mi</option>
+              <option value="km">km</option>
             </select>
           </div>
         </div>

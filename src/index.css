@@ -66,6 +66,14 @@ a:hover {
   }
 }
 
+/* Hide background image when printing */
+@media print {
+  .page-background {
+    display: none !important;
+    background-image: none !important;
+  }
+}
+
 /* Headings */
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0.5em; /* Reduced from 1.5em */

@@ -32,7 +32,6 @@
 
 .plan-summary,
 .plan-schedule,
-.plan-disclaimer,
 .plan-email-section,
 .plan-raw-data {
   background-color: rgba(0, 0, 0, 0.7);
@@ -45,9 +44,17 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
+.disclaimer-box {
+  background-color: rgba(255, 250, 240, 0.9);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-left: 4px solid #FFA500; /* Orange for disclaimer */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .plan-summary h2,
 .plan-schedule h2,
-.plan-disclaimer h3,
 .plan-email-section h3,
 .plan-raw-data h2,
 .plan-email-info h3 {
@@ -55,6 +62,18 @@
   margin-top: 0;
   margin-bottom: 1.5rem;
   font-size: 1.8rem;
+}
+
+.disclaimer-box h3 {
+  color: #FFA500; /* Orange for disclaimer heading */
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.disclaimer-box p {
+  color: #333; /* Dark text color for better readability */
+  line-height: 1.5;
 }
 
 .plan-phases {
@@ -182,12 +201,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   color: white;
   cursor: pointer;
   transition: transform 0.2s, opacity 0.2s;
+  overflow: hidden; /* Ensure content doesn't overflow */
+}
+
+.social-share-button svg {
+  width: 32px !important;
+  height: 32px !important;
 }
 
 .social-share-button:hover {
@@ -311,70 +336,90 @@
 
 /* Print styles */
 @media print {
-  .plan-page {
-    color: black;
-    background-color: white;
-    padding: 0;
+  /* Reset all background styles */
+  body, html, .plan-page, .running-plans-page, .running-plans-container {
+    color: black !important;
+    background-color: white !important;
+    background-image: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
+  /* Hide background elements */
+  .page-background {
+    display: none !important;
+    background-image: none !important;
+  }
+
+  /* Reset text styles */
   .plan-header h1 {
-    color: black;
-    text-shadow: none;
+    color: black !important;
+    text-shadow: none !important;
   }
 
+  /* Reset container styles */
   .plan-summary,
   .plan-schedule,
-  .plan-disclaimer {
-    background-color: white;
-    box-shadow: none;
-    border: 1px solid #ddd;
-    break-inside: avoid;
-    page-break-inside: avoid;
+  .disclaimer-box {
+    background-color: white !important;
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 
   .plan-summary h2,
-  .plan-schedule h2,
-  .plan-disclaimer h3 {
-    color: black;
+  .plan-schedule h2 {
+    color: black !important;
+  }
+
+  .disclaimer-box h3 {
+    color: #FFA500 !important;
+  }
+
+  .disclaimer-box p {
+    color: #333 !important;
   }
 
   .plan-phase {
-    background-color: #f5f5f5;
+    background-color: #f5f5f5 !important;
   }
 
   .plan-phase h3 {
-    color: black;
+    color: black !important;
   }
 
   .schedule-header {
-    background-color: #f5f5f5;
-    display: table-header-group; /* Ensure header appears on each page */
+    background-color: #f5f5f5 !important;
+    display: table-header-group !important; /* Ensure header appears on each page */
   }
 
   /* Improve table printing */
   .schedule-table {
-    display: table;
-    width: 100%;
-    border-collapse: collapse;
-    page-break-inside: auto; /* Allow table to break across pages */
+    display: table !important;
+    width: 100% !important;
+    border-collapse: collapse !important;
+    page-break-inside: auto !important; /* Allow table to break across pages */
   }
 
   .schedule-row {
-    display: table-row;
-    page-break-inside: avoid; /* Avoid breaking within a row */
-    break-inside: avoid;
+    display: table-row !important;
+    page-break-inside: avoid !important; /* Avoid breaking within a row */
+    break-inside: avoid !important;
   }
 
   .schedule-cell {
-    display: table-cell;
-    border: 1px solid #ddd;
-    padding: 8px;
-    vertical-align: top;
+    display: table-cell !important;
+    border: 1px solid #ddd !important;
+    padding: 8px !important;
+    vertical-align: top !important;
   }
 
   /* Zebra striping for better readability in print */
   .schedule-row:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #f9f9f9 !important;
   }
 
   /* Hide UI elements not needed for print */
@@ -382,7 +427,10 @@
   .plan-email-section,
   .pdf-button,
   .social-share-container,
-  .social-share-inline {
+  .social-share-inline,
+  header,
+  footer,
+  .guide-header-top {
     display: none !important;
   }
 }
