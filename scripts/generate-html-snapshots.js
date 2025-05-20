@@ -26,6 +26,7 @@ const routes = [
   '/running-gear-guide',
   '/common-running-injuries-guide',
   '/womens-running-health-guide',
+  '/optimal-running-form-guide',
   '/running-plans',
   '/terms-and-conditions',
   '/privacy-policy',
