@@ -2,13 +2,12 @@
 .app-footer {
   background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
   color: #f0f0f0;         /* Light text color */
-  text-align: center;
   height: 60px; /* Fixed height of 60px */
   width: 100%; /* Full width */
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0;
+  justify-content: space-between; /* Space between the three sections */
+  padding: 0 20px; /* Add horizontal padding */
   margin-top: 30px;       /* Some space above the footer */
   border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle light border */
   box-sizing: border-box;
@@ -18,12 +17,41 @@
   z-index: 10; /* Ensure footer is above other content */
 }
 
-.footer-content {
+/* Left section - currently empty but included for future use */
+.footer-left {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* Center section - contains links and copyright */
+.footer-center {
+  flex: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  text-align: center;
+}
+
+/* Right section - contains share button */
+.footer-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Custom styling for the share button in the footer */
+.footer-right .share-button {
+  padding: 6px 10px;
+  font-size: 0.85rem;
+}
+
+.footer-right .share-button svg {
+  width: 20px;
+  height: 20px;
 }
 
 .footer-links {
@@ -51,10 +79,25 @@
 }
 
 /* Responsive adjustments for smaller screens */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .app-footer {
     height: auto;
-    padding: 10px 0;
+    padding: 10px 20px;
+    flex-direction: column;
+  }
+
+  .footer-left, .footer-center, .footer-right {
+    width: 100%;
+    justify-content: center;
+    margin: 5px 0;
+  }
+
+  .footer-right {
+    order: 2; /* Move share button above copyright on mobile */
+  }
+
+  .footer-center {
+    order: 3; /* Move copyright to bottom on mobile */
   }
 
   .footer-links {
