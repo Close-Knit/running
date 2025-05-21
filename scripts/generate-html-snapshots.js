@@ -21,6 +21,7 @@ const routes = [
   '/blog',
   '/shoe-reviews',
   '/start-running-guide',
+  '/couch-to-5k-guide',
   '/intermediate-running-guide',
   '/advanced-running-guide',
   '/running-gear-guide',

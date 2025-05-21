@@ -26,6 +26,7 @@ const routes = [
   { path: '/blog', changefreq: 'weekly', priority: '0.7' },
   { path: '/shoe-reviews', changefreq: 'weekly', priority: '0.7' },
   { path: '/start-running-guide', changefreq: 'monthly', priority: '0.8' },
+  { path: '/couch-to-5k-guide', changefreq: 'monthly', priority: '0.8' },
   { path: '/terms-and-conditions', changefreq: 'monthly', priority: '0.5' },
   { path: '/privacy-policy', changefreq: 'monthly', priority: '0.5' },
   { path: '/intermediate-running-guide', changefreq: 'monthly', priority: '0.8' },
