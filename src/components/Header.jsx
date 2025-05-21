@@ -169,6 +169,8 @@ function Header() {
                 </button>
                 <div className={`dropdown-menu ${runnersDropdownOpen ? 'show' : ''}`}>
                   <NavLink to="/professional-runners/jakob-ingebrigtsen" className="dropdown-item" onClick={() => setRunnersDropdownOpen(false)}>Jakob Ingebrigtsen</NavLink>
+                  <NavLink to="/professional-runners/eliud-kipchoge" className="dropdown-item" onClick={() => setRunnersDropdownOpen(false)}>Eliud Kipchoge</NavLink>
+                  <NavLink to="/professional-runners/kelvin-kiptum" className="dropdown-item" onClick={() => setRunnersDropdownOpen(false)}>Kelvin Kiptum</NavLink>
                 </div>
               </div>
               {/* <NavLink to="/blog" className="nav-link">Blog</NavLink> */}
@@ -312,6 +314,26 @@ function Header() {
                 }}
               >
                 Jakob Ingebrigtsen
+              </NavLink>
+              <NavLink
+                to="/professional-runners/eliud-kipchoge"
+                className="mobile-dropdown-item"
+                onClick={() => {
+                  setMobileRunnersDropdownOpen(false);
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Eliud Kipchoge
+              </NavLink>
+              <NavLink
+                to="/professional-runners/kelvin-kiptum"
+                className="mobile-dropdown-item"
+                onClick={() => {
+                  setMobileRunnersDropdownOpen(false);
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Kelvin Kiptum
               </NavLink>
             </div>
           </div>
