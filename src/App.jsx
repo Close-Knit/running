@@ -25,6 +25,7 @@ import CouchTo5KGuidePage from './pages/CouchTo5KGuidePage';
 import RunningPlansPage from './pages/RunningPlansPage';
 import TermsPage from './pages/TermsPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import JakobIngebrigtsenPage from './pages/JakobIngebrigtsenPage';
 
 // Layout component imports
 import Header from './components/Header';
@@ -111,6 +112,7 @@ function App() {
           <Route path="/runners-nutrition-guide" element={<RunnersNutritionGuidePage />} />
           <Route path="/couch-to-5k-guide" element={<CouchTo5KGuidePage />} />
           <Route path="/running-plans/*" element={<RunningPlansPage />} />
+          <Route path="/professional-runners/jakob-ingebrigtsen" element={<JakobIngebrigtsenPage />} />
           <Route path="/terms-and-conditions" element={<TermsPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           {/* <Route path="/blog" element={<BlogPage />} /> */}

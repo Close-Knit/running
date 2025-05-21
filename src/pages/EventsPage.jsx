@@ -19,32 +19,43 @@ function EventsPage({ eventType }) {
   const currentPath = location.pathname;
   console.log('Current path:', currentPath);
 
-  // Set background image based on the current path
+  // Set background image based on the current path or selected event type
   useEffect(() => {
     const pageBackground = document.querySelector('.page-background');
     if (pageBackground) {
       let backgroundImage = '';
 
-      // Only change background if we're on a specific event page
-      if (currentPath === '/events') {
+      // First check if we have a filter event type selected
+      if (filters.eventType === 'charity') {
+        backgroundImage = 'fireman-walk.jpg';
+      } else if (filters.eventType === 'themed') {
+        backgroundImage = 'minidress.jpg';
+      } else if (filters.eventType === 'obstacle') {
+        backgroundImage = 'spartan.webp';
+      } else if (filters.eventType === 'virtual') {
+        backgroundImage = 'virtual.jpg';
+      } else if (filters.eventType === 'barefoot') {
+        backgroundImage = 'barefoot.jpg';
+      }
+      // If no filter event type, check the current path
+      else if (currentPath === '/events') {
         backgroundImage = 'ladyshoe.jpg';
-        pageBackground.style.backgroundImage = `url(/images/${backgroundImage})`;
-        console.log(`EventsPage: Set background to ${backgroundImage}`);
       } else if (currentPath === '/charity-run') {
         backgroundImage = 'fireman-walk.jpg';
-        pageBackground.style.backgroundImage = `url(/images/${backgroundImage})`;
       } else if (currentPath === '/themed-run') {
         backgroundImage = 'minidress.jpg';
-        pageBackground.style.backgroundImage = `url(/images/${backgroundImage})`;
       } else if (currentPath === '/obstacle-run') {
         backgroundImage = 'spartan.webp';
-        pageBackground.style.backgroundImage = `url(/images/${backgroundImage})`;
       } else if (currentPath === '/virtual-run') {
         backgroundImage = 'virtual.jpg';
-        pageBackground.style.backgroundImage = `url(/images/${backgroundImage})`;
       } else if (currentPath === '/barefoot-run') {
         backgroundImage = 'barefoot.jpg';
+      }
+
+      // Set the background image if we have one
+      if (backgroundImage) {
         pageBackground.style.backgroundImage = `url(/images/${backgroundImage})`;
+        console.log(`EventsPage: Set background to ${backgroundImage}`);
       }
       // Do NOT set a default background here, as it might override the homepage
 
@@ -69,7 +80,7 @@ function EventsPage({ eventType }) {
         window.removeEventListener('resize', optimizeForMobile);
       };
     }
-  }, [currentPath]);
+  }, [currentPath, filters.eventType]);
 
   // Get filters from URL query parameters or from the eventType prop
   const [filters, setFilters] = useState(() => {
@@ -87,6 +98,7 @@ function EventsPage({ eventType }) {
       city: params.get('city') || '',
       month: params.get('month') || currentMonth,
       day: params.get('day') || currentDay,
+      eventType: params.get('eventType') || eventType || '',
     };
   });
 
@@ -104,11 +116,18 @@ function EventsPage({ eventType }) {
         console.log('Current eventType:', eventType);
         console.log('Current path:', currentPath);
 
-        // Apply filters - only filter by type if we're not on the "All Events" page
-        if (eventType && currentPath !== '/events') {
-          // Convert eventType to lowercase for case-insensitive comparison
+        // Apply filters - check for event type from sidebar or URL
+        if (filters.eventType) {
+          // If we have an event type from the sidebar filter, use that
+          const typeToFilter = filters.eventType.toLowerCase();
+          console.log('Filtering by sidebar eventType (lowercase):', typeToFilter);
+
+          // Use ilike for case-insensitive matching
+          query = query.ilike('type', `%${typeToFilter}%`);
+        } else if (eventType && currentPath !== '/events') {
+          // If no sidebar filter but we have an eventType from the URL/prop, use that
           const typeToFilter = eventType.toLowerCase();
-          console.log('Filtering by eventType (lowercase):', typeToFilter);
+          console.log('Filtering by URL eventType (lowercase):', typeToFilter);
 
           // Use ilike for case-insensitive matching
           query = query.ilike('type', `%${typeToFilter}%`);
@@ -292,7 +311,13 @@ function EventsPage({ eventType }) {
       <div className="homepage-main-content">
         <div className="text-overlay-container">
           <h1>
-            {currentPath === '/events' ? 'All Events' :
+            {filters.eventType === 'charity' ? 'Charity Runs' :
+             filters.eventType === 'themed' ? 'Themed Runs' :
+             filters.eventType === 'obstacle' ? 'Obstacle Runs' :
+             filters.eventType === 'virtual' ? 'Virtual Runs' :
+             filters.eventType === 'barefoot' ? 'Barefoot Runs' :
+             filters.eventType ? `${filters.eventType.charAt(0).toUpperCase() + filters.eventType.slice(1)} Runs` :
+             currentPath === '/events' ? 'All Events' :
              eventType === 'charity' ? 'Charity Runs' :
              eventType === 'themed' ? 'Themed Runs' :
              eventType === 'obstacle' ? 'Obstacle Runs' :
@@ -302,8 +327,20 @@ function EventsPage({ eventType }) {
              'All Events'}
           </h1>
 
-          {/* Conditional paragraph text based on current path */}
-          {currentPath === '/events' ? (
+          {/* Conditional paragraph text based on selected event type */}
+          {filters.eventType === 'charity' ? (
+            <p>Running events that support charitable causes and make a difference.</p>
+          ) : filters.eventType === 'themed' ? (
+            <p>Fun runs that focus on a theme... like zombies!</p>
+          ) : filters.eventType === 'obstacle' ? (
+            <p>From Spartan Race to Tough Mudder, this is where the warriors go.</p>
+          ) : filters.eventType === 'virtual' ? (
+            <p>From We Run The North to The Conqueror Challenges, run from the comfort of your home.</p>
+          ) : filters.eventType === 'barefoot' ? (
+            <p>Barefoot runners aim to discover a more natural running stride.</p>
+          ) : filters.eventType ? (
+            <p>Specialized running events for every type of runner.</p>
+          ) : currentPath === '/events' ? (
             <p>All the types of events</p>
           ) : eventType === 'charity' ? (
             <p>Running events that support charitable causes and make a difference.</p>

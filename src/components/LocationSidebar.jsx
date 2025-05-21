@@ -14,6 +14,7 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedMonth, setSelectedMonth] = useState('');
   const [selectedDay, setSelectedDay] = useState('');
+  const [selectedEventType, setSelectedEventType] = useState('');
 
   // --- STATE FOR DROPDOWN OPTIONS ---
   // These will be populated from your database
@@ -22,6 +23,7 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
   const [cityOptions, setCityOptions] = useState([]);
   const [monthOptions, setMonthOptions] = useState([]);
   const [dayOptions, setDayOptions] = useState([]);
+  const [eventTypeOptions, setEventTypeOptions] = useState([]);
 
   // Set hardcoded country options and initialize state options
   useEffect(() => {
@@ -85,6 +87,17 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
     setSelectedMonth(currentMonth);
     setSelectedDay(currentDay);
 
+    // Initialize event type options
+    const eventTypes = [
+      { value: '', label: 'All Events' },
+      { value: 'charity', label: 'Charity Run' },
+      { value: 'themed', label: 'Themed Run' },
+      { value: 'obstacle', label: 'Obstacle Run' },
+      { value: 'virtual', label: 'Virtual Run' },
+      { value: 'barefoot', label: 'Barefoot Run' }
+    ];
+    setEventTypeOptions(eventTypes);
+
     // Set default country to USA
     setSelectedCountry('USA');
 
@@ -98,6 +111,7 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
         city: '',
         month: currentMonth,
         day: currentDay,
+        eventType: '',
         showNext30Days: true // Special flag to indicate we want to show the next 30 days
       });
 
@@ -349,7 +363,8 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
       state: '',
       city: '',
       month: selectedMonth,
-      day: selectedDay
+      day: selectedDay,
+      eventType: selectedEventType
     });
   };
 
@@ -544,7 +559,8 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
       state,
       city: '',
       month: selectedMonth,
-      day: selectedDay
+      day: selectedDay,
+      eventType: selectedEventType
     });
   };
 
@@ -558,7 +574,8 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
       state: selectedState,
       city,
       month: selectedMonth,
-      day: selectedDay
+      day: selectedDay,
+      eventType: selectedEventType
     });
 
     console.log("City selected:", city);
@@ -576,7 +593,8 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
       state: selectedState,
       city: selectedCity,
       month,
-      day: selectedDay
+      day: selectedDay,
+      eventType: selectedEventType
     });
   };
 
@@ -592,7 +610,25 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
       state: selectedState,
       city: selectedCity,
       month: selectedMonth,
-      day
+      day,
+      eventType: selectedEventType
+    });
+  };
+
+  const handleEventTypeChange = (event) => {
+    const eventType = event.target.value;
+    console.log("Event type selected:", eventType);
+
+    setSelectedEventType(eventType);
+
+    // Call onFilterChange with the updated event type
+    onFilterChange({
+      country: selectedCountry,
+      state: selectedState,
+      city: selectedCity,
+      month: selectedMonth,
+      day: selectedDay,
+      eventType
     });
   };
 
@@ -605,7 +641,8 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
       state: selectedState,
       city: selectedCity,
       month: selectedMonth,
-      day: selectedDay
+      day: selectedDay,
+      eventType: selectedEventType
     };
 
     onFilterChange(filters);
@@ -689,6 +726,18 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
         <label htmlFor="day-select">Day:</label>
         <select id="day-select" value={selectedDay} onChange={handleDayChange}>
           {dayOptions.map(option => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Event Type Dropdown */}
+      <div className="filter-group">
+        <label htmlFor="event-type-select">Event Type:</label>
+        <select id="event-type-select" value={selectedEventType} onChange={handleEventTypeChange}>
+          {eventTypeOptions.map(option => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>

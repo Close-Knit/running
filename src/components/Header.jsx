@@ -7,7 +7,9 @@ function Header() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [runnersDropdownOpen, setRunnersDropdownOpen] = useState(false);
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
+  const [mobileRunnersDropdownOpen, setMobileRunnersDropdownOpen] = useState(false);
 
   // Toggle mobile menu
   const toggleMobileMenu = () => {
@@ -23,30 +25,66 @@ function Header() {
     setMobileMenuOpen(false);
   };
 
-  // Toggle dropdown menu
+  // Toggle Running Guides dropdown menu
   const toggleDropdown = (e) => {
     e.preventDefault();
     setDropdownOpen(!dropdownOpen);
+    // Close runners dropdown if open
+    if (runnersDropdownOpen) {
+      setRunnersDropdownOpen(false);
+    }
   };
 
-  // Toggle mobile dropdown menu
+  // Toggle Professional Runners dropdown menu
+  const toggleRunnersDropdown = (e) => {
+    e.preventDefault();
+    setRunnersDropdownOpen(!runnersDropdownOpen);
+    // Close guides dropdown if open
+    if (dropdownOpen) {
+      setDropdownOpen(false);
+    }
+  };
+
+  // Toggle mobile Running Guides dropdown menu
   const toggleMobileDropdown = (e) => {
     e.preventDefault();
     setMobileDropdownOpen(!mobileDropdownOpen);
-    // Close mobile menu when opening mobile dropdown
+    // Close mobile menu and runners dropdown when opening mobile dropdown
     if (mobileMenuOpen) {
       setMobileMenuOpen(false);
+    }
+    if (mobileRunnersDropdownOpen) {
+      setMobileRunnersDropdownOpen(false);
+    }
+  };
+
+  // Toggle mobile Professional Runners dropdown menu
+  const toggleMobileRunnersDropdown = (e) => {
+    e.preventDefault();
+    setMobileRunnersDropdownOpen(!mobileRunnersDropdownOpen);
+    // Close mobile menu and guides dropdown when opening mobile runners dropdown
+    if (mobileMenuOpen) {
+      setMobileMenuOpen(false);
+    }
+    if (mobileDropdownOpen) {
+      setMobileDropdownOpen(false);
     }
   };
 
   // Close dropdowns when clicking outside
   useEffect(() => {
     const closeDropdowns = (e) => {
-      if (!e.target.closest('.dropdown')) {
+      if (!e.target.closest('.dropdown.guides-dropdown')) {
         setDropdownOpen(false);
       }
-      if (!e.target.closest('.mobile-dropdown')) {
+      if (!e.target.closest('.dropdown.runners-dropdown')) {
+        setRunnersDropdownOpen(false);
+      }
+      if (!e.target.closest('.mobile-dropdown.guides-mobile-dropdown')) {
         setMobileDropdownOpen(false);
+      }
+      if (!e.target.closest('.mobile-dropdown.runners-mobile-dropdown')) {
+        setMobileRunnersDropdownOpen(false);
       }
     };
 
@@ -94,18 +132,12 @@ function Header() {
         <>
           <div className="header-center">
             <nav className="main-nav"> {/* Navigation section */}
-              <NavLink to="/events" className="nav-link">All Events</NavLink>
-              <NavLink to="/charity-run" className="nav-link">Charity Run</NavLink>
-              <NavLink to="/themed-run" className="nav-link">Themed Run</NavLink>
-              <NavLink to="/obstacle-run" className="nav-link">Obstacle Run</NavLink>
-              <NavLink to="/virtual-run" className="nav-link">Virtual Run</NavLink>
-              <NavLink to="/barefoot-run" className="nav-link">Barefoot Run</NavLink>
               <NavLink to="/running-plans" className="nav-link">Free Running Planner</NavLink>
             </nav>
           </div>
           <div className="header-right">
             <nav className="secondary-nav">
-              <div className="dropdown">
+              <div className="dropdown guides-dropdown">
                 <button
                   className={`dropdown-toggle ${dropdownOpen ? 'active' : ''}`}
                   onClick={toggleDropdown}
@@ -126,6 +158,19 @@ function Header() {
                   <NavLink to="/runners-nutrition-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Runner's Nutrition Guide</NavLink>
                 </div>
               </div>
+
+              <div className="dropdown runners-dropdown">
+                <button
+                  className={`dropdown-toggle ${runnersDropdownOpen ? 'active' : ''}`}
+                  onClick={toggleRunnersDropdown}
+                  aria-expanded={runnersDropdownOpen}
+                >
+                  Professional Runners
+                </button>
+                <div className={`dropdown-menu ${runnersDropdownOpen ? 'show' : ''}`}>
+                  <NavLink to="/professional-runners/jakob-ingebrigtsen" className="dropdown-item" onClick={() => setRunnersDropdownOpen(false)}>Jakob Ingebrigtsen</NavLink>
+                </div>
+              </div>
               {/* <NavLink to="/blog" className="nav-link">Blog</NavLink> */}
             </nav>
           </div>
@@ -136,7 +181,7 @@ function Header() {
       {isMobile && (
         <div className="mobile-nav-container">
           {/* Mobile Running Guides Dropdown */}
-          <div className="mobile-dropdown">
+          <div className="mobile-dropdown guides-mobile-dropdown">
             <button
               className={`mobile-dropdown-toggle ${mobileDropdownOpen ? 'active' : ''}`}
               onClick={toggleMobileDropdown}
@@ -248,6 +293,29 @@ function Header() {
             </div>
           </div>
 
+          {/* Mobile Professional Runners Dropdown */}
+          <div className="mobile-dropdown runners-mobile-dropdown">
+            <button
+              className={`mobile-dropdown-toggle ${mobileRunnersDropdownOpen ? 'active' : ''}`}
+              onClick={toggleMobileRunnersDropdown}
+              aria-expanded={mobileRunnersDropdownOpen}
+            >
+              Professional Runners
+            </button>
+            <div className={`mobile-dropdown-menu ${mobileRunnersDropdownOpen ? 'show' : ''}`}>
+              <NavLink
+                to="/professional-runners/jakob-ingebrigtsen"
+                className="mobile-dropdown-item"
+                onClick={() => {
+                  setMobileRunnersDropdownOpen(false);
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Jakob Ingebrigtsen
+              </NavLink>
+            </div>
+          </div>
+
           {/* Hamburger Menu Button */}
           <button
             className={`hamburger-button ${mobileMenuOpen ? 'active' : ''}`}
@@ -263,12 +331,6 @@ function Header() {
           {/* Mobile Menu Dropdown */}
           <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
             <nav className="mobile-main-nav">
-              <NavLink to="/events" className="nav-link" onClick={closeMobileMenu}>All Events</NavLink>
-              <NavLink to="/charity-run" className="nav-link" onClick={closeMobileMenu}>Charity Run</NavLink>
-              <NavLink to="/themed-run" className="nav-link" onClick={closeMobileMenu}>Themed Run</NavLink>
-              <NavLink to="/obstacle-run" className="nav-link" onClick={closeMobileMenu}>Obstacle Run</NavLink>
-              <NavLink to="/virtual-run" className="nav-link" onClick={closeMobileMenu}>Virtual Run</NavLink>
-              <NavLink to="/barefoot-run" className="nav-link" onClick={closeMobileMenu}>Barefoot Run</NavLink>
               <NavLink to="/running-plans" className="nav-link" onClick={closeMobileMenu}>Free Running Planner</NavLink>
               {/* <NavLink to="/blog" className="nav-link" onClick={closeMobileMenu}>Blog</NavLink> */}
             </nav>

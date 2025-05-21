@@ -161,12 +161,12 @@ export default function MentalStrategiesGuidePage() {
           <h4>All Levels:</h4>
           <p>Using fitness trackers with badges, setting small weekly goals (e.g., "run one new route this week"), or incorporating "sprints" to landmarks can add an element of play and accomplishment to routine runs.</p>
 
-          {/* Video Placeholder 1 */}
+          {/* Video on Running Motivation */}
           <YouTubeEmbed
-            videoId=""
+            videoId="DsAW0CZQkJA"
             title="Developing Motivation for Consistent Running"
           />
-          <p className="video-note">Video Suggestion: Content focused on building and maintaining running motivation across different experience levels, or creative ways to make routine running a sustainable habit.</p>
+          <p className="video-note">This video explores strategies for building and maintaining running motivation across different experience levels.</p>
         </GuideSection>
 
         {/* --- Section 2 --- */}
@@ -211,12 +211,12 @@ export default function MentalStrategiesGuidePage() {
           <h4>Don't Cook Your Brain Too Early: Manage Pre-Race Mental Energy</h4>
           <p>Obsessing over the race for days can lead to mental fatigue. Develop strategies to distract yourself and conserve mental energy for race day.</p>
 
-          {/* Video Placeholder 2 */}
+          {/* Video on Pre-Race Mental Preparation */}
           <YouTubeEmbed
-            videoId=""
+            videoId="Tz0_Gzx7xCo"
             title="Mental Strategies for Pre-Race Preparation"
           />
-          <p className="video-note">Video Suggestion: Yowana's "How to Mentally Prepare for a Big Race" or a video detailing pre-race visualization and nerve management techniques applicable to various runner levels.</p>
+          <p className="video-note">This video covers essential pre-race visualization and nerve management techniques applicable to runners of all levels.</p>
 
           <h3>Your Inner Coach: Mastering Positive Self-Talk</h3>
           <p>Your internal dialogue significantly impacts performance.</p>
@@ -251,12 +251,12 @@ export default function MentalStrategiesGuidePage() {
           <h4>All Levels:</h4>
           <p>Develop a few short, powerful mantras. These are your go-to phrases when discomfort sets in or focus wavers. "Strong and steady," "Relentless forward progress," or even humorous ones can work wonders. Experiment during training to find what resonates.</p>
 
-          {/* Video Placeholder 3 */}
+          {/* Video on In-Race Mental Toughness */}
           <YouTubeEmbed
-            videoId=""
+            videoId="tYMU0LlW8LI"
             title="Developing In-Race Mental Toughness"
           />
-          <p className="video-note">Video Suggestion: Content focusing on psychological tactics for use during a race, such as managing discomfort, staying focused, and using mantras effectively across different race distances and runner abilities.</p>
+          <p className="video-note">This video demonstrates psychological tactics for use during a race, including managing discomfort, maintaining focus, and using mantras effectively across different race distances.</p>
         </GuideSection>
 
         {/* --- Section 3 --- */}
