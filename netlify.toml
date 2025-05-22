@@ -21,6 +21,20 @@
   status = 301
   force = true
 
+# Redirect obsolete blog URL to homepage
+[[redirects]]
+  from = "/blog"
+  to = "/"
+  status = 301
+  force = true
+
+# Redirect obsolete blog URL with trailing slash to homepage
+[[redirects]]
+  from = "/blog/*"
+  to = "/"
+  status = 301
+  force = true
+
 # Specific redirect for running plans with dynamic IDs
 [[redirects]]
   from = "/running-plans/plan/*"

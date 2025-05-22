@@ -13,12 +13,14 @@ const __dirname = path.dirname(__filename);
 const routes = [
   '/',
   '/events',
-  '/charity-run',
-  '/themed-run',
-  '/obstacle-run',
-  '/virtual-run',
-  '/barefoot-run',
-  '/blog',
+  // Event type filter URLs removed as they canonicalize to the homepage
+  // '/charity-run',
+  // '/themed-run',
+  // '/obstacle-run',
+  // '/virtual-run',
+  // '/barefoot-run',
+  // Obsolete blog URL removed
+  // '/blog',
   '/shoe-reviews',
   '/start-running-guide',
   '/couch-to-5k-guide',

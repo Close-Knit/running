@@ -226,6 +226,10 @@ function EventsPage({ eventType }) {
   const getSeoData = () => {
     let title, description, keywords, pageType;
 
+    // Determine if this is an event type filter page that should canonicalize to homepage
+    const isEventTypeFilterPage = currentPath !== '/' &&
+      ['/charity-run', '/themed-run', '/obstacle-run', '/virtual-run', '/barefoot-run'].includes(currentPath);
+
     // Set title and description based on event type
     if (currentPath === '/events') {
       title = "Fun Running Events Worldwide | Alt.Run";
@@ -289,7 +293,8 @@ function EventsPage({ eventType }) {
     return {
       title,
       description,
-      canonicalUrl: currentPath,
+      // Set canonical URL to homepage for event type filter pages
+      canonicalUrl: isEventTypeFilterPage ? '/' : currentPath,
       keywords,
       schema
     };
