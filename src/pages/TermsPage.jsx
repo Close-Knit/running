@@ -1,6 +1,6 @@
 // src/pages/TermsPage.jsx
-import { Helmet } from 'react-helmet-async';
 import { useEffect } from 'react';
+import SEO from '../components/SEO';
 import './LegalPages.css';
 
 function TermsPage() {
@@ -19,26 +19,18 @@ function TermsPage() {
   const seoData = {
     title: "Terms and Conditions | Alt.Run",
     description: "Terms and conditions for using Alt.Run and its running plan generator service.",
-    canonical: "https://alt.run/terms-and-conditions",
-    openGraph: {
-      url: "https://alt.run/terms-and-conditions",
-      title: "Terms and Conditions | Alt.Run",
-      description: "Terms and conditions for using Alt.Run and its running plan generator service.",
-      site_name: "Alt.Run"
-    }
+    canonicalUrl: "/terms-and-conditions", // Fixed to use canonicalUrl instead of canonical
+    ogType: "website",
+    keywords: [
+      "terms and conditions", "alt.run terms", "running website terms",
+      "user agreement", "service terms"
+    ]
   };
 
   return (
     <div className="terms-page">
-      <Helmet>
-        <title>{seoData.title}</title>
-        <meta name="description" content={seoData.description} />
-        <link rel="canonical" href={seoData.canonical} />
-        <meta property="og:url" content={seoData.openGraph.url} />
-        <meta property="og:title" content={seoData.openGraph.title} />
-        <meta property="og:description" content={seoData.openGraph.description} />
-        <meta property="og:site_name" content={seoData.openGraph.site_name} />
-      </Helmet>
+      {/* Use the SEO component instead of direct Helmet usage */}
+      <SEO {...seoData} />
 
       <div className="terms-container">
         <h1>Terms and Conditions for Alt.Run</h1>

@@ -15,7 +15,7 @@ export default function CouchTo5KGuidePage() {
   useEffect(() => {
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
-    
+
     // Set background image via JavaScript for better performance
     if (guideContentRef.current) {
       document.body.style.backgroundImage = "url('/images/c25k-guide.jpg')";
@@ -155,13 +155,13 @@ export default function CouchTo5KGuidePage() {
         {/* --- Section 2 --- */}
         <GuideSection id="training-plan" title="Your 8-Week Training Plan">
           <p>This flexible plan is designed for completing 3 to 4 running workouts per week. It's crucial to include rest days between your runs to allow your body to recover and adapt. Listen to your body and adjust the schedule to fit your life – consistency is more important than rigidly sticking to specific days.</p>
-          
+
           <TrainingPlanDisplay planData={c25kPlanJson} />
-          
+
           <PlanExplanation
             textAfter={
               <>
-                <p className="pro-tip"><strong>Pro Tip:</strong> To help organize your training and track your progress, consider using the <a href="/running-planner">alt.run free running planner</a>.</p>
+                <p className="pro-tip"><strong>Pro Tip:</strong> To help organize your training and track your progress, consider using the <a href="/running-plans">alt.run free running planner</a>.</p>
               </>
             }
           />
@@ -175,7 +175,7 @@ export default function CouchTo5KGuidePage() {
         {/* --- Section 4 --- */}
         <GuideSection id="warm-up" title="The All-Important Warm-Up (5 Minutes Before Each Run)">
           <p>Warming up properly prepares your muscles for exercise, increases blood flow, and can help reduce the risk of injury. Don't skip this!</p>
-          
+
           <ul>
             <li><strong>Brisk Walking (2 minutes):</strong> Start by walking at a pace that elevates your heart rate slightly.</li>
             <li><strong>Leg Swings (30 seconds per leg, each direction):</strong> Gently swing one leg forward and backward, then side to side. Hold onto a wall for balance if needed.</li>
@@ -188,7 +188,7 @@ export default function CouchTo5KGuidePage() {
         <GuideSection id="run-walk-method" title="Understanding the Run/Walk Method & Pacing">
           <h3>Running Pace</h3>
           <p>During your "run" intervals, aim for a comfortable, conversational pace. This means you should be able to speak in short sentences without gasping for air. If you can't, you're going too fast. It's okay if your "run" is a slow jog – the goal is to build endurance, not speed.</p>
-          
+
           <h3>Walking Pace</h3>
           <p>Your "walk" intervals are for active recovery. Walk briskly enough to keep your heart rate up but allow yourself to catch your breath.</p>
         </GuideSection>
@@ -196,7 +196,7 @@ export default function CouchTo5KGuidePage() {
         {/* --- Section 6 --- */}
         <GuideSection id="cool-down" title="Cooling Down After Every Run (5-10 Minutes)">
           <p>A cool-down helps your heart rate return to normal gradually and can aid in muscle recovery.</p>
-          
+
           <ul>
             <li><strong>Walking (5 minutes):</strong> Gradually slow your pace to a gentle walk.</li>
             <li><strong>Static Stretches (Hold each for 30 seconds):</strong> Once your heart rate has lowered, perform gentle stretches for your major running muscles.</li>
@@ -211,7 +211,7 @@ export default function CouchTo5KGuidePage() {
         {/* --- Section 7 --- */}
         <GuideSection id="strength-training" title="Strength Training for New Runners (Aim for 2 Times Per Week)">
           <p>Incorporating strength training helps build the muscles needed for running, improves durability, and can prevent injuries. Focus on simple bodyweight exercises on your non-running days:</p>
-          
+
           <ul>
             <li><strong>Squats (3 sets of 10-12 reps):</strong> Great for quads, glutes, and hamstrings.</li>
             <li><strong>Lunges (3 sets of 8-10 reps per leg):</strong> Works your leg muscles and improves balance.</li>
@@ -223,7 +223,7 @@ export default function CouchTo5KGuidePage() {
         {/* --- Section 8 --- */}
         <GuideSection id="nutrition" title="Nutrition Basics for Your Running Journey">
           <p>You don't need a special diet, but smart food choices can support your training.</p>
-          
+
           <ul>
             <li><strong>Pre-Run (30-60 minutes before):</strong> Have a small, easily digestible carbohydrate-rich snack if you're feeling hungry. A banana, a piece of toast, or a few crackers are good options.</li>
             <li><strong>Post-Run (within 30-60 minutes after):</strong> Aim for a snack or meal containing both carbohydrates (to replenish energy) and protein (to help muscle repair). Examples include Greek yogurt with fruit, a smoothie, or chocolate milk.</li>
@@ -255,7 +255,7 @@ export default function CouchTo5KGuidePage() {
         {/* --- Section 11 --- */}
         <GuideSection id="adapting-plan" title="Adapting the Plan to You">
           <p>This plan is a guide, not a rigid set of rules.</p>
-          
+
           <ul>
             <li><strong>Repeat Weeks:</strong> If a particular week feels too challenging, don't hesitate to repeat it. It's better to build a solid foundation.</li>
             <li><strong>Cross-Training:</strong> On your non-running days, consider low-impact activities like swimming, cycling, or strength training. This can help build overall fitness while giving your running muscles a break.</li>
@@ -266,7 +266,7 @@ export default function CouchTo5KGuidePage() {
         {/* --- Section 12 --- */}
         <GuideSection id="race-day" title="Your First 5K Race Day: Simple Tips for Success">
           <p>When the big day arrives:</p>
-          
+
           <ul>
             <li><strong>Rest Up:</strong> Aim for good sleep the night before.</li>
             <li><strong>Fuel Smart:</strong> Have your usual pre-run breakfast 1-2 hours before the start. Nothing new on race day!</li>
@@ -280,7 +280,7 @@ export default function CouchTo5KGuidePage() {
         {/* --- Section 13 --- */}
         <GuideSection id="you-got-this" title="You've Got This!">
           <p>Embarking on a Couch to 5K journey is a fantastic achievement. Trust the process, be patient with yourself, and celebrate every step forward. For more detailed information on running form, injury prevention, and other helpful topics, explore the <a href="/running-guides">alt.run running guides</a>.</p>
-          
+
           <p className="final-encouragement">Lace up those shoes – your first 5K is waiting!</p>
         </GuideSection>
       </div>

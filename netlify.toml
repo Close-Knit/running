@@ -35,6 +35,20 @@
   status = 301
   force = true
 
+# Redirect /events to homepage (alias)
+[[redirects]]
+  from = "/events"
+  to = "/"
+  status = 301
+  force = true
+
+# Redirect /events/ to homepage (alias with trailing slash)
+[[redirects]]
+  from = "/events/"
+  to = "/"
+  status = 301
+  force = true
+
 # Specific redirect for running plans with dynamic IDs
 [[redirects]]
   from = "/running-plans/plan/*"

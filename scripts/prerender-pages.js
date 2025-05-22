@@ -13,7 +13,7 @@ const __dirname = path.dirname(__filename);
 // These should match the routes defined in App.jsx for unique content pages
 const staticRoutes = [
   '/',
-  '/events',
+  // '/events' - Removed as it's now a 301 redirect to homepage
   '/shoe-reviews',
   '/start-running-guide',
   '/couch-to-5k-guide',

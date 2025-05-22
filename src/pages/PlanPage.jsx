@@ -180,11 +180,13 @@ function PlanPage() {
   // Define SEO data for the plan page
   const seoData = {
     title: plan && plan.plan_data && plan.plan_data.summary
-      ? `Alt.Run: ${plan.plan_data.summary}`
-      : "Alt.Run: Your Running Plan",
-    description: "Your personalized running plan from Alt.Run, tailored to your goals, experience level, and lifestyle.",
+      ? `${plan.plan_data.summary} | Alt.Run Running Plan`
+      : "Personalized Running Plan | Alt.Run",
+    description: plan && plan.plan_data && plan.plan_data.summary
+      ? `Your personalized ${plan.plan_data.summary} from Alt.Run, tailored to your goals, experience level, and lifestyle.`
+      : "Your personalized running plan from Alt.Run, tailored to your goals, experience level, and lifestyle.",
     canonicalUrl: `/running-plans/plan/${planId}`,
-    noindex: true, // Don't index individual plan pages
+    // Individual plan pages should be indexed with self-referencing canonicals
   };
 
   if (loading) return (

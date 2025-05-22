@@ -1,6 +1,6 @@
 // src/pages/PrivacyPolicyPage.jsx
-import { Helmet } from 'react-helmet-async';
 import { useEffect } from 'react';
+import SEO from '../components/SEO';
 import './LegalPages.css';
 
 function PrivacyPolicyPage() {
@@ -19,26 +19,18 @@ function PrivacyPolicyPage() {
   const seoData = {
     title: "Privacy Policy | Alt.Run",
     description: "Privacy policy for Alt.Run website and running plan generator service.",
-    canonical: "https://alt.run/privacy-policy",
-    openGraph: {
-      url: "https://alt.run/privacy-policy",
-      title: "Privacy Policy | Alt.Run",
-      description: "Privacy policy for Alt.Run website and running plan generator service.",
-      site_name: "Alt.Run"
-    }
+    canonicalUrl: "/privacy-policy", // Fixed to use canonicalUrl instead of canonical
+    ogType: "website",
+    keywords: [
+      "privacy policy", "alt.run privacy", "running website privacy",
+      "data protection", "user privacy"
+    ]
   };
 
   return (
     <div className="privacy-policy-page">
-      <Helmet>
-        <title>{seoData.title}</title>
-        <meta name="description" content={seoData.description} />
-        <link rel="canonical" href={seoData.canonical} />
-        <meta property="og:url" content={seoData.openGraph.url} />
-        <meta property="og:title" content={seoData.openGraph.title} />
-        <meta property="og:description" content={seoData.openGraph.description} />
-        <meta property="og:site_name" content={seoData.openGraph.site_name} />
-      </Helmet>
+      {/* Use the SEO component instead of direct Helmet usage */}
+      <SEO {...seoData} />
 
       <div className="privacy-container">
         <h1>Privacy Policy for Alt.Run</h1>

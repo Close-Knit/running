@@ -19,18 +19,17 @@ const routes = [
   // Homepage
   { path: '/', changefreq: 'daily', priority: '1.0' },
 
-  // Main events page
-  { path: '/events', changefreq: 'daily', priority: '0.9' },
+  // NOTE: Main events page (/events) is EXCLUDED as it redirects to homepage
 
-  // Event type filter URLs - removed as they canonicalize to homepage
-  // { path: '/charity-run', changefreq: 'daily', priority: '0.8' },
-  // { path: '/themed-run', changefreq: 'daily', priority: '0.8' },
-  // { path: '/obstacle-run', changefreq: 'daily', priority: '0.8' },
-  // { path: '/virtual-run', changefreq: 'daily', priority: '0.8' },
-  // { path: '/barefoot-run', changefreq: 'daily', priority: '0.8' },
+  // NOTE: Event type filter URLs are EXCLUDED as they canonicalize to homepage:
+  // - /charity-run
+  // - /themed-run
+  // - /obstacle-run
+  // - /virtual-run
+  // - /barefoot-run
 
-  // Obsolete blog URL - removed as it redirects to homepage
-  // { path: '/blog', changefreq: 'weekly', priority: '0.7' },
+  // NOTE: Obsolete blog URL is EXCLUDED as it redirects to homepage:
+  // - /blog
 
   // Unique content pages
   { path: '/shoe-reviews', changefreq: 'weekly', priority: '0.7' },
@@ -55,7 +54,7 @@ const routes = [
 
   // Running plans
   { path: '/running-plans', changefreq: 'monthly', priority: '0.8' },
-  { path: '/running-plans/plan', changefreq: 'monthly', priority: '0.7' }, // Base path for individual plans
+  // Individual plan pages are discovered and pre-rendered during build
 
   // Note: We don't include dynamic routes like /events/:slug or /running-plans/plan/:id here
   // Those would be generated separately if needed
@@ -75,6 +74,14 @@ function generateSitemapXml() {
     xml += `    <priority>${route.priority}</priority>\n`;
     xml += '  </url>\n';
   });
+
+  // Add a note about excluded event type filter URLs
+  xml += '\n  <!-- NOTE: Event type filter URLs are EXCLUDED as they canonicalize to homepage: -->\n';
+  xml += '  <!-- /charity-run, /themed-run, /obstacle-run, /virtual-run, /barefoot-run -->\n';
+
+  // Add a note about excluded blog URL
+  xml += '\n  <!-- NOTE: Obsolete blog URL is EXCLUDED as it redirects to homepage: -->\n';
+  xml += '  <!-- /blog -->\n';
 
   // Add comments for dynamic pages
   xml += '\n  <!-- Individual Event Pages - These would be dynamically generated -->\n';
@@ -106,6 +113,9 @@ function generateSitemapXml() {
   xml += '    <priority>0.5</priority>\n';
   xml += '  </url>\n';
   xml += '  -->\n';
+
+  xml += '\n  <!-- Individual Running Plans - These are discovered and pre-rendered during build -->\n';
+  xml += '  <!-- Each plan page has a self-referencing canonical URL and is properly indexed -->\n';
 
   xml += '</urlset>';
 
