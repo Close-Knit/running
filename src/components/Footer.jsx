@@ -11,8 +11,8 @@ function Footer() {
       </div>
       <div className="footer-center">
         <div className="footer-links">
-          <Link to="/privacy-policy" className="footer-link">Privacy Policy</Link>
-          <Link to="/terms-and-conditions" className="footer-link">Terms & Conditions</Link>
+          <Link to="/privacy-policy/" className="footer-link">Privacy Policy</Link>
+          <Link to="/terms-and-conditions/" className="footer-link">Terms & Conditions</Link>
         </div>
         <p>© {new Date().getFullYear()} Alt.Run. All rights reserved.</p>
       </div>

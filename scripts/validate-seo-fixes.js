@@ -4,25 +4,25 @@ import fetch from 'node-fetch';
 // Base URL of the site
 const siteUrl = 'https://alt.run';
 
-// URLs from sitemap to validate
+// URLs from sitemap to validate (with trailing slashes to match Netlify's Pretty URLs)
 const urlsToValidate = [
   '/',
-  '/shoe-reviews',
-  '/start-running-guide',
-  '/couch-to-5k-guide',
-  '/intermediate-running-guide',
-  '/advanced-running-guide',
-  '/running-gear-guide',
-  '/common-running-injuries-guide',
-  '/womens-running-health-guide',
-  '/optimal-running-form-guide',
-  '/mental-strategies-guide',
-  '/professional-runners/jakob-ingebrigtsen',
-  '/professional-runners/eliud-kipchoge',
-  '/professional-runners/kelvin-kiptum',
-  '/terms-and-conditions',
-  '/privacy-policy',
-  '/running-plans'
+  '/shoe-reviews/',
+  '/start-running-guide/',
+  '/couch-to-5k-guide/',
+  '/intermediate-running-guide/',
+  '/advanced-running-guide/',
+  '/running-gear-guide/',
+  '/common-running-injuries-guide/',
+  '/womens-running-health-guide/',
+  '/optimal-running-form-guide/',
+  '/mental-strategies-guide/',
+  '/professional-runners/jakob-ingebrigtsen/',
+  '/professional-runners/eliud-kipchoge/',
+  '/professional-runners/kelvin-kiptum/',
+  '/terms-and-conditions/',
+  '/privacy-policy/',
+  '/running-plans/'
 ];
 
 // Function to check if a URL returns 200 and has correct canonical
@@ -38,10 +38,10 @@ async function validateUrl(path) {
 
     const status = response.status;
     const finalUrl = response.url;
-    
+
     // Check if there were redirects
     const redirected = finalUrl !== url;
-    
+
     let canonicalUrl = null;
     if (status === 200) {
       const html = await response.text();
@@ -70,18 +70,18 @@ async function validateUrl(path) {
   }
 }
 
-// Function to validate trailing slash redirects
+// Function to validate non-trailing slash URLs redirect to trailing slash versions
 async function validateTrailingSlashRedirects() {
-  console.log('\n🔍 Validating trailing slash redirects...');
-  
-  const trailingSlashUrls = [
-    '/shoe-reviews/',
-    '/start-running-guide/',
-    '/running-plans/',
-    '/terms-and-conditions/'
+  console.log('\n🔍 Validating non-trailing slash URLs redirect to trailing slash versions...');
+
+  const nonTrailingSlashUrls = [
+    '/shoe-reviews',
+    '/start-running-guide',
+    '/running-plans',
+    '/terms-and-conditions'
   ];
 
-  for (const path of trailingSlashUrls) {
+  for (const path of nonTrailingSlashUrls) {
     try {
       const url = `${siteUrl}${path}`;
       const response = await fetch(url, {
@@ -90,7 +90,7 @@ async function validateTrailingSlashRedirects() {
 
       const status = response.status;
       const location = response.headers.get('location');
-      const expectedRedirect = path.slice(0, -1); // Remove trailing slash
+      const expectedRedirect = `${path}/`; // Add trailing slash
 
       if (status === 301 && location && location.endsWith(expectedRedirect)) {
         console.log(`✅ ${path} → ${location} (301)`);
@@ -108,17 +108,17 @@ async function validateSeoFixes() {
   console.log('🚀 Validating SEO fixes for Alt.Run...\n');
 
   console.log('📋 Checking sitemap URLs for 200 status and correct canonicals...');
-  
+
   const results = await Promise.all(urlsToValidate.map(validateUrl));
-  
+
   const validUrls = results.filter(r => r.isValid);
   const invalidUrls = results.filter(r => !r.isValid);
-  
+
   console.log(`\n✅ Valid URLs (${validUrls.length}):`);
   validUrls.forEach(result => {
     console.log(`   ${result.originalUrl}`);
   });
-  
+
   if (invalidUrls.length > 0) {
     console.log(`\n❌ Issues found (${invalidUrls.length}):`);
     invalidUrls.forEach(result => {
@@ -144,7 +144,7 @@ async function validateSeoFixes() {
   console.log(`   Total URLs checked: ${results.length}`);
   console.log(`   Valid (200, no redirects, correct canonical): ${validUrls.length}`);
   console.log(`   Issues found: ${invalidUrls.length}`);
-  
+
   if (invalidUrls.length === 0) {
     console.log('\n🎉 All SEO fixes validated successfully!');
   } else {

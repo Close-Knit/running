@@ -132,7 +132,7 @@ function Header() {
         <>
           <div className="header-center">
             <nav className="main-nav"> {/* Navigation section */}
-              <NavLink to="/running-plans" className="nav-link">Free Running Planner</NavLink>
+              <NavLink to="/running-plans/" className="nav-link">Free Running Planner</NavLink>
             </nav>
           </div>
           <div className="header-right">
@@ -146,16 +146,16 @@ function Header() {
                   Running Guides
                 </button>
                 <div className={`dropdown-menu ${dropdownOpen ? 'show' : ''}`}>
-                  <NavLink to="/start-running-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Beginner Running Guide</NavLink>
-                  <NavLink to="/couch-to-5k-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Couch to 5K Guide</NavLink>
-                  <NavLink to="/intermediate-running-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Intermediate Running Guide</NavLink>
-                  <NavLink to="/advanced-running-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Advanced Running Guide</NavLink>
-                  <NavLink to="/running-gear-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Running Gear Guide</NavLink>
-                  <NavLink to="/common-running-injuries-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Running Injuries Guide</NavLink>
-                  <NavLink to="/womens-running-health-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Women's Running Health Guide</NavLink>
-                  <NavLink to="/optimal-running-form-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Optimal Running Form Guide</NavLink>
-                  <NavLink to="/mental-strategies-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Mental Strategies Guide</NavLink>
-                  <NavLink to="/runners-nutrition-guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Runner's Nutrition Guide</NavLink>
+                  <NavLink to="/start-running-guide/" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Beginner Running Guide</NavLink>
+                  <NavLink to="/couch-to-5k-guide/" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Couch to 5K Guide</NavLink>
+                  <NavLink to="/intermediate-running-guide/" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Intermediate Running Guide</NavLink>
+                  <NavLink to="/advanced-running-guide/" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Advanced Running Guide</NavLink>
+                  <NavLink to="/running-gear-guide/" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Running Gear Guide</NavLink>
+                  <NavLink to="/common-running-injuries-guide/" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Running Injuries Guide</NavLink>
+                  <NavLink to="/womens-running-health-guide/" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Women's Running Health Guide</NavLink>
+                  <NavLink to="/optimal-running-form-guide/" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Optimal Running Form Guide</NavLink>
+                  <NavLink to="/mental-strategies-guide/" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Mental Strategies Guide</NavLink>
+                  <NavLink to="/runners-nutrition-guide/" className="dropdown-item" onClick={() => setDropdownOpen(false)}>Runner's Nutrition Guide</NavLink>
                 </div>
               </div>
 
@@ -168,9 +168,9 @@ function Header() {
                   Professional Runners
                 </button>
                 <div className={`dropdown-menu ${runnersDropdownOpen ? 'show' : ''}`}>
-                  <NavLink to="/professional-runners/jakob-ingebrigtsen" className="dropdown-item" onClick={() => setRunnersDropdownOpen(false)}>Jakob Ingebrigtsen</NavLink>
-                  <NavLink to="/professional-runners/eliud-kipchoge" className="dropdown-item" onClick={() => setRunnersDropdownOpen(false)}>Eliud Kipchoge</NavLink>
-                  <NavLink to="/professional-runners/kelvin-kiptum" className="dropdown-item" onClick={() => setRunnersDropdownOpen(false)}>Kelvin Kiptum</NavLink>
+                  <NavLink to="/professional-runners/jakob-ingebrigtsen/" className="dropdown-item" onClick={() => setRunnersDropdownOpen(false)}>Jakob Ingebrigtsen</NavLink>
+                  <NavLink to="/professional-runners/eliud-kipchoge/" className="dropdown-item" onClick={() => setRunnersDropdownOpen(false)}>Eliud Kipchoge</NavLink>
+                  <NavLink to="/professional-runners/kelvin-kiptum/" className="dropdown-item" onClick={() => setRunnersDropdownOpen(false)}>Kelvin Kiptum</NavLink>
                 </div>
               </div>
               {/* <NavLink to="/blog" className="nav-link">Blog</NavLink> */}
@@ -193,7 +193,7 @@ function Header() {
             </button>
             <div className={`mobile-dropdown-menu ${mobileDropdownOpen ? 'show' : ''}`}>
               <NavLink
-                to="/start-running-guide"
+                to="/start-running-guide/"
                 className="mobile-dropdown-item"
                 onClick={() => {
                   setMobileDropdownOpen(false);
@@ -203,7 +203,7 @@ function Header() {
                 Beginner Running Guide
               </NavLink>
               <NavLink
-                to="/couch-to-5k-guide"
+                to="/couch-to-5k-guide/"
                 className="mobile-dropdown-item"
                 onClick={() => {
                   setMobileDropdownOpen(false);
@@ -213,7 +213,7 @@ function Header() {
                 Couch to 5K Guide
               </NavLink>
               <NavLink
-                to="/intermediate-running-guide"
+                to="/intermediate-running-guide/"
                 className="mobile-dropdown-item"
                 onClick={() => {
                   setMobileDropdownOpen(false);
@@ -223,7 +223,7 @@ function Header() {
                 Intermediate Running Guide
               </NavLink>
               <NavLink
-                to="/advanced-running-guide"
+                to="/advanced-running-guide/"
                 className="mobile-dropdown-item"
                 onClick={() => {
                   setMobileDropdownOpen(false);
@@ -233,7 +233,7 @@ function Header() {
                 Advanced Running Guide
               </NavLink>
               <NavLink
-                to="/running-gear-guide"
+                to="/running-gear-guide/"
                 className="mobile-dropdown-item"
                 onClick={() => {
                   setMobileDropdownOpen(false);
@@ -243,7 +243,7 @@ function Header() {
                 Running Gear Guide
               </NavLink>
               <NavLink
-                to="/common-running-injuries-guide"
+                to="/common-running-injuries-guide/"
                 className="mobile-dropdown-item"
                 onClick={() => {
                   setMobileDropdownOpen(false);
@@ -253,7 +253,7 @@ function Header() {
                 Running Injuries Guide
               </NavLink>
               <NavLink
-                to="/womens-running-health-guide"
+                to="/womens-running-health-guide/"
                 className="mobile-dropdown-item"
                 onClick={() => {
                   setMobileDropdownOpen(false);
@@ -263,7 +263,7 @@ function Header() {
                 Women's Running Health Guide
               </NavLink>
               <NavLink
-                to="/optimal-running-form-guide"
+                to="/optimal-running-form-guide/"
                 className="mobile-dropdown-item"
                 onClick={() => {
                   setMobileDropdownOpen(false);
@@ -273,7 +273,7 @@ function Header() {
                 Optimal Form Guide
               </NavLink>
               <NavLink
-                to="/mental-strategies-guide"
+                to="/mental-strategies-guide/"
                 className="mobile-dropdown-item"
                 onClick={() => {
                   setMobileDropdownOpen(false);
@@ -283,7 +283,7 @@ function Header() {
                 Mental Strategies Guide
               </NavLink>
               <NavLink
-                to="/runners-nutrition-guide"
+                to="/runners-nutrition-guide/"
                 className="mobile-dropdown-item"
                 onClick={() => {
                   setMobileDropdownOpen(false);
@@ -306,7 +306,7 @@ function Header() {
             </button>
             <div className={`mobile-dropdown-menu ${mobileRunnersDropdownOpen ? 'show' : ''}`}>
               <NavLink
-                to="/professional-runners/jakob-ingebrigtsen"
+                to="/professional-runners/jakob-ingebrigtsen/"
                 className="mobile-dropdown-item"
                 onClick={() => {
                   setMobileRunnersDropdownOpen(false);
@@ -316,7 +316,7 @@ function Header() {
                 Jakob Ingebrigtsen
               </NavLink>
               <NavLink
-                to="/professional-runners/eliud-kipchoge"
+                to="/professional-runners/eliud-kipchoge/"
                 className="mobile-dropdown-item"
                 onClick={() => {
                   setMobileRunnersDropdownOpen(false);
@@ -326,7 +326,7 @@ function Header() {
                 Eliud Kipchoge
               </NavLink>
               <NavLink
-                to="/professional-runners/kelvin-kiptum"
+                to="/professional-runners/kelvin-kiptum/"
                 className="mobile-dropdown-item"
                 onClick={() => {
                   setMobileRunnersDropdownOpen(false);
@@ -353,7 +353,7 @@ function Header() {
           {/* Mobile Menu Dropdown */}
           <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
             <nav className="mobile-main-nav">
-              <NavLink to="/running-plans" className="nav-link" onClick={closeMobileMenu}>Free Running Planner</NavLink>
+              <NavLink to="/running-plans/" className="nav-link" onClick={closeMobileMenu}>Free Running Planner</NavLink>
               {/* <NavLink to="/blog" className="nav-link" onClick={closeMobileMenu}>Blog</NavLink> */}
             </nav>
           </div>

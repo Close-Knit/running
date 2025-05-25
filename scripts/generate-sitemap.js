@@ -13,18 +13,18 @@ const siteUrl = 'https://alt.run';
 // Current date in YYYY-MM-DD format for lastmod
 const currentDate = new Date().toISOString().split('T')[0];
 
-// Function to normalize URL to match Netlify's final serving pattern
-// Ensures consistency with how Netlify actually serves the URLs
+// Function to normalize URL to match Netlify's "Pretty URLs" behavior
+// Netlify automatically adds trailing slashes to directory-like paths
 function normalizeUrl(path) {
   // For homepage, always use trailing slash
   if (path === '/') {
     return `${siteUrl}/`;
   }
 
-  // For all other paths, ensure NO trailing slash to match your current setup
-  // This matches your React Router configuration and pre-rendering setup
-  const cleanPath = path.endsWith('/') ? path.slice(0, -1) : path;
-  return `${siteUrl}${cleanPath}`;
+  // For all content pages (guides, legal, etc.), add trailing slash to match Netlify's behavior
+  // This prevents 301 redirects from non-trailing to trailing slash versions
+  const pathWithTrailingSlash = path.endsWith('/') ? path : `${path}/`;
+  return `${siteUrl}${pathWithTrailingSlash}`;
 }
 
 // Define the routes that exist in the React Router configuration

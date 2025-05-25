@@ -36,7 +36,7 @@ function ensureDirectoryExists(dirPath) {
   }
 }
 
-// Function to normalize URL to match Netlify's final serving pattern
+// Function to normalize URL to match Netlify's "Pretty URLs" behavior
 // This must match the normalization used in generate-sitemap.js
 function normalizeCanonicalUrl(path) {
   const baseUrl = 'https://alt.run';
@@ -46,10 +46,10 @@ function normalizeCanonicalUrl(path) {
     return `${baseUrl}/`;
   }
 
-  // For all other paths, ensure NO trailing slash to match your current setup
-  // This matches your React Router configuration and Netlify serving pattern
-  const cleanPath = path.endsWith('/') ? path.slice(0, -1) : path;
-  return `${baseUrl}${cleanPath}`;
+  // For all content pages (guides, legal, etc.), add trailing slash to match Netlify's behavior
+  // This prevents canonical URLs from pointing to redirects
+  const pathWithTrailingSlash = path.endsWith('/') ? path : `${path}/`;
+  return `${baseUrl}${pathWithTrailingSlash}`;
 }
 
 // Function to create HTML using Vite-generated template with correct asset paths
