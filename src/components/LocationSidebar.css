@@ -124,4 +124,97 @@
   }
 }
 
+/* Location controls styles */
+.location-controls {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
 
+.location-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+.location-status.detecting {
+  background-color: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.location-status.detected {
+  background-color: rgba(40, 167, 69, 0.2);
+  color: #28a745;
+  border: 1px solid rgba(40, 167, 69, 0.3);
+}
+
+.location-status.not-detected {
+  background-color: rgba(108, 117, 125, 0.2);
+  color: #6c757d;
+  border: 1px solid rgba(108, 117, 125, 0.3);
+}
+
+.location-toggle-btn {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  transition: background-color 0.2s ease;
+}
+
+.location-toggle-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.location-controls-actions {
+  margin-top: 8px;
+}
+
+.location-enable-btn {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.location-enable-btn:hover {
+  background: linear-gradient(135deg, #218838, #1ea085);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.location-enable-btn:active {
+  transform: translateY(0);
+}
+
+/* Mobile adjustments for location controls */
+@media (max-width: 768px) {
+  .location-controls {
+    margin-top: 12px;
+    padding-top: 12px;
+  }
+
+  .location-status {
+    font-size: 0.8rem;
+    padding: 6px 8px;
+  }
+
+  .location-enable-btn {
+    padding: 8px;
+    font-size: 0.85rem;
+  }
+}

@@ -139,11 +139,21 @@ function EventsPage({ eventType }) {
 
         // Location filters still apply to all pages
         if (filters.country) {
-          query = query.eq('country', filters.country);
+          if (tableName === 'events_canada') {
+            // For events_canada table, filter by country 'CA'
+            query = query.eq('country', 'CA');
+            console.log(`EventsPage: Applied country filter 'CA' to events_canada table`);
+          } else {
+            // For events table, apply the country filter
+            query = query.eq('country', filters.country);
+            console.log(`EventsPage: Applied country filter: ${filters.country} to table: ${tableName}`);
+          }
         }
+
         if (filters.state) {
           query = query.eq('state_province', filters.state);
         }
+
         if (filters.city) {
           query = query.eq('city', filters.city);
         }

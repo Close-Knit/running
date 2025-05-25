@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Amherstburg Query</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <h1>Test Amherstburg Query</h1>
+  <button id="testBtn">Test Query</button>
+  <div id="results"></div>
+
+  <script>
+    document.getElementById('testBtn').addEventListener('click', async () => {
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = '<p>Testing...</p>';
+      
+      try {
+        // Get Supabase URL and key from the environment variables
+        const supabaseUrl = 'https://lfcbwmqvbgfpjkqwue.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxmY2J3bXF2YmdmcGdwamtxd3VlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTU0NTM5NzcsImV4cCI6MjAzMTAyOTk3N30.Nh8yCZtYJMDM0T4Yx0b0-Uh9bTj-LrYl9pEcCw5icQE';
+        
+        // Create Supabase client
+        const { createClient } = supabase;
+        const client = createClient(supabaseUrl, supabaseKey);
+        
+        console.log('Testing basic connectivity...');
+        
+        // Test 1: Basic connectivity to events_canada
+        const { data: basicTest, error: basicError } = await client
+          .from('events_canada')
+          .select('id')
+          .limit(1);
+        
+        if (basicError) {
+          throw new Error(`Basic connectivity failed: ${JSON.stringify(basicError)}`);
+        }
+        
+        console.log('Basic connectivity passed:', basicTest);
+        
+        // Test 2: Get all data from events_canada (limited)
+        const { data: allData, error: allError } = await client
+          .from('events_canada')
+          .select('*')
+          .limit(10);
+        
+        if (allError) {
+          throw new Error(`All data query failed: ${JSON.stringify(allError)}`);
+        }
+        
+        console.log('All data query passed:', allData);
+        
+        // Test 3: Query with country filter only
+        const { data: countryData, error: countryError } = await client
+          .from('events_canada')
+          .select('*')
+          .eq('country', 'CA')
+          .limit(10);
+        
+        if (countryError) {
+          throw new Error(`Country filter failed: ${JSON.stringify(countryError)}`);
+        }
+        
+        console.log('Country filter passed:', countryData);
+        
+        // Test 4: Query with country and state filter
+        const { data: stateData, error: stateError } = await client
+          .from('events_canada')
+          .select('*')
+          .eq('country', 'CA')
+          .eq('state_province', 'ON')
+          .limit(10);
+        
+        if (stateError) {
+          throw new Error(`State filter failed: ${JSON.stringify(stateError)}`);
+        }
+        
+        console.log('State filter passed:', stateData);
+        
+        // Test 5: Query with all filters (like the failing query)
+        const { data: cityData, error: cityError } = await client
+          .from('events_canada')
+          .select('*')
+          .eq('country', 'CA')
+          .eq('state_province', 'ON')
+          .eq('city', 'Amherstburg')
+          .range(0, 9);
+        
+        if (cityError) {
+          throw new Error(`City filter failed: ${JSON.stringify(cityError)}`);
+        }
+        
+        console.log('City filter passed:', cityData);
+        
+        // Display results
+        resultsDiv.innerHTML = `
+          <h2>All Tests Passed!</h2>
+          <h3>Basic Test (${basicTest.length} results)</h3>
+          <pre>${JSON.stringify(basicTest, null, 2)}</pre>
+          
+          <h3>All Data (${allData.length} results)</h3>
+          <pre>${JSON.stringify(allData, null, 2)}</pre>
+          
+          <h3>Country Filter (${countryData.length} results)</h3>
+          <pre>${JSON.stringify(countryData, null, 2)}</pre>
+          
+          <h3>State Filter (${stateData.length} results)</h3>
+          <pre>${JSON.stringify(stateData, null, 2)}</pre>
+          
+          <h3>City Filter (${cityData.length} results)</h3>
+          <pre>${JSON.stringify(cityData, null, 2)}</pre>
+        `;
+      } catch (err) {
+        resultsDiv.innerHTML = `<p style="color: red;">Error: ${err.message}</p>`;
+        console.error('Error:', err);
+      }
+    });
+  </script>
+</body>
+</html>

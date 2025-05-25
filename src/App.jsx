@@ -5,6 +5,9 @@
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
+// Context imports
+import { LocationProvider } from './contexts/LocationContext';
+
 // Page component imports
 import HomePage from './pages/HomePage';
 import EventsPage from './pages/EventsPage';
@@ -70,63 +73,66 @@ function App() {
   }, []);
 
   return (
-    <> {/* React Fragment to group multiple top-level elements */}
-      {/* Background image container */}
-      <div
-        className="page-background"
-        style={{
-          backgroundImage: 'url(/images/homepage.jpg)'
-        }}
-      ></div>
+    <LocationProvider>
+      {/* React Fragment to group multiple top-level elements */}
+      <>
+        {/* Background image container */}
+        <div
+          className="page-background"
+          style={{
+            backgroundImage: 'url(/images/homepage.jpg)'
+          }}
+        ></div>
 
-      <Header /> {/* Renders the Header component at the top */}
+        <Header /> {/* Renders the Header component at the top */}
 
-      {/* Navigation bar removed as requested */}
+        {/* Navigation bar removed as requested */}
 
-      {/* Main content area where routed pages will be displayed */}
-      <main style={{
-          padding: '0', /* Removed horizontal padding to avoid interference with container */
-          marginTop: '0', /* Remove top margin */
-          minHeight: 'calc(100vh - 120px)', /* Adjusted to account for header and footer */
-          width: '100%', /* Ensure full width */
-          boxSizing: 'border-box', /* Include padding in width calculation */
-          position: 'relative', /* For proper stacking context */
-          zIndex: '1' /* Ensure content is above background */
-        }}>
-        <Routes> {/* Defines the different routes for your application */}
-          <Route path="/" element={<HomePage menuType="home" />} />
-          <Route path="/events" element={<EventsPage />} />
-          <Route path="/events/:slug" element={<EventDetailPage />} />
-          <Route path="/charity-run" element={<EventsPage eventType="charity" />} />
-          <Route path="/themed-run" element={<EventsPage eventType="themed" />} />
-          <Route path="/obstacle-run" element={<EventsPage eventType="obstacle" />} />
-          <Route path="/virtual-run" element={<EventsPage eventType="virtual" />} />
-          <Route path="/barefoot-run" element={<EventsPage eventType="barefoot" />} />
-          <Route path="/shoe-reviews" element={<ShoeReviewsPage />} />
-          <Route path="/start-running-guide" element={<BeginnerGuidePage />} />
-          <Route path="/intermediate-running-guide" element={<IntermediateGuidePage />} />
-          <Route path="/advanced-running-guide" element={<AdvancedRunningGuidePage />} />
-          <Route path="/running-gear-guide" element={<RunningGearGuidePage />} />
-          <Route path="/common-running-injuries-guide" element={<RunningInjuriesGuidePage />} />
-          <Route path="/womens-running-health-guide" element={<WomensRunningHealthGuidePage />} />
-          <Route path="/optimal-running-form-guide" element={<OptimalFormGuidePage />} />
-          <Route path="/mental-strategies-guide" element={<MentalStrategiesGuidePage />} />
-          <Route path="/runners-nutrition-guide" element={<RunnersNutritionGuidePage />} />
-          <Route path="/couch-to-5k-guide" element={<CouchTo5KGuidePage />} />
-          <Route path="/running-plans/*" element={<RunningPlansPage />} />
-          <Route path="/professional-runners/jakob-ingebrigtsen" element={<JakobIngebrigtsenPage />} />
-          <Route path="/professional-runners/eliud-kipchoge" element={<EliudKipchogePage />} />
-          <Route path="/professional-runners/kelvin-kiptum" element={<KelvinKiptumPage />} />
-          <Route path="/terms-and-conditions" element={<TermsPage />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-          {/* <Route path="/blog" element={<BlogPage />} /> */}
-          {/* 404 Not Found Route - catches all unmatched routes */}
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </main>
+        {/* Main content area where routed pages will be displayed */}
+        <main style={{
+            padding: '0', /* Removed horizontal padding to avoid interference with container */
+            marginTop: '0', /* Remove top margin */
+            minHeight: 'calc(100vh - 120px)', /* Adjusted to account for header and footer */
+            width: '100%', /* Ensure full width */
+            boxSizing: 'border-box', /* Include padding in width calculation */
+            position: 'relative', /* For proper stacking context */
+            zIndex: '1' /* Ensure content is above background */
+          }}>
+          <Routes> {/* Defines the different routes for your application */}
+            <Route path="/" element={<HomePage menuType="home" />} />
+            <Route path="/events" element={<EventsPage />} />
+            <Route path="/events/:slug" element={<EventDetailPage />} />
+            <Route path="/charity-run" element={<EventsPage eventType="charity" />} />
+            <Route path="/themed-run" element={<EventsPage eventType="themed" />} />
+            <Route path="/obstacle-run" element={<EventsPage eventType="obstacle" />} />
+            <Route path="/virtual-run" element={<EventsPage eventType="virtual" />} />
+            <Route path="/barefoot-run" element={<EventsPage eventType="barefoot" />} />
+            <Route path="/shoe-reviews" element={<ShoeReviewsPage />} />
+            <Route path="/start-running-guide" element={<BeginnerGuidePage />} />
+            <Route path="/intermediate-running-guide" element={<IntermediateGuidePage />} />
+            <Route path="/advanced-running-guide" element={<AdvancedRunningGuidePage />} />
+            <Route path="/running-gear-guide" element={<RunningGearGuidePage />} />
+            <Route path="/common-running-injuries-guide" element={<RunningInjuriesGuidePage />} />
+            <Route path="/womens-running-health-guide" element={<WomensRunningHealthGuidePage />} />
+            <Route path="/optimal-running-form-guide" element={<OptimalFormGuidePage />} />
+            <Route path="/mental-strategies-guide" element={<MentalStrategiesGuidePage />} />
+            <Route path="/runners-nutrition-guide" element={<RunnersNutritionGuidePage />} />
+            <Route path="/couch-to-5k-guide" element={<CouchTo5KGuidePage />} />
+            <Route path="/running-plans/*" element={<RunningPlansPage />} />
+            <Route path="/professional-runners/jakob-ingebrigtsen" element={<JakobIngebrigtsenPage />} />
+            <Route path="/professional-runners/eliud-kipchoge" element={<EliudKipchogePage />} />
+            <Route path="/professional-runners/kelvin-kiptum" element={<KelvinKiptumPage />} />
+            <Route path="/terms-and-conditions" element={<TermsPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            {/* <Route path="/blog" element={<BlogPage />} /> */}
+            {/* 404 Not Found Route - catches all unmatched routes */}
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </main>
 
-      <Footer /> {/* Renders the Footer component at the bottom */}
-    </>
+        <Footer /> {/* Renders the Footer component at the bottom */}
+      </>
+    </LocationProvider>
   );
 }
 

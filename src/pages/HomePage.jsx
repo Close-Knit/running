@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import LocationSidebar from '../components/LocationSidebar'; // Import the sidebar
+import LocationPrompt from '../components/LocationPrompt'; // Import location prompt
 import SEO from '../components/SEO'; // Import SEO component
 import { sortEventsByDate, filterEventsByDateRange } from '../utils/dateUtils';
 import './HomePage.css'; // Import CSS for this page's layout
@@ -114,6 +115,26 @@ function HomePage({ menuType: propMenuType = 'home' }) {
         const from = page * pageSize;
         const to = from + pageSize - 1;
 
+        // First, test basic connectivity to the table
+        console.log(`HomePage: Testing basic connectivity to ${tableName}...`);
+        try {
+          const { data: testData, error: testError } = await supabase
+            .from(tableName)
+            .select('id')
+            .limit(1);
+
+          if (testError) {
+            console.error(`HomePage: Basic connectivity test failed for ${tableName}:`, testError);
+            console.error('HomePage: Test error details:', JSON.stringify(testError, null, 2));
+            throw new Error(`Table ${tableName} is not accessible: ${testError.message}`);
+          }
+
+          console.log(`HomePage: Basic connectivity test passed for ${tableName}. Table has data:`, testData?.length > 0);
+        } catch (connectivityError) {
+          console.error(`HomePage: Connectivity test threw error:`, connectivityError);
+          throw connectivityError;
+        }
+
         // Start with a base query
         let query = supabase
           .from(tableName)
@@ -122,21 +143,22 @@ function HomePage({ menuType: propMenuType = 'home' }) {
 
         // Apply filters if they exist
         if (filters.country) {
-          // For Canada events, we need to use 'CAN' as the country code in the database
-          // For events_canada table, we don't need to filter by country since all events are Canadian
           if (tableName === 'events_canada') {
-            // For events_canada table, don't filter by country
-            console.log(`HomePage: Not applying country filter to events_canada table`);
+            // For events_canada table, filter by country 'CA'
+            query = query.eq('country', 'CA');
+            console.log(`HomePage: Applied country filter 'CA' to events_canada table`);
           } else {
             // For events table, apply the country filter
             query = query.eq('country', filters.country);
             console.log(`HomePage: Applied country filter: ${filters.country} to table: ${tableName}`);
           }
         }
+
         if (filters.state) {
           query = query.eq('state_province', filters.state);
           console.log(`HomePage: Applied state/province filter: ${filters.state}`);
         }
+
         if (filters.city) {
           query = query.eq('city', filters.city);
           console.log(`HomePage: Applied city filter: ${filters.city}`);
@@ -145,11 +167,28 @@ function HomePage({ menuType: propMenuType = 'home' }) {
         // Log the full query for debugging
         console.log(`HomePage: Executing query on table: ${tableName}`);
         console.log('HomePage: Query details:', query);
+        console.log('HomePage: About to execute Supabase query with filters:', filters);
+
+        // Log the exact query URL that will be constructed
+        console.log('HomePage: Query URL will be constructed for:', {
+          table: tableName,
+          filters: {
+            country: tableName === 'events_canada' ? 'CA' : filters.country,
+            state_province: filters.state,
+            city: filters.city
+          },
+          pagination: { from, to }
+        });
 
         const { data, error: supabaseError } = await query;
 
         if (supabaseError) {
-          console.error(`HomePage: Error querying table ${tableName}:`, supabaseError);
+          console.error(`HomePage: Supabase error querying table ${tableName}:`, supabaseError);
+          console.error('HomePage: Supabase error details:', JSON.stringify(supabaseError, null, 2));
+          console.error('HomePage: Supabase error message:', supabaseError.message);
+          console.error('HomePage: Supabase error code:', supabaseError.code);
+          console.error('HomePage: Supabase error hint:', supabaseError.hint);
+          console.error('HomePage: Supabase error details:', supabaseError.details);
           throw supabaseError;
         }
 
@@ -161,7 +200,7 @@ function HomePage({ menuType: propMenuType = 'home' }) {
 
         // If we're querying the events_canada table and got no results, let's try a simpler query
         if (tableName === 'events_canada' && (!data || data.length === 0)) {
-          console.log('HomePage: No results from events_canada table, trying a simpler query');
+          console.log('HomePage: No results from events_canada table, trying diagnostic queries');
 
           // Try a simple query without filters to see if the table has any data
           const { data: allCanadaData, error: allCanadaError } = await supabase
@@ -174,6 +213,36 @@ function HomePage({ menuType: propMenuType = 'home' }) {
           } else {
             console.log('HomePage: Simple query results from events_canada:', allCanadaData);
             console.log(`HomePage: Number of results from simple query: ${allCanadaData ? allCanadaData.length : 0}`);
+          }
+
+          // Check if Amherstburg exists in the table
+          const { data: amherstburgData, error: amherstburgError } = await supabase
+            .from('events_canada')
+            .select('*')
+            .eq('country', 'CA')
+            .eq('state_province', 'ON')
+            .eq('city', 'Amherstburg')
+            .limit(5);
+
+          if (amherstburgError) {
+            console.error('HomePage: Error querying for Amherstburg:', amherstburgError);
+          } else {
+            console.log('HomePage: Amherstburg query results:', amherstburgData);
+            console.log(`HomePage: Number of Amherstburg events: ${amherstburgData ? amherstburgData.length : 0}`);
+          }
+
+          // Check what cities exist in Ontario
+          const { data: ontarioCities, error: ontarioError } = await supabase
+            .from('events_canada')
+            .select('city, state_province, country')
+            .eq('country', 'CA')
+            .eq('state_province', 'ON')
+            .limit(10);
+
+          if (ontarioError) {
+            console.error('HomePage: Error querying Ontario cities:', ontarioError);
+          } else {
+            console.log('HomePage: Ontario cities in database:', ontarioCities);
           }
         }
 
@@ -189,7 +258,8 @@ function HomePage({ menuType: propMenuType = 'home' }) {
           // Calculate date for filtering
           const filterDate = new Date(currentYear, filterMonth - 1, filterDay);
 
-          console.log(`Filtering events from ${filterDate} for next ${currentTimeWindow} days`);
+          console.log(`HomePage: Filtering events from ${filterDate} for next ${currentTimeWindow} days`);
+          console.log(`HomePage: Using table ${tableName} with ${data.length} events before date filtering`);
 
           // Use our utility function to filter events for the specified time window
           let filteredEvents = filterEventsByDateRange(data, filterDate, currentTimeWindow);
@@ -238,9 +308,11 @@ function HomePage({ menuType: propMenuType = 'home' }) {
           return; // Exit early to prevent the finally block from executing
         } else if (data && data.length > 0) {
           // Even if we don't have month and day filters, still sort by date
+          console.log(`HomePage: Skipping date filtering - month: ${filters.month}, day: ${filters.day}`);
+          console.log(`HomePage: Using table ${tableName} with ${data.length} events without date filtering`);
           const sortedEvents = sortEventsByDate(data);
 
-          console.log('Events sorted by date (ascending) without filters:', sortedEvents);
+          console.log('HomePage: Events sorted by date (ascending) without date filters:', sortedEvents);
 
           // If loading more, append to existing events, otherwise replace
           if (isLoadMore) {
@@ -271,7 +343,13 @@ function HomePage({ menuType: propMenuType = 'home' }) {
           return; // Exit early to prevent the finally block from executing
         }
       } catch (err) {
-        console.error("Error fetching events:", err);
+        console.error("HomePage: Error fetching events:", err);
+        console.error("HomePage: Error type:", typeof err);
+        console.error("HomePage: Error name:", err.name);
+        console.error("HomePage: Error message:", err.message);
+        console.error("HomePage: Error stack:", err.stack);
+        console.error("HomePage: Full error object:", err);
+
         setError(err.message || "Failed to fetch events.");
         if (!isLoadMore) {
           setEvents([]);
@@ -282,20 +360,11 @@ function HomePage({ menuType: propMenuType = 'home' }) {
       }
     }
 
-    // Get current date for default filters
-    const today = new Date();
-    const currentMonth = String(today.getMonth() + 1);
-    const currentDay = String(today.getDate());
-
-    // Fetch with default filters - using USA as default
-    fetchEvents({
-      country: 'USA',
-      month: currentMonth,
-      day: currentDay
-    });
-
     // Store the fetchEvents function for later use
     window.fetchHomePageEvents = fetchEvents;
+
+    // Don't fetch immediately - let LocationSidebar handle the initial fetch
+    // either with auto-detected location or default USA filters
   }, []);
 
   // Handler for filter changes from LocationSidebar
@@ -363,6 +432,9 @@ function HomePage({ menuType: propMenuType = 'home' }) {
     <div className="homepage-layout">
       {/* SEO Component */}
       <SEO {...seoData} />
+
+      {/* Location Prompt - shows when user first visits */}
+      <LocationPrompt />
 
       <LocationSidebar
         onFilterChange={handleLocationFilterChange}

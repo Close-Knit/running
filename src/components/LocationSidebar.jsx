@@ -6,7 +6,21 @@ import './LocationSidebar.css'; // Import the CSS
 // Import Supabase client for database queries
 import { supabase } from '../supabaseClient';
 
+// Import location context
+import { useLocation } from '../hooks/useLocation';
+
 function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will be used to send filter changes
+  // --- LOCATION CONTEXT ---
+  const {
+    autoFilters,
+    hasValidLocation,
+    detectedLocation,
+    isDetecting,
+    preferences,
+    enableAutoDetection,
+    disableAutoDetection
+  } = useLocation();
+
   // --- STATE FOR SELECTED FILTER VALUES ---
   // We will initialize these later, possibly from URL params or default values
   const [selectedCountry, setSelectedCountry] = useState('');
@@ -15,6 +29,9 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
   const [selectedMonth, setSelectedMonth] = useState('');
   const [selectedDay, setSelectedDay] = useState('');
   const [selectedEventType, setSelectedEventType] = useState('');
+
+  // Track if auto-filters have been applied
+  const [autoFiltersApplied, setAutoFiltersApplied] = useState(false);
 
   // --- STATE FOR DROPDOWN OPTIONS ---
   // These will be populated from your database
@@ -101,28 +118,54 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
     // Set default country to USA
     setSelectedCountry('USA');
 
-    // Automatically apply filters with default values
+    // Automatically apply filters with default values (only if no auto-filters will be applied)
     setTimeout(() => {
-      // Call onFilterChange with the default values
-      // We'll use a special flag to indicate we want to show the next 30 days
-      onFilterChange({
-        country: 'USA',
-        state: '',
-        city: '',
-        month: currentMonth,
-        day: currentDay,
-        eventType: '',
-        showNext30Days: true // Special flag to indicate we want to show the next 30 days
-      });
+      // Only apply default filters if we don't have auto-filters from location detection
+      if (!autoFilters && !hasValidLocation()) {
+        console.log("LocationSidebar: Applying default USA filters (no location detected)");
+        console.log("LocationSidebar: autoFilters:", autoFilters);
+        console.log("LocationSidebar: hasValidLocation():", hasValidLocation());
+
+        // Call onFilterChange with the default values
+        // We'll use a special flag to indicate we want to show the next 30 days
+        onFilterChange({
+          country: 'USA',
+          state: '',
+          city: '',
+          month: currentMonth,
+          day: currentDay,
+          eventType: '',
+          showNext30Days: true // Special flag to indicate we want to show the next 30 days
+        });
+      } else {
+        console.log("LocationSidebar: Skipping default filters - auto-filters will be applied");
+        console.log("LocationSidebar: autoFilters:", autoFilters);
+        console.log("LocationSidebar: hasValidLocation():", hasValidLocation());
+      }
 
       // Do NOT automatically trigger the find events function on load
       // This was causing navigation to /events when the page loads
       // if (onFindEvents) {
       //   onFindEvents();
       // }
+    }, 3000); // Increased delay to 3 seconds to give location detection more time to complete
 
-      console.log("Automatically applying default filters on load (next 30 days)");
-    }, 500); // Give a bit more time for everything to initialize
+    // Clear location cache to force re-detection with restored working structure
+    import('../services/locationService').then(({ clearLocationCache }) => {
+      clearLocationCache();
+      console.log('LocationSidebar: Cleared location cache to force re-detection with restored working structure');
+    });
+
+    // Add debugging for location context values
+    console.log('LocationSidebar: Initial location context values:');
+    console.log('LocationSidebar: autoFilters:', autoFilters);
+    console.log('LocationSidebar: hasValidLocation():', hasValidLocation());
+    console.log('LocationSidebar: detectedLocation:', detectedLocation);
+    console.log('LocationSidebar: isDetecting:', isDetecting);
+
+  // Reset autoFiltersApplied when component mounts to ensure fresh state
+  setAutoFiltersApplied(false);
+  console.log('LocationSidebar: Reset autoFiltersApplied to false on mount');
 
     // Test direct database access - fetch all states
     const testDatabaseAccess = async () => {
@@ -184,25 +227,27 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
           }
         }
 
-        // Test Canada events table
+        // Test Canada events table - check what columns actually exist
         const { data: canadaEventsData, error: canadaError } = await supabase
           .from('events_canada')
-          .select('state_province, country')
-          .order('state_province');
+          .select('*')
+          .limit(10);
 
         if (canadaError) {
           console.error('Error in test database access for Canada events:', canadaError);
         } else {
-          console.log('Test database access successful for Canada events. All provinces:', canadaEventsData);
+          console.log('Test database access successful for Canada events. Sample data:', canadaEventsData);
+          console.log('Canada events table columns:', canadaEventsData.length > 0 ? Object.keys(canadaEventsData[0]) : 'No data');
 
-          // Log all raw data for Canada
-          const canadaData = canadaEventsData.filter(item => item.country === 'CAN');
-          console.log('Raw Canada data:', canadaData);
-
-          // Log each province individually to see if there are any issues
-          canadaData.forEach((item, index) => {
-            console.log(`Province ${index}:`, item.state_province, 'from country:', item.country);
-          });
+          // Check if state_province column exists
+          if (canadaEventsData.length > 0) {
+            const firstRow = canadaEventsData[0];
+            console.log('First row keys:', Object.keys(firstRow));
+            console.log('Has state_province column?', 'state_province' in firstRow);
+            console.log('Has locations column?', 'locations' in firstRow);
+            console.log('Sample locations value:', firstRow.locations);
+            console.log('Sample state_province value:', firstRow.state_province);
+          }
         }
       } catch (err) {
         console.error('Error in test database access:', err);
@@ -211,6 +256,55 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
 
     testDatabaseAccess();
   }, []);
+
+  // --- HANDLE AUTO-FILTERS FROM LOCATION DETECTION ---
+  useEffect(() => {
+    console.log('LocationSidebar: Auto-filters useEffect triggered');
+    console.log('LocationSidebar: autoFilters:', autoFilters);
+    console.log('LocationSidebar: autoFiltersApplied:', autoFiltersApplied);
+    console.log('LocationSidebar: hasValidLocation():', hasValidLocation());
+
+    if (autoFilters && !autoFiltersApplied && hasValidLocation()) {
+      console.log('LocationSidebar: ✅ CONDITIONS MET - Applying auto-detected location filters', autoFilters);
+      console.log('LocationSidebar: Auto-filters country:', autoFilters.country);
+      console.log('LocationSidebar: Auto-filters state:', autoFilters.state);
+      console.log('LocationSidebar: Auto-filters city:', autoFilters.city);
+
+      // Update the UI state to reflect the auto-detected location
+      setSelectedCountry(autoFilters.country);
+      setSelectedState(autoFilters.state);
+      setSelectedCity(autoFilters.city);
+      setSelectedMonth(autoFilters.month);
+      setSelectedDay(autoFilters.day);
+      setSelectedEventType(autoFilters.eventType);
+
+      // Fetch states and cities for the detected location
+      if (autoFilters.country) {
+        fetchStatesForCountry(autoFilters.country);
+
+        if (autoFilters.state) {
+          setTimeout(() => {
+            fetchCitiesForState(autoFilters.country, autoFilters.state);
+          }, 500); // Give time for states to load
+        }
+      }
+
+      // Apply the filters
+      console.log('LocationSidebar: 🚀 CALLING onFilterChange with auto-detected filters');
+      console.log('LocationSidebar: Filters being passed to onFilterChange:', autoFilters);
+      onFilterChange(autoFilters);
+
+      // Mark auto-filters as applied
+      setAutoFiltersApplied(true);
+
+      console.log('LocationSidebar: ✅ Auto-filters applied successfully');
+    } else {
+      console.log('LocationSidebar: ❌ CONDITIONS NOT MET for auto-filters');
+      console.log('LocationSidebar: autoFilters exists?', !!autoFilters);
+      console.log('LocationSidebar: autoFiltersApplied?', autoFiltersApplied);
+      console.log('LocationSidebar: hasValidLocation()?', hasValidLocation());
+    }
+  }, [autoFilters, autoFiltersApplied, hasValidLocation]); // Removed onFilterChange from dependencies to prevent re-renders
 
   // Function to fetch states/provinces for a selected country
   const fetchStatesForCountry = async (country) => {
@@ -227,23 +321,45 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
       const tableName = country === 'CAN' ? 'events_canada' : 'events';
       console.log(`Using table: ${tableName} for country: ${country}`);
 
-      // For debugging, let's try a direct query to see all state_province values
-      const { data: allStates, error: allStatesError } = await supabase
-        .from(tableName)
-        .select('state_province, country');
+      let data, error;
 
-      console.log('All states in database:', allStates);
+      if (tableName === 'events_canada') {
+        // For events_canada table, extract provinces from locations column
+        const { data: allData, error: fetchError } = await supabase
+          .from(tableName)
+          .select('locations')
+          .eq('country', 'CA')
+          .not('locations', 'is', null);
 
-      if (allStatesError) {
-        console.error('Error fetching all states:', allStatesError);
+        if (fetchError) {
+          error = fetchError;
+          data = [];
+        } else {
+          // Extract provinces from locations (format: "City, PROVINCE")
+          const provinces = allData
+            .map(item => {
+              if (item.locations && item.locations.includes(',')) {
+                const province = item.locations.split(',').pop().trim();
+                return { state_province: province };
+              }
+              return null;
+            })
+            .filter(item => item && item.state_province);
+
+          data = provinces;
+          error = null;
+        }
+      } else {
+        // For events table, use state_province column as before
+        const { data: fetchData, error: fetchError } = await supabase
+          .from(tableName)
+          .select('state_province')
+          .eq('country', country)
+          .not('state_province', 'is', null);
+
+        data = fetchData;
+        error = fetchError;
       }
-
-      // Fetch all states/provinces from the appropriate table for the selected country
-      const { data, error } = await supabase
-        .from(tableName)
-        .select('state_province')
-        .eq('country', country)
-        .not('state_province', 'is', null);
 
       if (error) {
         console.error('Error fetching states/provinces:', error);
@@ -383,38 +499,41 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
       const tableName = country === 'CAN' ? 'events_canada' : 'events';
       console.log(`Using table: ${tableName} for cities in ${state}, ${country}`);
 
-      // For debugging, let's try a direct query to see all city values
-      let debugQuery = supabase
-        .from(tableName)
-        .select('city, state_province, country');
+      let data, error;
 
-      // For events_canada table, filter by the selected province to see all cities
       if (tableName === 'events_canada') {
-        debugQuery = debugQuery.eq('state_province', state);
+        // For events_canada table, filter by locations containing the province
+        const { data: allData, error: fetchError } = await supabase
+          .from(tableName)
+          .select('locations, city')
+          .eq('country', 'CA')
+          .not('city', 'is', null);
+
+        if (fetchError) {
+          error = fetchError;
+          data = [];
+        } else {
+          // Filter to only include entries that end with the exact province code
+          const filteredData = allData.filter(item =>
+            item.locations && item.locations.endsWith(`, ${state}`)
+          );
+
+          // Extract cities
+          data = filteredData.map(item => ({ city: item.city }));
+          error = null;
+        }
+      } else {
+        // For events table, use state_province column as before
+        const { data: fetchData, error: fetchError } = await supabase
+          .from(tableName)
+          .select('city')
+          .eq('state_province', state)
+          .eq('country', country)
+          .not('city', 'is', null);
+
+        data = fetchData;
+        error = fetchError;
       }
-
-      const { data: allCities, error: allCitiesError } = await debugQuery;
-
-      console.log(`All cities in ${tableName} for ${state}:`, allCities);
-
-      if (allCitiesError) {
-        console.error('Error fetching all cities:', allCitiesError);
-      }
-
-      // Fetch all cities from the appropriate table for the selected state
-      let query = supabase
-        .from(tableName)
-        .select('city')
-        .eq('state_province', state)
-        .not('city', 'is', null);
-
-      // Only apply country filter for the events table, not for events_canada
-      // This ensures we get all cities from the events_canada table for the selected province
-      if (tableName !== 'events_canada') {
-        query = query.eq('country', country);
-      }
-
-      const { data, error } = await query;
 
       if (error) {
         console.error('Error fetching cities:', error);
@@ -759,8 +878,65 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
         )}
       </div>
 
-      {/* TODO: "Use my current location" button */}
-      {/* TODO: "Clear filters" button */}
+      {/* Location Detection Status and Controls */}
+      <div className="location-controls">
+        {isDetecting && (
+          <div className="location-status detecting">
+            <span>🌍 Detecting your location...</span>
+          </div>
+        )}
+
+        {detectedLocation && hasValidLocation() && (
+          <div className="location-status detected">
+            <span>📍 Auto-filtered to {detectedLocation.city}, {detectedLocation.state}</span>
+            <button
+              type="button"
+              className="location-toggle-btn"
+              onClick={disableAutoDetection}
+              title="Disable automatic location filtering"
+            >
+              ✕
+            </button>
+          </div>
+        )}
+
+        {!detectedLocation && !isDetecting && preferences.autoDetectEnabled && (
+          <div className="location-status not-detected">
+            <span>🌍 Location detection available</span>
+            <button
+              type="button"
+              className="location-toggle-btn"
+              onClick={() => {
+                console.log('Manual location detection triggered');
+                // Import and call the location detection directly for debugging
+                import('../services/locationService').then(({ detectUserLocation }) => {
+                  import('../supabaseClient').then(({ supabase }) => {
+                    detectUserLocation(supabase).then(result => {
+                      console.log('Manual detection result:', result);
+                    });
+                  });
+                });
+              }}
+              title="Test location detection"
+            >
+              🔍
+            </button>
+          </div>
+        )}
+
+        {!preferences.autoDetectEnabled && (
+          <div className="location-controls-actions">
+            <button
+              type="button"
+              className="location-enable-btn"
+              onClick={enableAutoDetection}
+              title="Enable automatic location filtering"
+            >
+              📍 Use My Location
+            </button>
+          </div>
+        )}
+      </div>
     </aside>
   );
 }

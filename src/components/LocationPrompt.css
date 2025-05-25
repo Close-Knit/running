@@ -1,0 +1,133 @@
+/* src/components/LocationPrompt.css */
+
+.location-prompt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.location-prompt {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(20, 20, 20, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 480px;
+  width: 90%;
+  color: white;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.location-prompt-header h3 {
+  margin: 0 0 16px 0;
+  font-size: 1.4rem;
+  color: #00ff88;
+  text-align: center;
+}
+
+.location-prompt-content p {
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+  color: #e0e0e0;
+}
+
+.location-prompt-benefits {
+  margin: 16px 0;
+}
+
+.location-prompt-benefits ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.location-prompt-benefits li {
+  padding: 4px 0;
+  color: #00ff88;
+  font-size: 0.9rem;
+}
+
+.location-prompt-privacy {
+  font-size: 0.8rem !important;
+  color: #b0b0b0 !important;
+  margin-top: 16px !important;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.location-prompt-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.location-prompt-btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 140px;
+}
+
+.location-prompt-accept {
+  background: linear-gradient(135deg, #00ff88, #00cc6a);
+  color: black;
+}
+
+.location-prompt-accept:hover {
+  background: linear-gradient(135deg, #00cc6a, #00aa55);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 255, 136, 0.3);
+}
+
+.location-prompt-decline {
+  background: transparent;
+  color: #b0b0b0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.location-prompt-decline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .location-prompt {
+    margin: 20px;
+    padding: 20px;
+  }
+  
+  .location-prompt-actions {
+    flex-direction: column;
+  }
+  
+  .location-prompt-btn {
+    width: 100%;
+  }
+}
