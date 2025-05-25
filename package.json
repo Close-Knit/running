@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build:vite": "vite build",
-    "build": "npm run generate-sitemap && npm run build:vite && npm run prerender-pages",
+    "build": "npm run generate-sitemap && npm run build:vite && node scripts/prerender-pages-simple.js",
+    "build:complex": "npm run generate-sitemap && npm run build:vite && npm run prerender-pages",
     "build:simple": "npm run generate-sitemap && npm run build:vite && npm run prerender-pages:simple",
     "lint": "eslint .",
     "preview": "vite preview",
