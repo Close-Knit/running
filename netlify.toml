@@ -2,7 +2,10 @@
   publish = "dist"
   command = "npm run build"
 
-# Domain redirects for canonical URL
+# Domain redirects for canonical URL - optimized to prevent chains
+# Order matters: most specific first, then general patterns
+
+# Redirect www to non-www with HTTPS (handles both HTTP and HTTPS www)
 [[redirects]]
   from = "https://www.alt.run/*"
   to = "https://alt.run/:splat"
@@ -10,13 +13,14 @@
   force = true
 
 [[redirects]]
-  from = "http://alt.run/*"
+  from = "http://www.alt.run/*"
   to = "https://alt.run/:splat"
   status = 301
   force = true
 
+# Redirect HTTP to HTTPS (only for non-www, since www is handled above)
 [[redirects]]
-  from = "http://www.alt.run/*"
+  from = "http://alt.run/*"
   to = "https://alt.run/:splat"
   status = 301
   force = true
@@ -46,6 +50,104 @@
 [[redirects]]
   from = "/events/"
   to = "/"
+  status = 301
+  force = true
+
+# Trailing slash normalization - redirect trailing slashes to clean URLs
+# This prevents duplicate content and ensures canonical URLs
+[[redirects]]
+  from = "/shoe-reviews/"
+  to = "/shoe-reviews"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/start-running-guide/"
+  to = "/start-running-guide"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/couch-to-5k-guide/"
+  to = "/couch-to-5k-guide"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/intermediate-running-guide/"
+  to = "/intermediate-running-guide"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/advanced-running-guide/"
+  to = "/advanced-running-guide"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/running-gear-guide/"
+  to = "/running-gear-guide"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/common-running-injuries-guide/"
+  to = "/common-running-injuries-guide"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/womens-running-health-guide/"
+  to = "/womens-running-health-guide"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/optimal-running-form-guide/"
+  to = "/optimal-running-form-guide"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/mental-strategies-guide/"
+  to = "/mental-strategies-guide"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/running-plans/"
+  to = "/running-plans"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/terms-and-conditions/"
+  to = "/terms-and-conditions"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/privacy-policy/"
+  to = "/privacy-policy"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/professional-runners/jakob-ingebrigtsen/"
+  to = "/professional-runners/jakob-ingebrigtsen"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/professional-runners/eliud-kipchoge/"
+  to = "/professional-runners/eliud-kipchoge"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/professional-runners/kelvin-kiptum/"
+  to = "/professional-runners/kelvin-kiptum"
   status = 301
   force = true
 

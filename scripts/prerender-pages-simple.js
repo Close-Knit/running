@@ -36,11 +36,27 @@ function ensureDirectoryExists(dirPath) {
   }
 }
 
+// Function to normalize URL to match Netlify's final serving pattern
+// This must match the normalization used in generate-sitemap.js
+function normalizeCanonicalUrl(path) {
+  const baseUrl = 'https://alt.run';
+
+  // For homepage, always use trailing slash
+  if (path === '/') {
+    return `${baseUrl}/`;
+  }
+
+  // For all other paths, ensure NO trailing slash to match your current setup
+  // This matches your React Router configuration and Netlify serving pattern
+  const cleanPath = path.endsWith('/') ? path.slice(0, -1) : path;
+  return `${baseUrl}${cleanPath}`;
+}
+
 // Function to create HTML using Vite-generated template with correct asset paths
 function createHTMLFromTemplate(route, viteGeneratedHTML) {
   const title = getPageTitle(route);
   const description = getPageDescription(route);
-  const canonicalUrl = `https://alt.run${route === '/' ? '' : route}`;
+  const canonicalUrl = normalizeCanonicalUrl(route);
 
   // Replace the title, description, and canonical URL in the Vite-generated HTML
   let html = viteGeneratedHTML;

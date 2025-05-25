@@ -16,6 +16,7 @@
     "prerender-pages:simple": "node scripts/prerender-pages-simple.js",
     "check-routes": "node scripts/check-routes.js",
     "check-redirects": "node scripts/check-redirects.js",
+    "validate-seo": "node scripts/validate-seo-fixes.js",
     "postbuild": "echo 'Build completed with pre-rendered pages and sitemap generation'"
   },
   "dependencies": {

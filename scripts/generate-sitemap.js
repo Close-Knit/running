@@ -13,6 +13,20 @@ const siteUrl = 'https://alt.run';
 // Current date in YYYY-MM-DD format for lastmod
 const currentDate = new Date().toISOString().split('T')[0];
 
+// Function to normalize URL to match Netlify's final serving pattern
+// Ensures consistency with how Netlify actually serves the URLs
+function normalizeUrl(path) {
+  // For homepage, always use trailing slash
+  if (path === '/') {
+    return `${siteUrl}/`;
+  }
+
+  // For all other paths, ensure NO trailing slash to match your current setup
+  // This matches your React Router configuration and pre-rendering setup
+  const cleanPath = path.endsWith('/') ? path.slice(0, -1) : path;
+  return `${siteUrl}${cleanPath}`;
+}
+
 // Define the routes that exist in the React Router configuration
 // These match the routes defined in App.jsx
 const routes = [
@@ -65,10 +79,10 @@ function generateSitemapXml() {
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
   xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
 
-  // Add each route to the sitemap
+  // Add each route to the sitemap with normalized URLs
   routes.forEach(route => {
     xml += '  <url>\n';
-    xml += `    <loc>${siteUrl}${route.path}</loc>\n`;
+    xml += `    <loc>${normalizeUrl(route.path)}</loc>\n`;
     xml += `    <lastmod>${currentDate}</lastmod>\n`;
     xml += `    <changefreq>${route.changefreq}</changefreq>\n`;
     xml += `    <priority>${route.priority}</priority>\n`;
