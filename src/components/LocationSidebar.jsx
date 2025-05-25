@@ -119,12 +119,14 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
     setSelectedCountry('USA');
 
     // Automatically apply filters with default values (only if no auto-filters will be applied)
+    // Use a longer delay and check if auto-filters have already been applied
     setTimeout(() => {
-      // Only apply default filters if we don't have auto-filters from location detection
-      if (!autoFilters && !hasValidLocation()) {
-        console.log("LocationSidebar: Applying default USA filters (no location detected)");
+      // Only apply default filters if we don't have auto-filters AND auto-filters haven't been applied yet
+      if (!autoFilters && !hasValidLocation() && !autoFiltersApplied) {
+        console.log("LocationSidebar: Applying default USA filters (no location detected after 5 seconds)");
         console.log("LocationSidebar: autoFilters:", autoFilters);
         console.log("LocationSidebar: hasValidLocation():", hasValidLocation());
+        console.log("LocationSidebar: autoFiltersApplied:", autoFiltersApplied);
 
         // Call onFilterChange with the default values
         // We'll use a special flag to indicate we want to show the next 30 days
@@ -137,10 +139,14 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
           eventType: '',
           showNext30Days: true // Special flag to indicate we want to show the next 30 days
         });
+
+        // Mark that we've applied default filters to prevent auto-filters from overriding later
+        setAutoFiltersApplied(true);
       } else {
-        console.log("LocationSidebar: Skipping default filters - auto-filters will be applied");
+        console.log("LocationSidebar: Skipping default filters - auto-filters available or already applied");
         console.log("LocationSidebar: autoFilters:", autoFilters);
         console.log("LocationSidebar: hasValidLocation():", hasValidLocation());
+        console.log("LocationSidebar: autoFiltersApplied:", autoFiltersApplied);
       }
 
       // Do NOT automatically trigger the find events function on load
@@ -148,13 +154,10 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
       // if (onFindEvents) {
       //   onFindEvents();
       // }
-    }, 3000); // Increased delay to 3 seconds to give location detection more time to complete
+    }, 5000); // Increased delay to 5 seconds to give location detection more time to complete
 
-    // Clear location cache to force re-detection with restored working structure
-    import('../services/locationService').then(({ clearLocationCache }) => {
-      clearLocationCache();
-      console.log('LocationSidebar: Cleared location cache to force re-detection with restored working structure');
-    });
+    // Note: Location cache clearing removed to prevent interference with location detection
+    // The cache helps provide faster subsequent page loads for users
 
     // Add debugging for location context values
     console.log('LocationSidebar: Initial location context values:');
@@ -264,6 +267,8 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
     console.log('LocationSidebar: autoFiltersApplied:', autoFiltersApplied);
     console.log('LocationSidebar: hasValidLocation():', hasValidLocation());
 
+    // Only apply auto-filters if they exist, haven't been applied yet, and we have a valid location
+    // This prevents the race condition with default USA filters
     if (autoFilters && !autoFiltersApplied && hasValidLocation()) {
       console.log('LocationSidebar: ✅ CONDITIONS MET - Applying auto-detected location filters', autoFilters);
       console.log('LocationSidebar: Auto-filters country:', autoFilters.country);
@@ -289,15 +294,15 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
         }
       }
 
-      // Apply the filters
+      // Apply the filters immediately - this should happen before the 5-second default filter timeout
       console.log('LocationSidebar: 🚀 CALLING onFilterChange with auto-detected filters');
       console.log('LocationSidebar: Filters being passed to onFilterChange:', autoFilters);
       onFilterChange(autoFilters);
 
-      // Mark auto-filters as applied
+      // Mark auto-filters as applied to prevent both default filters and duplicate applications
       setAutoFiltersApplied(true);
 
-      console.log('LocationSidebar: ✅ Auto-filters applied successfully');
+      console.log('LocationSidebar: ✅ Auto-filters applied successfully - default filters will be skipped');
     } else {
       console.log('LocationSidebar: ❌ CONDITIONS NOT MET for auto-filters');
       console.log('LocationSidebar: autoFilters exists?', !!autoFilters);
