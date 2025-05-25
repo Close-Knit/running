@@ -3,7 +3,7 @@ import puppeteer from 'puppeteer';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { execSync } from 'child_process';
+
 
 // Get the directory name of the current module
 const __filename = fileURLToPath(import.meta.url);
@@ -43,14 +43,39 @@ function ensureDirectoryExists(dirPath) {
 async function startDevServer() {
   console.log('Starting development server for pre-rendering...');
 
+  const { spawn } = await import('child_process');
+
   // Start the development server in the background
-  const serverProcess = execSync('npm run dev -- --port 5173', {
+  const serverProcess = spawn('npm', ['run', 'dev', '--', '--port', '5173'], {
     stdio: ['ignore', 'pipe', 'pipe'],
-    detached: true
+    detached: false // Changed to false to prevent zombie processes
   });
 
-  // Give the server some time to start up
-  await new Promise(resolve => setTimeout(resolve, 5000));
+  // Wait for server to be ready by checking if port is available
+  let serverReady = false;
+  let attempts = 0;
+  const maxAttempts = 60; // 60 seconds max wait time
+
+  while (!serverReady && attempts < maxAttempts) {
+    try {
+      const response = await fetch('http://localhost:5173');
+      if (response.status === 200) {
+        serverReady = true;
+        console.log('Development server is ready!');
+      }
+    } catch (error) {
+      // Server not ready yet, wait and try again
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      attempts++;
+      if (attempts % 10 === 0) {
+        console.log(`Waiting for server to start... (${attempts}s)`);
+      }
+    }
+  }
+
+  if (!serverReady) {
+    throw new Error('Development server failed to start within 60 seconds');
+  }
 
   return serverProcess;
 }
@@ -71,11 +96,31 @@ async function prerenderPages() {
   // Start a development server for pre-rendering
   const serverProcess = await startDevServer();
 
+  // Set a global timeout for the entire pre-rendering process (10 minutes)
+  const globalTimeout = setTimeout(() => {
+    console.error('Pre-rendering process timed out after 10 minutes');
+    if (serverProcess && !serverProcess.killed) {
+      serverProcess.kill('SIGTERM');
+    }
+    process.exit(1);
+  }, 10 * 60 * 1000); // 10 minutes
+
   try {
-    // Launch a headless browser
+    // Launch a headless browser with Netlify-optimized settings
     const browser = await puppeteer.launch({
       headless: 'new', // Use the new headless mode
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage', // Overcome limited resource problems
+        '--disable-extensions',
+        '--disable-gpu',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding',
+        '--disable-features=TranslateUI',
+        '--disable-ipc-flooding-protection'
+      ]
     });
 
     // Create a new page
@@ -204,9 +249,14 @@ async function prerenderPages() {
     console.error('Error during pre-rendering:', error);
     process.exit(1);
   } finally {
+    // Clear the global timeout
+    clearTimeout(globalTimeout);
+
     // Kill the development server
-    process.kill(-serverProcess.pid);
-    console.log('Development server stopped.');
+    if (serverProcess && !serverProcess.killed) {
+      serverProcess.kill('SIGTERM');
+      console.log('Development server stopped.');
+    }
   }
 }
 
