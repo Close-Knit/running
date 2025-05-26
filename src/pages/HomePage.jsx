@@ -89,6 +89,55 @@ function HomePage({ menuType: propMenuType = 'home' }) {
     return () => clearTimeout(timeoutId);
   }, [menuType]); // Re-run when menuType changes
 
+  // Set background image based on selected event type filter
+  useEffect(() => {
+    const pageBackground = document.querySelector('.page-background');
+    if (pageBackground) {
+      let backgroundImage = '';
+
+      // Check if we have an event type filter selected
+      if (currentFilters.eventType === 'charity') {
+        backgroundImage = 'fireman-walk.jpg';
+      } else if (currentFilters.eventType === 'themed') {
+        backgroundImage = 'minidress.jpg';
+      } else if (currentFilters.eventType === 'obstacle') {
+        backgroundImage = 'spartan.webp';
+      } else if (currentFilters.eventType === 'virtual') {
+        backgroundImage = 'virtual.jpg';
+      } else if (currentFilters.eventType === 'barefoot') {
+        backgroundImage = 'barefoot.jpg';
+      } else {
+        // If no event type filter, use the default homepage background
+        backgroundImage = 'homepage.jpg';
+      }
+
+      // Set the background image
+      pageBackground.style.backgroundImage = `url(/images/${backgroundImage})`;
+      console.log(`HomePage: Set background to ${backgroundImage} for event type: ${currentFilters.eventType || 'none'}`);
+
+      // Optimize background position for mobile if needed
+      const optimizeForMobile = () => {
+        if (window.innerWidth <= 768) {
+          // Adjust background position for better mobile display
+          // This helps prevent zooming and pixelation issues
+          pageBackground.style.backgroundPosition = 'center center';
+        } else {
+          // Reset to default for desktop
+          pageBackground.style.backgroundPosition = 'center';
+        }
+      };
+
+      // Run optimization immediately and on resize
+      optimizeForMobile();
+      window.addEventListener('resize', optimizeForMobile);
+
+      // Clean up event listener on component unmount
+      return () => {
+        window.removeEventListener('resize', optimizeForMobile);
+      };
+    }
+  }, [currentFilters.eventType]); // Re-run when event type filter changes
+
   // Fetch events for display
   useEffect(() => {
     async function fetchEvents(filters = {}, isLoadMore = false, page = 0, customTimeWindow = null) {
