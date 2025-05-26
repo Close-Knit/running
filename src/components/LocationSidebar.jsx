@@ -1,6 +1,6 @@
 // src/components/LocationSidebar.jsx
 // No 'import React from "react";' needed for modern Vite/React
-import { useState, useEffect } from 'react'; // We'll need these later
+import { useState, useEffect, useRef } from 'react'; // We'll need these later
 import './LocationSidebar.css'; // Import the CSS
 
 // Import Supabase client for database queries
@@ -32,6 +32,9 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
 
   // Track if auto-filters have been applied
   const [autoFiltersApplied, setAutoFiltersApplied] = useState(false);
+
+  // Ref to track if any filters have been applied (persists across re-renders)
+  const filtersAppliedRef = useRef(false);
 
   // --- STATE FOR DROPDOWN OPTIONS ---
   // These will be populated from your database
@@ -119,14 +122,12 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
     setSelectedCountry('USA');
 
     // Automatically apply filters with default values (only if no auto-filters will be applied)
-    // Use a longer delay and check if auto-filters have already been applied
-    setTimeout(() => {
-      // Only apply default filters if we don't have auto-filters AND auto-filters haven't been applied yet
-      if (!autoFilters && !hasValidLocation() && !autoFiltersApplied) {
+    // Use a longer delay and check current state when timeout executes
+    const defaultFilterTimeout = setTimeout(() => {
+      // Check current state of filters - don't rely on closure values
+      if (!filtersAppliedRef.current) {
         console.log("LocationSidebar: Applying default USA filters (no location detected after 5 seconds)");
-        console.log("LocationSidebar: autoFilters:", autoFilters);
-        console.log("LocationSidebar: hasValidLocation():", hasValidLocation());
-        console.log("LocationSidebar: autoFiltersApplied:", autoFiltersApplied);
+        console.log("LocationSidebar: filtersAppliedRef.current:", filtersAppliedRef.current);
 
         // Call onFilterChange with the default values
         // We'll use a special flag to indicate we want to show the next 30 days
@@ -140,21 +141,19 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
           showNext30Days: true // Special flag to indicate we want to show the next 30 days
         });
 
-        // Mark that we've applied default filters to prevent auto-filters from overriding later
+        // Mark that we've applied default filters
+        filtersAppliedRef.current = true;
         setAutoFiltersApplied(true);
       } else {
-        console.log("LocationSidebar: Skipping default filters - auto-filters available or already applied");
-        console.log("LocationSidebar: autoFilters:", autoFilters);
-        console.log("LocationSidebar: hasValidLocation():", hasValidLocation());
-        console.log("LocationSidebar: autoFiltersApplied:", autoFiltersApplied);
+        console.log("LocationSidebar: Skipping default filters - filters already applied");
+        console.log("LocationSidebar: filtersAppliedRef.current:", filtersAppliedRef.current);
       }
-
-      // Do NOT automatically trigger the find events function on load
-      // This was causing navigation to /events when the page loads
-      // if (onFindEvents) {
-      //   onFindEvents();
-      // }
     }, 5000); // Increased delay to 5 seconds to give location detection more time to complete
+
+    // Cleanup timeout on unmount
+    return () => {
+      clearTimeout(defaultFilterTimeout);
+    };
 
     // Note: Location cache clearing removed to prevent interference with location detection
     // The cache helps provide faster subsequent page loads for users
@@ -166,9 +165,8 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
     console.log('LocationSidebar: detectedLocation:', detectedLocation);
     console.log('LocationSidebar: isDetecting:', isDetecting);
 
-  // Reset autoFiltersApplied when component mounts to ensure fresh state
-  setAutoFiltersApplied(false);
-  console.log('LocationSidebar: Reset autoFiltersApplied to false on mount');
+  // Note: autoFiltersApplied starts as false by default, no need to reset
+  console.log('LocationSidebar: autoFiltersApplied initial state:', autoFiltersApplied);
 
     // Test direct database access - fetch all states
     const testDatabaseAccess = async () => {
@@ -300,6 +298,7 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
       onFilterChange(autoFilters);
 
       // Mark auto-filters as applied to prevent both default filters and duplicate applications
+      filtersAppliedRef.current = true;
       setAutoFiltersApplied(true);
 
       console.log('LocationSidebar: ✅ Auto-filters applied successfully - default filters will be skipped');
@@ -309,7 +308,7 @@ function LocationSidebar({ onFilterChange, isLoading = false }) { // Props will 
       console.log('LocationSidebar: autoFiltersApplied?', autoFiltersApplied);
       console.log('LocationSidebar: hasValidLocation()?', hasValidLocation());
     }
-  }, [autoFilters, autoFiltersApplied, hasValidLocation]); // Removed onFilterChange from dependencies to prevent re-renders
+  }, [autoFilters]); // Only depend on autoFilters to prevent loops - hasValidLocation and autoFiltersApplied are checked inside
 
   // Function to fetch states/provinces for a selected country
   const fetchStatesForCountry = async (country) => {

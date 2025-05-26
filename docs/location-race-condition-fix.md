@@ -35,34 +35,48 @@ The race condition occurred in `LocationSidebar.jsx` between two competing timin
 // Before: 3 seconds
 setTimeout(() => { /* apply default filters */ }, 3000);
 
-// After: 5 seconds  
+// After: 5 seconds
 setTimeout(() => { /* apply default filters */ }, 5000);
 ```
 
-### 2. Added Race Condition Prevention
+### 2. Fixed Closure Variable Issue
 ```javascript
-// Before: Only checked if auto-filters exist
-if (!autoFilters && !hasValidLocation()) {
-  // Apply default USA filters
-}
+// Before: Used closure variables that could be stale
+setTimeout(() => {
+  if (!autoFilters && !hasValidLocation() && !autoFiltersApplied) {
+    // These values were captured at component mount, not current values
+  }
+}, 5000);
 
-// After: Also check if auto-filters were already applied
-if (!autoFilters && !hasValidLocation() && !autoFiltersApplied) {
-  // Apply default USA filters
-  setAutoFiltersApplied(true); // Prevent future auto-filter applications
-}
+// After: Use ref to track current state
+const filtersAppliedRef = useRef(false);
+setTimeout(() => {
+  if (!filtersAppliedRef.current) {
+    // Check current state, not stale closure values
+  }
+}, 5000);
 ```
 
 ### 3. Enhanced Auto-Filter Protection
 ```javascript
-// Auto-filters now mark themselves as applied immediately
+// Auto-filters now mark themselves as applied immediately using both state and ref
 if (autoFilters && !autoFiltersApplied && hasValidLocation()) {
   onFilterChange(autoFilters);
-  setAutoFiltersApplied(true); // Prevent default filters from overriding
+  filtersAppliedRef.current = true; // Immediate protection
+  setAutoFiltersApplied(true); // State update for UI
 }
 ```
 
-### 4. Removed Cache Clearing
+### 4. Fixed useEffect Dependencies
+```javascript
+// Before: Included autoFiltersApplied in dependencies causing loops
+}, [autoFilters, autoFiltersApplied, hasValidLocation]);
+
+// After: Only depend on autoFilters to prevent loops
+}, [autoFilters]);
+```
+
+### 5. Removed Cache Clearing
 ```javascript
 // Before: Cleared location cache on every page load
 clearLocationCache();
