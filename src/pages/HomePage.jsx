@@ -27,6 +27,7 @@ function HomePage({ menuType: propMenuType = 'home' }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [lastQueryParams, setLastQueryParams] = useState(null);
   const [timeWindow, setTimeWindow] = useState(30); // Default time window in days
+  const [currentFilters, setCurrentFilters] = useState({}); // Track current filters for dynamic heading
 
   // These were used for navigation to the events page, but we're not using that functionality anymore
   // const [activeFilters, setActiveFilters] = useState({
@@ -164,6 +165,15 @@ function HomePage({ menuType: propMenuType = 'home' }) {
           console.log(`HomePage: Applied city filter: ${filters.city}`);
         }
 
+        // Apply event type filter if specified
+        if (filters.eventType) {
+          const typeToFilter = filters.eventType.toLowerCase();
+          console.log('HomePage: Filtering by eventType (lowercase):', typeToFilter);
+
+          // Use ilike for case-insensitive matching
+          query = query.ilike('type', `%${typeToFilter}%`);
+        }
+
         // Log the full query for debugging
         console.log(`HomePage: Executing query on table: ${tableName}`);
         console.log('HomePage: Query details:', query);
@@ -175,7 +185,8 @@ function HomePage({ menuType: propMenuType = 'home' }) {
           filters: {
             country: tableName === 'events_canada' ? 'CA' : filters.country,
             state_province: filters.state,
-            city: filters.city
+            city: filters.city,
+            eventType: filters.eventType
           },
           pagination: { from, to }
         });
@@ -377,6 +388,9 @@ function HomePage({ menuType: propMenuType = 'home' }) {
       console.log(`HomePage: Will use table: ${newFilters.country === 'CAN' ? 'events_canada' : 'events'}`);
     }
 
+    // Update current filters for dynamic heading
+    setCurrentFilters(newFilters);
+
     // Reset pagination when filters change
     setCurrentPage(0);
 
@@ -443,9 +457,53 @@ function HomePage({ menuType: propMenuType = 'home' }) {
 
       <div className="homepage-main-content">
         <div className="text-overlay-container">
-          <h1>Alternative Running Events</h1>
-          <p>Your curated guide to the most exciting themed, obstacle, and alternative running events.</p>
-          <p>Welcome to the world beyond traditional marathons. At Alt.Run, we bring together a comprehensive directory of unique running adventures, from muddy obstacle courses and vibrant themed runs to challenging virtual races you can do anywhere. Find your next unforgettable experience and filter by location, date, or event type to start your adventure today. From the USA to the Philippines to the United Kingdom to Canada to Australia, we have every type of running event you could hope for.</p>
+          <h1>
+            {currentFilters.eventType === 'charity' ? 'Charity Runs' :
+             currentFilters.eventType === 'themed' ? 'Themed Runs' :
+             currentFilters.eventType === 'obstacle' ? 'Obstacle Runs' :
+             currentFilters.eventType === 'virtual' ? 'Virtual Runs' :
+             currentFilters.eventType === 'barefoot' ? 'Barefoot Runs' :
+             currentFilters.eventType ? `${currentFilters.eventType.charAt(0).toUpperCase() + currentFilters.eventType.slice(1)} Runs` :
+             'Alternative Running Events'}
+          </h1>
+
+          {/* Conditional paragraph text based on selected event type */}
+          {currentFilters.eventType === 'charity' ? (
+            <>
+              <p>Running events that support charitable causes and make a difference.</p>
+              <p>Find charity runs and fundraising events that support great causes. Make a difference while enjoying a fun running experience with Alt.Run.</p>
+            </>
+          ) : currentFilters.eventType === 'themed' ? (
+            <>
+              <p>Fun runs that focus on a theme... like zombies!</p>
+              <p>Discover fun themed runs from color runs to zombie dashes. Find the most exciting costume and themed running events worldwide on Alt.Run.</p>
+            </>
+          ) : currentFilters.eventType === 'obstacle' ? (
+            <>
+              <p>From Spartan Race to Tough Mudder, this is where the warriors go.</p>
+              <p>Challenge yourself with obstacle course races and mud runs for all skill levels. Find beginner-friendly OCRs and exciting challenges on Alt.Run.</p>
+            </>
+          ) : currentFilters.eventType === 'virtual' ? (
+            <>
+              <p>From We Run The North to The Conqueror Challenges, run from the comfort of your home.</p>
+              <p>Participate in virtual runs and remote running challenges from anywhere. Find flexible, fun virtual running events on Alt.Run.</p>
+            </>
+          ) : currentFilters.eventType === 'barefoot' ? (
+            <>
+              <p>Barefoot runners aim to discover a more natural running stride.</p>
+              <p>Explore barefoot running events and natural running experiences. Discover minimalist running adventures on Alt.Run.</p>
+            </>
+          ) : currentFilters.eventType ? (
+            <>
+              <p>Specialized running events for every type of runner.</p>
+              <p>Find unique and alternative running events worldwide. Discover fun, social, and adventurous running experiences on Alt.Run.</p>
+            </>
+          ) : (
+            <>
+              <p>Your curated guide to the most exciting themed, obstacle, and alternative running events.</p>
+              <p>Welcome to the world beyond traditional marathons. At Alt.Run, we bring together a comprehensive directory of unique running adventures, from muddy obstacle courses and vibrant themed runs to challenging virtual races you can do anywhere. Find your next unforgettable experience and filter by location, date, or event type to start your adventure today. From the USA to the Philippines to the United Kingdom to Canada to Australia, we have every type of running event you could hope for.</p>
+            </>
+          )}
         </div>
 
         {/* Display event cards without the "Featured Events" heading */}
